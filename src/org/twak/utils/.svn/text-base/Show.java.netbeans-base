@@ -1,0 +1,45 @@
+package utils;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+/**
+ *
+ * @author twak
+ */
+public class Show extends JFrame
+{
+    
+    public Show ( BufferedImage n )
+    {
+        add (new P(n));
+        setSize (n.getWidth(), n.getHeight()+40);
+        setVisible( true );
+    }
+    
+    public class P extends JComponent
+    {
+        BufferedImage bi;
+
+        public P( BufferedImage n )
+        {
+            this.bi = new BufferedImage( n.getWidth(), n.getHeight(), n.getType() );
+
+            Graphics g = bi.getGraphics();
+            g.drawImage( n, 0, 0, null );
+
+
+        }
+
+        @Override
+        public void paint( Graphics g )
+        {
+            g.setColor (Color.red);
+            g.fillRect( 0, 0, getWidth(), getHeight() );
+            g.drawImage( bi, 0, 0, null );
+        }
+    }
+}
