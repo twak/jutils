@@ -2,6 +2,7 @@
 package org.twak.utils;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.Comparator;
 import javax.swing.text.Segment;
 import javax.vecmath.Point2d;
@@ -12,7 +13,7 @@ import javax.vecmath.Vector2d;
  *
  * @author twak
  */
-public class Line 
+public class Line implements Serializable
 {
     public Point2d start, end;
     

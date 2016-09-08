@@ -20,9 +20,20 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable
 
     public List<RangeListener> listeners = new ArrayList();
 
-
-//    public int button = MouseEvent.BUTTON2;
-
+    public static PanMouseAdaptor buildFixedMA (Component comp, double x, double y, double width, double height, double outWidth) {
+    	
+    	PanMouseAdaptor out = new PanMouseAdaptor();
+    	
+    	out.comp = comp;
+    	
+    	out.cenX = x + width/2;
+    	out.cenY = y + height/2;
+    	
+    	out.zoom = outWidth/width;
+    	
+    	return out;
+    }
+    
     public PanMouseAdaptor()
     {
         super();
@@ -117,7 +128,7 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable
     {
         zoomInt += direction;
         zoomInt = MUtils.clamp( zoomInt, -100, 100 );
-        zoom = Math.exp( zoomInt/2. );
+        zoom = Math.exp( zoomInt/4. );
         comp.repaint();
         fireListeners();
 
