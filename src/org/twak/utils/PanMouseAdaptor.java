@@ -39,6 +39,52 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable
         super();
     }
     
+	private class PanKeyListener implements KeyListener {
+
+		final float speed = 6;
+		
+		@Override
+		public void keyPressed(KeyEvent e) {
+
+
+			switch (e.getKeyCode()) {
+			case KeyEvent.VK_LEFT:
+				cenX -= comp.getWidth() / speed;
+				break;
+			case KeyEvent.VK_RIGHT:
+				cenX += comp.getWidth() / speed;
+				break;
+			case KeyEvent.VK_UP:
+				cenY -= comp.getHeight() / speed;
+				break;
+			case KeyEvent.VK_DOWN:
+				cenY += comp.getHeight() / speed;
+				break;
+			case KeyEvent.VK_PAGE_UP:
+				e.consume();
+				setZoom(1);
+				return;
+			case KeyEvent.VK_PAGE_DOWN:
+				e.consume();
+				setZoom(-1);
+				return;
+			default:
+				return;
+			}
+			
+			e.consume();
+			PanMouseAdaptor.this.comp.repaint();
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+		}
+
+		@Override
+		public void keyTyped(KeyEvent arg0) {
+		}
+    }
+    
     public PanMouseAdaptor( Component comp )
     {
         super();
@@ -47,6 +93,8 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable
         comp.addMouseWheelListener( this );
         comp.addMouseMotionListener( this );
 
+        comp.addKeyListener(new PanKeyListener());
+        
 //        SwingUtilities.invokeLater( new Runnable()
 //        {
 //
