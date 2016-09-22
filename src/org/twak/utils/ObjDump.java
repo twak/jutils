@@ -19,17 +19,10 @@ import javax.vecmath.Tuple2d;
 import javax.vecmath.Tuple3d;
 
 /**
- * .obj face output
  * @author twak
  */
 public class ObjDump {
-/**
- * Really simple anchor that aggregates the points and then outputs the results
- * to a abject file
- *
- * @author twak
- *
- */
+
 	public String name;
 
 	public String currentMaterial = null;
@@ -67,22 +60,30 @@ public class ObjDump {
             
 			BufferedWriter out = new BufferedWriter(new FileWriter(output));
 			
+			System.out.println("writing material file");
+			
 			if (materialFile != null) {
 				String matFile = output.getName().substring(0,output.getName().indexOf('.')) + ".mtl";
 				out.write("mtllib "+matFile+"\n" );
 				Files.write(new File (output.getParentFile(), matFile).toPath(), materialFile.toString().getBytes());
 			}
 			
-			for (Tuple3d v: orderVert)
+			int c = 0;
+			for (Tuple3d v: orderVert) {
 				out.write("v "+v.x+" "+v.y+" "+v.z+"\n");
+				if (c++ % 10000 == 0)
+					System.out.println("written verts "+c+"/"+orderVert.size());
+			}
 			
 			if (orderUV != null)
 			for (Tuple2d uv: orderUV)
 				out.write("vt "+uv.x+" "+uv.y+"\n");
             
 			for (String mat : material2Face.keySet()) {
-				if (mat != null)
+				if (mat != null) {
 					out.write("usemtl " + mat+"\n");
+					out.write("o " + mat+"\n"); // every object has a different material...right?
+				}
 				
 				for (Face f : material2Face.get(mat)) {
 					
