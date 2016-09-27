@@ -3,11 +3,12 @@ package org.twak.utils;
 public class BitTwiddle {
 	
 	
+	
 	public static int[][] byteToUByte(byte[] bytes, int size, int offset, int stride ) {
 		
 		int[][] out = new int[bytes.length / stride][size];
 		
-		for (int i = offset, x = 0; i < bytes.length; i+= stride, x++)
+		for (int i = offset, x = 0; i < bytes.length && x < out.length; i+= stride, x++)
 			for (int j = 0; j < size ; j++)  
 				out[x][j] = (int) bytes[i+j] & 0xff;
 		
@@ -35,7 +36,7 @@ public class BitTwiddle {
 		
 		int[][] out = new int[bytes.length / stride][size];
 		
-		for (int i = offset, x = 0; i < bytes.length; i+= stride, x++)
+		for (int i = offset, x = 0; i < bytes.length && x < out.length; i+= stride, x++)
 			for (int j = 0; j < size ; j++)  {
 				
 				out[x][j] = 
