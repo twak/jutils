@@ -287,11 +287,14 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable
         g.drawImage(im, toX(x), toY(y), toZoom (im.getWidth(null)),toZoom (im.getHeight(null)), null );
     }
 
-    public AffineTransform getAffineTransform( AffineTransform current )
+    public AffineTransform getAffineTransform( AffineTransform current, boolean includeScale )
     {
         AffineTransform at = new AffineTransform();
         at.translate(comp.getWidth()/2, comp.getHeight()/2);
-        at.scale( zoom, zoom );
+        
+        if (includeScale)
+        	at.scale( zoom, zoom );
+        
         at.translate(-cenX, -cenY);
 
         current.concatenate(at);
