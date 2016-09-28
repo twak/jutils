@@ -29,6 +29,11 @@ public class MUtils
     {
         return a < min ? min : a > max ? max : a;
     }
+    
+    public static float clamp( float a, float min, float max )
+    {
+    	return a < min ? min : a > max ? max : a;
+    }
 
     public static int clamp( int a, int min, int max )
     {
