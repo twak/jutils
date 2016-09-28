@@ -2,6 +2,9 @@
 package org.twak.utils;
 
 import Jama.Matrix;
+
+import java.util.Arrays;
+
 import javax.vecmath.Matrix3d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Tuple3d;
@@ -109,7 +112,7 @@ public class LinearForm3D implements Cloneable
         
         return new Point3d(direction);
     }
-    
+
     /**
      * Not a complete collision, compares normals to determine
      * direction of line-intersection

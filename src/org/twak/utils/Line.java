@@ -4,7 +4,7 @@ package org.twak.utils;
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.Comparator;
-import javax.swing.text.Segment;
+
 import javax.vecmath.Point2d;
 import javax.vecmath.Tuple2d;
 import javax.vecmath.Vector2d;
