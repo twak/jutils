@@ -348,4 +348,8 @@ public class Line implements Serializable
             return Double.compare( line.findPPram( o1 ), line.findPPram( o2 ) );
         }
     }
+
+	public Point2d[] points() {
+		return new Point2d[] {start, end};
+	}
 }

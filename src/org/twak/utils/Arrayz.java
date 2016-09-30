@@ -24,6 +24,20 @@ public class Arrayz {
 
         return maxI;
     }
+    
+    public static int max (double[] array)
+    {
+    	double max = Integer.MIN_VALUE;
+    	int maxI = -1;
+    	for (int i = 0; i < array.length; i++)
+    		if (array[i] > max)
+    		{
+    			maxI = i;
+    			max = array[i];
+    		}
+    	
+    	return maxI;
+    }
 
     public static Set asSet( Object... to )
     {

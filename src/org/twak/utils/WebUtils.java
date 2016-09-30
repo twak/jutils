@@ -1,13 +1,5 @@
 package org.twak.utils;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
-
-import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,15 +8,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 

@@ -206,7 +206,7 @@ public class LinearForm implements Serializable
 
     public Point2d project( Point2d pt )
     {
-        double denom = -x*x-y*y; // untested
+        double denom = -x*x-y*y; 
         return new Point2d ( (x * (-c) +y * (-y*pt.x + x * pt.y )) / denom, (y*(-c)+x*y*pt.x-x*x*pt.y)/denom);
     }
 
@@ -237,6 +237,17 @@ public class LinearForm implements Serializable
         else
             return pt.y/dir.y;
     }
+    
+	public Point2d fromPParam(double p) {
+		
+		Point2d origin = project(new Point2d());
+		Point2d dir = new Point2d ( unitVector() );
+		
+		dir.scale(p);
+		dir.add(origin);
+		
+		return dir;
+	}
 
     public double angleFromNorth()
     {
