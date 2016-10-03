@@ -66,7 +66,6 @@ public class Line implements Serializable
 
     public Point2d intersects (Line other, boolean doClip)
     {
-        // drop down to matrix form  - could refac w linear form?
         double a1 = end.y - start.y;
         double b1 = start.x-end.x;
         double c1 = a1 * start.x + b1 * start.y;
@@ -102,7 +101,7 @@ public class Line implements Serializable
         // no intersect :(
         return null;
     }
-
+    
     @Override
     public String toString()
     {

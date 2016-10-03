@@ -37,6 +37,27 @@ public class Graph2D extends MultiMap<Point2d, Line> {
 		
 		return out;
 	}
+	
+	public void removeInnerEdges() {
+		
+		Set<Line> togo = new HashSet<>();
+		
+		for (Point2d pt : keySet()) 
+			for (Line l1 : get(pt))
+				for (Line l2 : get(pt))
+					if (
+						l1.start.equals (l2.end) &&
+						l2.start.equals (l1.end) ) {
+							togo.add(l1);
+							togo.add(l2);
+					}
+
+		for (Line l : togo) {
+			remove(l.start, l);
+			remove(l.end, l);
+		}
+	}
+	
 
 	private static Point2d transform(Point2d a, AffineTransform at) {
 
@@ -46,11 +67,19 @@ public class Graph2D extends MultiMap<Point2d, Line> {
 		return new Point2d(coords[0], coords[1]);
 	}
 
-	public void paint(Graph2D graph, Graphics2D g2, PanMouseAdaptor ma) {
+	public void paint(Graphics2D g2, PanMouseAdaptor ma) {
 
+		double scatterRadius = 0.0;
+		
 		for (Line l : allLines()) {
 
-			g2.drawLine(ma.toX(l.start.x), ma.toY(l.start.y), ma.toX(l.end.x), ma.toY(l.end.y));
+//			g2.setColor(Rainbow.next(graph));
+			
+			g2.drawLine(
+					ma.toX(l.start.x + Math.random() * scatterRadius),
+					ma.toY(l.start.y + Math.random() * scatterRadius),
+					ma.toX(l.end  .x + Math.random() * scatterRadius), 
+					ma.toY(l.end  .y + Math.random() * scatterRadius) );
 
 			Vector2d dir = l.dir();
 			Point2d mid = l.fromFrac(0.5);
@@ -75,7 +104,12 @@ public class Graph2D extends MultiMap<Point2d, Line> {
 		return seenLines;
 	}
 
-	public void newLine(Point2d a, Point2d b) {
+	public void add(Line l) {
+		put(l.start, l);
+		put(l.end, l);
+	}
+	
+	public void add(Point2d a, Point2d b) {
 		Line l = new Line (a,b);
 		put(l.start, l);
 		put(l.end, l);

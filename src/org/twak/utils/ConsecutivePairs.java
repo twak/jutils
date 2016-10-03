@@ -31,7 +31,7 @@ public class ConsecutivePairs <E> implements Iterator<Pair<E,E>>, Iterable<Pair<
 
     public boolean hasNext()
     {
-        if (size == 1 && !loop)
+        if (size == 0 || size == 1 && !loop)
             return false;
         return a >= 0;
     }
