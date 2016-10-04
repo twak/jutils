@@ -25,7 +25,8 @@ public class ConsecutiveItPairs <E> implements Iterator<Pair<E,E>>, Iterable<Pai
     public ConsecutiveItPairs (Iterable<E> input)
     {
         this.it = input.iterator();
-        prev = it.next();
+        if (it.hasNext())
+        	prev = it.next();
     }
 
     public boolean hasNext()

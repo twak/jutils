@@ -363,4 +363,8 @@ public class Line implements Serializable
 	public Point2d[] points() {
 		return new Point2d[] {start, end};
 	}
+
+	public Line reverse() {
+		return new Line (end, start);
+	}
 }
