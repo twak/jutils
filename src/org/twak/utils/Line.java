@@ -238,7 +238,6 @@ public class Line implements Serializable
     {
         Vector2d v2 = new Vector2d ( end );
         v2.sub( start );
-//        v2.normalize();
         v2.scale( fParam );
         v2.add( start );
 
