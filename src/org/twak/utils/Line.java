@@ -182,16 +182,14 @@ public class Line implements Serializable
         return Math.pow(end.x- start.x, 2) + Math.pow (end.y - start.y,2);
     }
     
-    public double length()
-    {
+    public double length() {
         return Math.sqrt( lengthSquared() );
     }
     
     /**
      * Distance to infinite line
      */
-    public double distance (Tuple2d p)
-    {
+    public double distance (Tuple2d p) {
         return distance(p, false);
     }
     
@@ -244,6 +242,17 @@ public class Line implements Serializable
         return new Point2d (v2);
     }
 
+	public boolean adjacent(Point2d pt) {
+
+		Vector2d v1 = new Vector2d(end);
+		v1.sub(start);
+		Vector2d v2 = new Vector2d(pt);
+		v2.sub(start);
+		double param = v2.dot(v1) / v1.length();
+
+		return param > 0 && param < v1.length();
+	}
+    
     public Point2d project( Point2d pt, boolean clamp )
     {
         Vector2d v1 = new Vector2d( end );

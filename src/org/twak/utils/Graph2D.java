@@ -82,7 +82,7 @@ public class Graph2D extends MultiMap<Point2d, Line> {
 					ma.toY(l.end  .y + Math.random() * scatterRadius) );
 
 			Vector2d dir = l.dir();
-			Point2d mid = l.fromFrac(0.5);
+			Point2d mid = l.fromFrac(0.0);
 
 			AffineTransform old = g2.getTransform();
 			g2.translate(ma.toX(mid.x), ma.toY(mid.y));
