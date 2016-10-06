@@ -248,9 +248,9 @@ public class Line implements Serializable
 		v1.sub(start);
 		Vector2d v2 = new Vector2d(pt);
 		v2.sub(start);
-		double param = v2.dot(v1) / v1.length();
+		double param = v2.dot(v1);
 
-		return param > 0 && param < v1.length();
+		return param > 0 && param < v1.lengthSquared();
 	}
     
     public Point2d project( Point2d pt, boolean clamp )
