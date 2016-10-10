@@ -55,8 +55,14 @@ public class LinearForm implements Serializable
 
     public LinearForm findC( Tuple2d goesThrough )
     {
-        c = x * goesThrough.x + y * goesThrough.y;
+    	findC(goesThrough.x, goesThrough.y);
         return this;
+    }
+    
+    public LinearForm findC( double x1, double y1 )
+    {
+    	c = x * x1 + y * y1;
+    	return this;
     }
 
     /**

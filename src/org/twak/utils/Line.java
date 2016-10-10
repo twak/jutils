@@ -40,7 +40,13 @@ public class Line implements Serializable
         this (new Point2d (line.start), new Point2d (line.end));
     }
 
-    /**
+    public Line(LinearForm lf, double pp1, double pp2) {
+    	
+    	this.start = lf.fromPParam(pp1);
+    	this.end   = lf.fromPParam(pp2);
+	}
+
+	/**
      * Line intersecting a line segment
      */
     public Point2d intersects (LinearForm other)
