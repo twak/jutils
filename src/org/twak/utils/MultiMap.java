@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.vecmath.Point2d;
+
 /**
  * HashMap backed mutli-item hash. eg a list for every entry in the hash table
  * @author twak
@@ -161,4 +163,13 @@ public class MultiMap <A,B> //implements Map<A,List<B>>
         for (A aa : a)
             remove( aa );
     }
+
+	public boolean contains(A a, B b) {
+		
+		for (B b2 : get(a))
+			if (b.equals(b2))
+				return true;
+		
+		return false;
+	}
 }

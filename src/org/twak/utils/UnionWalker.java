@@ -15,15 +15,23 @@ public class UnionWalker
     public MultiMap<Point2d,Point2d> map = new MultiMap();
     public Set<Pair<Point2d, Point2d>> starts = new LinkedHashSet();
 
-    public void addEdge (Point2d a, Point2d b, boolean isStart)
-    {
-        map.put( a, b );
+    public void addEdge (Point2d a, Point2d b, boolean isStart) {
+    	
+        addEdge(a, b);
         if (isStart)
             starts.add( new Pair<Point2d, Point2d>(a,b));
     }
+    
+    public void addEdge (Point2d a, Point2d b) {
+    	
+    	if (!a.equals(b) && !map.contains(a, b))
+    		map.put( a, b );
+    	else
+    		System.out.println(">>>");
+    }
 
-    public LoopL<Point2d> find()
-    {
+    public LoopL<Point2d> find()  {
+    	
         LoopL<Point2d> loopl = new LoopL();
         start:
         for (Pair<Point2d, Point2d> s : starts)
@@ -64,6 +72,53 @@ public class UnionWalker
         return loopl;
     }
 
+    public LoopL<Point2d> findAll() /* ignores start */ {
+    	
+        LoopL<Point2d> loopl = new LoopL();
+        start:
+        while  (!map.isEmpty())
+        {
+            Loop<Point2d> loop = new Loop();
+
+            Point2d prev = map.keySet().iterator().next(),
+            		current = map.get(prev).iterator().next(),
+            		start = current;
+            
+            do
+            {
+                Point2d next = null;
+                double angle = -Double.MAX_VALUE;
+                for (Point2d n : map.get( current) )
+                {
+                    if ( n != prev )
+                    {
+                        double iA = interiorAngleBetween( prev, current, n );
+                        if ( iA > angle )
+                        {
+                            next = n;
+                            angle = iA;
+                        }
+                    }
+                }
+                
+                if (next == null) {
+                	map.remove( prev); // don't revisit points
+                    continue start;
+                }
+                map.remove( current ); // don't revisit points
+                
+                loop.append( new Point2d(next) );
+                prev = current;
+                current = next;
+            }
+            while (current != start);
+
+            // if we sucessfully complete :)
+            loopl.add( loop );
+        }
+        return loopl;
+    }
+    
     public static void main (String[] args)
     {
         Point2d a = new Point2d (0,0),

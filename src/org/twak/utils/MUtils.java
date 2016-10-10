@@ -123,4 +123,8 @@ public class MUtils
     {
         return new Point2d ( pt.x, pt.y );
     }
+
+	public static double[] minMax(double...ds) {
+		return new double[] {min(ds), max(ds) };
+	}
 }
