@@ -1,7 +1,5 @@
 package org.twak.utils;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,11 +8,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.vecmath.Point2d;
-import javax.vecmath.Vector2d;
 
-import org.twak.utils.ui.PaintThing.ICanPaint;
-
-public class Graph2D extends MultiMap<Point2d, Line> implements ICanPaint {
+public class Graph2D extends MultiMap<Point2d, Line>  {
 
 	public Graph2D apply(AffineTransform at) {
 
@@ -70,49 +65,6 @@ public class Graph2D extends MultiMap<Point2d, Line> implements ICanPaint {
 		return new Point2d(coords[0], coords[1]);
 	}
 
-	public void paint(Graphics2D g2, PanMouseAdaptor ma) {
-
-		double scatterRadius = 0.0;
-		
-		Color c = g2.getColor();
-		
-		for (Line l : allLines()) {
-
-			if (l.length() < 0.001)
-				g2.setColor(Color.red);
-			
-			g2.drawLine(
-					ma.toX(l.start.x + Math.random() * scatterRadius),
-					ma.toY(l.start.y + Math.random() * scatterRadius),
-					ma.toX(l.end  .x + Math.random() * scatterRadius), 
-					ma.toY(l.end  .y + Math.random() * scatterRadius) );
-
-			
-			
-			Vector2d dir = l.dir();
-			Point2d mid = l.fromFrac(0.5);
-
-			
-			
-			AffineTransform old = g2.getTransform();
-			g2.translate(ma.toX(mid.x), ma.toY(mid.y));
-			g2.rotate(-Math.atan2(dir.x, dir.y));
-
-			g2.drawLine(-5, -5, 0, 0);
-			g2.drawLine(5,  -5, 0, 0);
-
-			g2.setTransform(old);
-			
-			g2.setColor(Color.red);
-			
-			if (get(l.start).size() != 2) {
-				g2.fillOval(ma.toX(l.start.x), ma.toY(l.start.y), 5, 5);
-				g2.drawString( " "+get(l.start).size(), ma.toX(l.start.x), ma.toY(l.start.y));
-			}
-			
-			g2.setColor(c);
-		}
-	}
 
 	public Set<Line> allLines() {
 		Set<Line> seenLines = new HashSet<>();
@@ -134,4 +86,8 @@ public class Graph2D extends MultiMap<Point2d, Line> implements ICanPaint {
 		put(l.end, l);
 	}
 
+	public void addAll(Iterable<Line> portal) {
+		for (Line l : portal)
+			add(l);
+	}
 }

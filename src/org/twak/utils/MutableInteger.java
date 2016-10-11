@@ -11,4 +11,8 @@ public class MutableInteger {
     {
         this.i = i;
     }
+    @Override
+    public String toString() {
+    	return ""+i;
+    }
 }

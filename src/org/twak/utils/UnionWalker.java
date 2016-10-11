@@ -23,11 +23,8 @@ public class UnionWalker
     }
     
     public void addEdge (Point2d a, Point2d b) {
-    	
     	if (!a.equals(b) && !map.contains(a, b))
     		map.put( a, b );
-    	else
-    		System.out.println(">>>");
     }
 
     public LoopL<Point2d> find()  {
