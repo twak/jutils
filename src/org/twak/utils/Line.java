@@ -248,16 +248,6 @@ public class Line implements Serializable
         return new Point2d (v2);
     }
 
-	public boolean adjacent(Point2d pt) {
-
-		Vector2d v1 = new Vector2d(end);
-		v1.sub(start);
-		Vector2d v2 = new Vector2d(pt);
-		v2.sub(start);
-		double param = v2.dot(v1);
-
-		return param > 0 && param < v1.lengthSquared();
-	}
     
     public Point2d project( Point2d pt, boolean clamp )
     {
@@ -380,5 +370,18 @@ public class Line implements Serializable
 
 	public Line reverse() {
 		return new Line (end, start);
+	}
+
+	public double distance(Line l) {
+		
+		if (intersects(l, true) != null)
+			return 0;
+		
+		return MUtils.min (
+				l.distance(  start, true),
+				l.distance(  end  , true),
+				  distance(l.start, true),
+				  distance(l.end  , true)
+				);
 	}
 }

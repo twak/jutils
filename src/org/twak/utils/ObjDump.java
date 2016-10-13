@@ -89,7 +89,7 @@ public class ObjDump {
 					
 					out.write("f ");
 					for (int ii = 0; ii < f.vtIndexes.size(); ii ++)
-						out.write( f.vtIndexes.get(ii) + ( f.vtIndexes == null ? "" : ("/" + f.uvIndexes.get(ii) )) +" ");
+						out.write( f.vtIndexes.get(ii) + ( f.uvIndexes == null ? "" : ("/" + f.uvIndexes.get(ii) )) +" ");
 					
 					out.write("\n");
 				}
