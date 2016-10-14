@@ -1,5 +1,6 @@
 package org.twak.utils;
 
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -104,4 +105,20 @@ public class Arrayz {
             }
         return -1;
     }
+
+	public static float[] toFloatArray(List<Float> coords) {
+		float[] out = new float[coords.size()];
+		for (int i = 0; i < coords.size(); i++)
+			out[i] = coords.get(i);
+
+		return out;
+	}
+
+	public static int[] toIntArray(List<Integer> inds) {
+		int[] out = new int[inds.size()];
+		for (int i = 0; i < inds.size(); i++)
+			out[i] = inds.get(i);
+		
+		return out;
+	}
 }
