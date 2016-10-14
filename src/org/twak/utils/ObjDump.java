@@ -25,12 +25,34 @@ public class ObjDump {
 
 	public String name;
 
-	public String currentMaterial = null;
+	public Material currentMaterial = null;
 	
-	public MultiMap<String, Face> material2Face = new MultiMap<>();
+	public MultiMap<Material, Face> material2Face = new MultiMap<>();
 	
-	private static class Face {		
+	public static class Material {
+		String name;
+		public String filename;
+		public int w, h;
 		
+		public Material(String filename, String name, int w, int h) {
+			this.name = name;
+			this.filename = filename;
+			this.w = w;
+			this.h = h;
+		}
+
+		@Override
+		public boolean equals(Object m) {
+			return filename.equals( ((Material)m ).filename);
+		}
+		
+		@Override
+		public int hashCode() {
+			return filename.hashCode();
+		}
+	}
+	
+	public static class Face {		
 		public List<Integer> vtIndexes = new ArrayList<>();
 		public List<Integer> uvIndexes = null;//new ArrayList<>();
 	}
@@ -48,10 +70,20 @@ public class ObjDump {
 		material2Face = new MultiMap<>();
 		vertexToNo = new LinkedHashMap<Tuple3d, Integer>();
 		orderVert = new ArrayList<Tuple3d>();
-		// ask for file name, bootstraping for sity frame
 	}
 
-    public void allDone( File output )
+    public ObjDump(ObjDump in) {
+    	this.name = in.name;
+    	this.currentMaterial = in.currentMaterial;
+    	this.vertexToNo = new HashMap ( in.vertexToNo );
+    	this.orderVert = new ArrayList( in.orderVert );
+ 		this.uvToNo = new HashMap ( in.vertexToNo );
+ 		this.orderUV = new ArrayList( in.orderUV);
+ 		
+ 		this.material2Face = new MultiMap<Material, Face>( in.material2Face );
+	}
+
+	public void allDone( File output )
 	{
 		try
 		{
@@ -62,7 +94,21 @@ public class ObjDump {
 			
 			System.out.println("writing material file");
 			
-			if (materialFile != null) {
+			if (currentMaterial != null) {
+				StringBuffer materialFile = new StringBuffer();
+				for (Material mat : material2Face.keySet()) {
+
+					materialFile.append("newmtl " + mat.name + "\n");
+					materialFile.append("Ka 1.000 1.000 1.000\n");
+					materialFile.append("Kd 1.000 1.000 1.000\n");
+					materialFile.append("Ks 0.000 0.000 0.000\n");
+					materialFile.append("d 1.0\n");
+					materialFile.append("illum 2\n");
+					materialFile.append("map_Ka "+mat.filename+"\n");
+					materialFile.append("map_Kd "+mat.filename+"\n");
+					materialFile.append("map_Ks "+mat.filename+"\n\n");
+				}
+				
 				String matFile = output.getName().substring(0,output.getName().indexOf('.')) + ".mtl";
 				out.write("mtllib "+matFile+"\n" );
 				Files.write(new File (output.getParentFile(), matFile).toPath(), materialFile.toString().getBytes());
@@ -79,17 +125,18 @@ public class ObjDump {
 			for (Tuple2d uv: orderUV)
 				out.write("vt "+uv.x+" "+uv.y+"\n");
             
-			for (String mat : material2Face.keySet()) {
+			for (Material mat : material2Face.keySet()) {
 				if (mat != null) {
-					out.write("usemtl " + mat+"\n");
-					out.write("o " + mat+"\n"); // every object has a different material...right?
+					out.write("usemtl " + mat.name+"\n");
+					out.write("o " + mat.name+"\n"); // every object has a different material...right?
 				}
 				
 				for (Face f : material2Face.get(mat)) {
 					
 					out.write("f ");
 					for (int ii = 0; ii < f.vtIndexes.size(); ii ++)
-						out.write( f.vtIndexes.get(ii) + ( f.uvIndexes == null ? "" : ("/" + f.uvIndexes.get(ii) )) +" ");
+						out.write( ( f.vtIndexes.get(ii) + 1) +  /** obj's first element is 1 */
+								( f.uvIndexes == null ? "" : ("/" + ( f.uvIndexes.get(ii) + 1 ) )) +" ");
 					
 					out.write("\n");
 				}
@@ -124,7 +171,7 @@ public class ObjDump {
                 face.vtIndexes.add( vertexToNo.get( v ) );
             else
             {
-                int number = orderVert.size() + 1; // size will be next index
+                int number = orderVert.size(); // size will be next index
                 face.vtIndexes.add( number );
                 orderVert.add( v );
                 vertexToNo.put( v, number );
@@ -148,7 +195,7 @@ public class ObjDump {
 				face.vtIndexes.add( vertexToNo.get( v ) );
 			else
 			{
-				int number = orderVert.size() + 1; 
+				int number = orderVert.size(); 
 				face.vtIndexes.add( number );
 				orderVert.add( v );
 				vertexToNo.put( v, number );
@@ -171,12 +218,26 @@ public class ObjDump {
 				face.uvIndexes.add( uvToNo.get( v ) );
 			else
 			{
-				orderUV.add( v );
 				int number = orderUV.size();
+				orderUV.add( v );
 				face.uvIndexes.add( number );
 				uvToNo.put( v, number );
 			}
 		}
+	}
+	
+	public void validateIndicies() {
+		for (Material m : material2Face.keySet())
+			for (Face f : material2Face.get(m)) {
+				for (int i : f.uvIndexes)
+					if (i >= orderUV.size() || i < 0)
+						System.out.println("invalid uv index " + i);
+				
+				for (int i : f.vtIndexes)
+					if (i >= orderVert.size() || i < 0)
+						System.out.println("invalid vert index " + i);
+				
+			}
 	}
 
     public void addAll( LoopL<Point3d> faces )
@@ -195,30 +256,10 @@ public class ObjDump {
     /**
      * Sets the texture map for following verts
      */
-	StringBuffer materialFile = null;
-	private Set<String> seenTextures = new HashSet<String>();
+	public void setCurrentTexture(String textureFile, int w, int h) {
 
-	public void setCurrentTexture(String textureFile) {
-
-		if (materialFile == null)
-			materialFile = new StringBuffer();
-
-		currentMaterial = textureFile.replace(".", "_");
-
-		if (!seenTextures.contains(textureFile)) {
-			seenTextures.add(textureFile);
-
-			materialFile.append("newmtl " + currentMaterial + "\n");
-			materialFile.append("Ka 1.000 1.000 1.000\n");
-			materialFile.append("Kd 1.000 1.000 1.000\n");
-			materialFile.append("Ks 0.000 0.000 0.000\n");
-			materialFile.append("d 1.0\n");
-			materialFile.append("illum 2\n");
-			materialFile.append("map_Ka "+textureFile+"\n");
-			materialFile.append("map_Kd "+textureFile+"\n");
-			materialFile.append("map_Ks "+textureFile+"\n\n");
-		}
-
+		currentMaterial = new Material (textureFile, textureFile.replace(".", "_"), w, h );
+		
 	}
 
     public void addAll( List<List<Point3d>> faces )
@@ -226,5 +267,4 @@ public class ObjDump {
         for (List<Point3d> face : faces)
             addFace( face );
     }
-
 }

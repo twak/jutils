@@ -18,7 +18,15 @@ public class MultiMap <A,B> //implements Map<A,List<B>>
 {
     public Map <A, List<B>> map = new LinkedHashMap();
 
-    public void addEmpty( A a )
+    public MultiMap(){}
+    
+    public MultiMap(MultiMap<A, B> other) {
+    	for (A a : other.map.keySet())
+    		for (B b : other.map.get (a) )
+    			put(a,b);
+	}
+
+	public void addEmpty( A a )
     {
         if (!map.containsKey( a ))
             map.put ( a, new ArrayList());

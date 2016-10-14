@@ -67,4 +67,14 @@ public class BitTwiddle {
 	public static void main (String[] args) throws Throwable {
 		new BitTwiddle();
 	}
+	
+    public static int nextPowerOf2(final int a)
+    {
+        int b = 1;
+        while (b < a)
+        {
+            b = b << 1;
+        }
+        return b;
+    }
 }
