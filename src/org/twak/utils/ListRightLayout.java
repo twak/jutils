@@ -23,9 +23,12 @@ public class ListRightLayout implements LayoutManager
     public Dimension preferredLayoutSize( Container parent )
     {
         int width = 0;
-        for (Component c : parent.getComponents())
+        int height = 0;
+        for (Component c : parent.getComponents()) {
             width += c.getPreferredSize().getWidth();
-        return new Dimension ( width, 10 );
+            height = Math.max(height,c.getPreferredSize().height);
+        }
+        return new Dimension ( width, height );
     }
 
     public Dimension minimumLayoutSize( Container parent )
