@@ -121,4 +121,23 @@ public class Arrayz {
 		
 		return out;
 	}
+
+	public static float[] sub(float[] a, float[] b) {
+		assert a.length == b.length;
+		float[] out = new float[a.length];
+		for (int i = 0; i< a.length; i++) 
+			out[i] = a[i] - b[i];
+		
+		return out;
+	}
+
+	public static float[] cross(float[] a, float[] b) {
+		assert a.length == 3 && b.length == 3;
+		
+		return new float[] {
+				a[1] * b[2] + a[2] * b[1],
+				a[2] * b[0] + a[0] * b[2],
+				a[0] * b[1] + a[1] * b[0],
+				};
+	}
 }

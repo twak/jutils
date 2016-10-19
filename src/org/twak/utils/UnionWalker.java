@@ -102,7 +102,7 @@ public class UnionWalker
                 	map.remove( prev); // don't revisit points
                     continue start;
                 }
-                map.remove( current ); // don't revisit points
+                map.remove( current, next ); // don't revisit points
                 
                 loop.append( new Point2d(next) );
                 prev = current;

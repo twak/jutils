@@ -29,7 +29,7 @@ public class Intersector
          
     /**
      */
-    public List<Collision> intersectLines (List<Line> a)
+    public List<Collision> intersectLines (Iterable<Line> a)
     {
         index_ = 0;
         events = new PriorityQueue<Event>();
@@ -477,7 +477,7 @@ public class Intersector
     {
         public Point2d location;
         public List<Line> lines;
-        public int index = index_++;
+//        public int index = index_++;
         public Collision (Point2d loc, List<Line> lines)
         {
             this.location = loc;

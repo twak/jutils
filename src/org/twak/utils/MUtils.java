@@ -79,6 +79,15 @@ public class MUtils
         return min;
     }
     
+    public static float min (float ... vals)
+    {
+    	float min = Float.MAX_VALUE;
+    	for (float v : vals)
+    		min = Math.min (v, min);
+    	
+    	return min;
+    }
+    
     public static double max (double ... vals)
     {
         double max = -Double.MAX_VALUE;

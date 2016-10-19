@@ -108,4 +108,31 @@ public class Line3D
         delta.sub( start );
         return new Line3D (start, delta);
     }
+
+    /**
+     * http://geomalgorithms.com/a07-_distance.html
+     * @param v
+     * @return closest point on v
+     */
+	public Point3d closestPointOn(Line3D v) {
+		
+		Line3D u = this;
+		
+		Vector3d w0 = new Vector3d ( u.origin);
+		w0.sub( v.origin);
+		
+		double  a = u.direction.dot ( u.direction ),
+				b = u.direction.dot ( v.direction ),
+				c = v.direction.dot ( v.direction ),
+				d = u.direction.dot ( w0 ),
+				e = v.direction.dot ( w0 );
+        
+		double tc = ( a*e-b*d ) / (a*c - b * b);
+				
+		Point3d out = new Point3d(v.direction);
+		out.scale(tc);
+		out.add(v.origin);
+		
+		return out;
+	}
 }

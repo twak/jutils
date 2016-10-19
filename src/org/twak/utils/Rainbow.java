@@ -13,8 +13,8 @@ public class Rainbow
 
     static String[] rainbowStrings = new String[]
     {
-        "red", "orange", "yellow", "green", "cyan", "blue", "magenta", "pink", "gray", "purple",
-        "dark red", "brown", "dark orange", "dark yellow", "dark green", "dark blue"
+        "red", "orange", "green", "cyan", "blue", "magenta", "pink", "gray", "purple",
+        "dark red", "brown", "dark orange", "dark yellow", "dark green", "dark blue", "yellow"
     };
     static int rainbowIndex = 0;
     
@@ -24,7 +24,6 @@ public class Rainbow
     {
         Color.red,
         Color.orange,
-        Color.yellow,
         Color.green,
         Color.cyan,
         Color.blue,
@@ -37,7 +36,8 @@ public class Rainbow
         Color.orange.darker(),
         Color.yellow.darker(),
         Color.green.darker(),
-        Color.blue.darker()
+        Color.blue.darker(),
+        Color.yellow,
     };
 
     public static String lastAsString( Object key )

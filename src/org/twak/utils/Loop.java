@@ -15,6 +15,11 @@ public class Loop <E> implements Iterable<E>
     {
         start = null;
     }
+    
+    public Loop(Loop<E> toClone) {
+    	for (E e : toClone)
+    		append(e);
+    }
 
     public int count()
     {

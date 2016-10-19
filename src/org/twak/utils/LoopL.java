@@ -20,6 +20,13 @@ public class LoopL<E> extends ArrayList<Loop<E>>
         this();
         add( fromPoints );
     }
+    public LoopL( LoopL<E> toClone)
+    {
+        this();
+        for (Loop<E> loop : toClone)
+        	add(new Loop<E>(loop) );
+    }
+    
     
     public Iterable<E> eIterator()
     {
@@ -50,17 +57,7 @@ public class LoopL<E> extends ArrayList<Loop<E>>
         return i;
     }
 
-    public Iterable<LContext<E>> getCIterable()
-    {
-        return new Iterable<LContext<E>>()
-        {
-            public Iterator<LContext<E>> iterator()
-            {
-                return getCIterator();
-            }
 
-        };
-    }
 
     public void reverseEachLoop()
     {
@@ -71,6 +68,18 @@ public class LoopL<E> extends ArrayList<Loop<E>>
     public Iterator<LContext<E>> getCIterator()
     {
         return new ContextIt();
+    }
+    
+    public Iterable<LContext<E>> getCIterable()
+    {
+        return new Iterable<LContext<E>>()
+        {
+            public Iterator<LContext<E>> iterator()
+            {
+                return getCIterator();
+            }
+
+        };
     }
 
     public class ContextIt implements Iterator <LContext<E>>
@@ -118,6 +127,78 @@ public class LoopL<E> extends ArrayList<Loop<E>>
         public LContext next()
         {
             LContext out = new LContext( loopable, loop );
+            findNext();
+            return out;
+        }
+
+        public void remove()
+        {
+            throw new UnsupportedOperationException( "Not supported yet." );
+        }
+    }
+    
+    public Iterator<Loopable<E>> getLoopableIterator()
+    {
+        return new LoopableLIterator();
+    }
+    
+    public Iterable<Loopable<E>> getLoopableIterable()
+    {
+        return new Iterable<Loopable<E>>()
+        {
+            public Iterator<Loopable<E>> iterator()
+            {
+                return new LoopableLIterator();
+            }
+
+        };
+    }
+    
+    public class LoopableLIterator implements Iterator <Loopable<E>>
+    {
+        Iterator<Loop<E>> loopIt  = null;
+        Iterator<Loopable<E>> loopableIt = null;
+
+        // next values to return
+        Loopable<E> loopable;
+        Loop<E> loop;
+
+        public LoopableLIterator()
+        {
+            loopIt = LoopL.this.iterator();
+            findNext();
+        }
+
+        private void findNext()
+        {
+            if (loopIt == null)
+            {
+                return; // finished!
+            }
+            else if (loopableIt != null && // start
+                    loopableIt.hasNext())
+            {
+                loopable = loopableIt.next();
+            }
+            else if (loopIt.hasNext())
+            {
+                loopableIt = (loop = loopIt.next()).loopableIterator().iterator();
+                findNext();
+            }
+            else
+            {
+                loopIt = null;
+            }
+        }
+
+        public boolean hasNext()
+        {
+            return loopIt != null;
+        }
+
+        public Loopable<E> next()
+        {
+            Loopable<E> out = loopable;
             findNext();
             return out;
         }
