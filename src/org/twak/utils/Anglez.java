@@ -4,6 +4,7 @@ public class Anglez {
 	
 	/**
 	 * for (a,b) in -Math.PI to Math.PI, what is the angle between them?
+	 * @return 0-pi
 	 */
 	public static double dist (double a, double b) {
 		
@@ -15,7 +16,7 @@ public class Anglez {
 		
 		double 
 			tween = b - a,
-			around = Math.PI - b + a + Math.PI;
+			around = 2 * Math.PI - b + a;
 		
 		return Math.min ( tween, around );
 		

@@ -11,6 +11,12 @@ import javax.vecmath.Point2d;
 
 public class Graph2D extends MultiMap<Point2d, Line>  {
 
+	public Graph2D(List<Line> sliceTri) {
+		sliceTri.stream().forEach( i -> add(i) );
+	}
+	
+	public Graph2D(){}
+
 	public Graph2D apply(AffineTransform at) {
 
 		Graph2D out = new Graph2D();
@@ -89,5 +95,16 @@ public class Graph2D extends MultiMap<Point2d, Line>  {
 	public void addAll(Iterable<Line> portal) {
 		for (Line l : portal)
 			add(l);
+	}
+
+	public void remove(Line line) {
+		
+		remove(line.start, line);
+		remove(line.end,   line);
+	}
+
+	public void removeAll(Iterable<Line> togo) {
+		for (Line l : togo)
+			remove(l);
 	}
 }

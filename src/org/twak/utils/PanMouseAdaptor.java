@@ -49,16 +49,16 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable
 
 			switch (e.getKeyCode()) {
 			case KeyEvent.VK_LEFT:
-				cenX -= comp.getWidth() / speed;
+				cenX -= comp.getWidth() / ( speed * zoom);
 				break;
 			case KeyEvent.VK_RIGHT:
-				cenX += comp.getWidth() / speed;
+				cenX += comp.getWidth() / ( speed * zoom);
 				break;
 			case KeyEvent.VK_UP:
-				cenY -= comp.getHeight() / speed;
+				cenY -= comp.getHeight() / ( speed * zoom);
 				break;
 			case KeyEvent.VK_DOWN:
-				cenY += comp.getHeight() / speed;
+				cenY += comp.getHeight() / ( speed * zoom);
 				break;
 			case KeyEvent.VK_PAGE_UP:
 				e.consume();
@@ -122,6 +122,7 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable
     @Override
     public void mousePressed( MouseEvent e )
     {
+    	comp.requestFocus();
         if ( e.getButton() == button )
         {
             startX = e.getPoint().x;
