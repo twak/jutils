@@ -2,6 +2,8 @@ package org.twak.utils;
 
 import java.util.Iterator;
 
+import javax.vecmath.Point2d;
+
 public class Loopable<E> implements Iterable<Loopable<E>>
 {
     E me;
@@ -115,5 +117,19 @@ public class Loopable<E> implements Iterable<Loopable<E>>
             lit.remove();
         }
     }
+
+	public Loopable<E> move(int dir) {
+		Loopable<E> out = this;
+		while (dir > 0) {
+			dir--;
+			out = out.getNext();
+		}
+		
+		while (dir < 0) {
+			dir ++;
+			out = out.getPrev();
+		}
+		return out;
+	}
 
 }
