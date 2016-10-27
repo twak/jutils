@@ -347,6 +347,10 @@ public class Line implements Serializable
     		a += Math.PI;
     	return a;
     }
+    
+	public double absAngle(Line sl) {
+		return Anglez.dist(aTan2(), sl.aTan2());
+	}
 
     public static class AlongLineComparator implements Comparator<Point2d>
     {
@@ -376,7 +380,7 @@ public class Line implements Serializable
 		
 		if (intersects(l, true) != null)
 			return 0;
-		
+
 		return MUtils.min (
 				l.distance(  start, true),
 				l.distance(  end  , true),

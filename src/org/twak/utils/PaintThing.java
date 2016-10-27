@@ -64,6 +64,11 @@ public class PaintThing {
 			g.fill(p);
 			g.setColor(c);
 			g.draw(p);
+			
+			if (true)
+				for (Loopable<Point2d> able : ll.loopableIterator() )
+					drawArrow(g, ma, new Line (able.get(), able.getNext().get()), 5);
+			
 		}
 	}
 	
