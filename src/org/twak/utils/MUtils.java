@@ -3,6 +3,7 @@ package org.twak.utils;
 import java.awt.Color;
 import java.awt.geom.Point2D;
 import javax.vecmath.Point2d;
+import javax.vecmath.Point3d;
 import javax.vecmath.Tuple2d;
 import javax.vecmath.Vector2d;
 import static java.lang.Math.*;
@@ -135,5 +136,16 @@ public class MUtils
 
 	public static double[] minMax(double...ds) {
 		return new double[] {min(ds), max(ds) };
+	}
+	
+	public static double area (Point2d a, Point2d b, Point2d c) {
+		return 0.5 * (
+			   -b.x * a.y + 
+				c.x * a.y + 
+				a.x * b.y - 
+				c.x * b.y - 
+				a.x * c.y + 
+				b.x * c.y
+				);
 	}
 }
