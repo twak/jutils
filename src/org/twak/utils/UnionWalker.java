@@ -81,34 +81,62 @@ public class UnionWalker
             		current = map.get(prev).iterator().next(),
             		start = current;
             
+//            PaintThing.debug.put(this, start);
+//            PaintThing.debug.put(this, prev);
+            
+            System.out.println("prev "+prev);
+            System.out.println("current "+prev);
+            
             do
             {
                 Point2d next = null;
                 double angle = -Double.MAX_VALUE;
-                for (Point2d n : map.get( current) )
-                {
-                    if ( n != prev )
-                    {
-                        double iA = interiorAngleBetween( prev, current, n );
-                        if ( iA > angle )
-                        {
-                            next = n;
-                            angle = iA;
-                        }
-                    }
-                }
                 
-                if (next == null) {
-                	map.remove( prev); // don't revisit points
+				for (Point2d n : map.get(current)) {
+
+					double iA = interiorAngleBetween(prev, current, n);
+					if (iA > angle) {
+						next = n;
+						angle = iA;
+					}
+				}
+                
+                if (next == null ) {
+                	
+                	
+                    for (Point2d n : map.get( prev) )
+                    	System.out.println("  "+n);
+                	
+                	map.remove( prev ); // don't revisit points
+                	
+                	System.out.println("Deadend with "+loop.count());
+                	
+//                	PaintThing.debug.put(this, current);
+//                	PaintThing.debug.put("foo", prev);
+//                	PaintThing.debug.put("foo", start);
+                	
+                	
+//                	return loopl;
                     continue start;
                 }
+                
+                System.out.println(next);
+                
+				{
+					Point2d tmp = new Point2d(0.01, 0.01);
+					tmp.add(current);
+
+					PaintThing.debug.put("foo2", tmp);
+					PaintThing.debug.put("foo3", next);
+				}
+                
                 map.remove( current, next ); // don't revisit points
                 
                 loop.append( new Point2d(next) );
                 prev = current;
                 current = next;
             }
-            while (current != start);
+            while (!current.equals ( start ) );
 
             // if we sucessfully complete :)
             loopl.add( loop );
