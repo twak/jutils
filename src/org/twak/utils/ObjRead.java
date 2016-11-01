@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -97,6 +98,17 @@ public class ObjRead {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public ObjRead(ObjRead obj) {
+		
+		this.pts = new double[obj.pts.length][];
+		for (int i = 0; i < obj.pts.length; i++)
+			this.pts[i] = Arrays.copyOf(obj.pts[i], obj.pts[i].length);
+		
+		this.faces = new int[obj.faces.length][];
+		for (int i = 0; i < obj.faces.length; i++)
+			this.faces[i] = Arrays.copyOf(obj.faces[i], obj.faces[i].length);
 	}
 
 	public static void main(String[] args) {

@@ -81,12 +81,6 @@ public class UnionWalker
             		current = map.get(prev).iterator().next(),
             		start = current;
             
-//            PaintThing.debug.put(this, start);
-//            PaintThing.debug.put(this, prev);
-            
-//            System.out.println("prev "+prev);
-//            System.out.println("current "+prev);
-            
             do
             {
                 Point2d next = null;
@@ -103,31 +97,13 @@ public class UnionWalker
                 
                 if (next == null ) {
                 	
-                	
-//                    for (Point2d n : map.get( prev) )
-//                    	System.out.println("  "+n);
-                	
                 	map.remove( prev ); // don't revisit points
-                	
-//                	System.out.println("Deadend with "+loop.count());
-                	
-//                	PaintThing.debug.put(this, current);
-//                	PaintThing.debug.put("foo", prev);
-//                	PaintThing.debug.put("foo", start);
-                	
-                	
-//                	return loopl;
                     continue start;
                 }
-                
-//                System.out.println(next);
                 
 				{
 					Point2d tmp = new Point2d(0.01, 0.01);
 					tmp.add(current);
-
-//					PaintThing.debug.put("foo2", tmp);
-//					PaintThing.debug.put("foo3", next);
 				}
                 
                 map.remove( current, next ); // don't revisit points

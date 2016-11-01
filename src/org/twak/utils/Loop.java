@@ -2,6 +2,7 @@
 package org.twak.utils;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Double linked-list wrapper around an arbitrary object
@@ -9,6 +10,8 @@ import java.util.Iterator;
  */
 public class Loop <E> implements Iterable<E>
 {
+	public List<Loop<E>> children;
+	
     public Loopable<E> start;
     
     public Loop ()
