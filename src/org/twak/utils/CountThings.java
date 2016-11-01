@@ -12,7 +12,7 @@ import java.util.Set;
 public class CountThings<E>
 {
 
-    Cache<E, MutableInteger> counts = new Cache<E, MutableInteger>()
+    public Cache<E, MutableInteger> counts = new Cache<E, MutableInteger>()
     {
 
         @Override

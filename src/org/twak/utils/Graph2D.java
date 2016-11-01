@@ -1,6 +1,7 @@
 package org.twak.utils;
 
 import java.awt.geom.AffineTransform;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +12,7 @@ import javax.vecmath.Point2d;
 
 public class Graph2D extends MultiMap<Point2d, Line>  {
 
-	public Graph2D(List<Line> sliceTri) {
+	public Graph2D(Collection<Line> sliceTri) {
 		sliceTri.stream().forEach( i -> add(i) );
 	}
 	
