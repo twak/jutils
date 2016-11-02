@@ -179,15 +179,14 @@ public class ObjDump {
         }
 	}
 	
-	public void addFace(float[][] points, float[][] uvs)
-	{
+	public void addFace(double[][] points, double[][] uvs) {
 		if (uvs.length != points.length)
 			throw new Error();
 		
 		Face face = new Face();
 		material2Face.put(currentMaterial, face);
 
-		for ( float[] xyz : points )
+		for ( double[] xyz : points )
 		{
 			Tuple3d v = new Point3d( xyz[0], xyz[1], xyz[2] );
 			
@@ -210,7 +209,7 @@ public class ObjDump {
 			orderUV = new ArrayList<>();
 		}
 		
-		for ( float[] uv : uvs )
+		for ( double[] uv : uvs )
 		{
 			Tuple2d v = new Point2d( uv[0], uv[1] );
 			
@@ -224,6 +223,20 @@ public class ObjDump {
 				uvToNo.put( v, number );
 			}
 		}
+	}
+	
+	public void addFace(float[][] points, float[][] uvs) {
+		addFace(toDouble(points), toDouble(uvs));
+	}
+	
+	private static double[][] toDouble(float[][] in) {
+		double[][] out = new double[in.length][];
+		for(int i =0; i < out.length;i++){
+			out[i] = new double[in[i].length];
+			for (int j = 0; j < out[i].length; j++)
+				out[i][j] = in[i][j];
+		}
+		return out;
 	}
 	
 	public void validateIndicies() {

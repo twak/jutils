@@ -10,8 +10,6 @@ import java.util.List;
  */
 public class Loop <E> implements Iterable<E>
 {
-	public List<Loop<E>> children;
-	
     public Loopable<E> start;
     
     public Loop ()
@@ -233,7 +231,6 @@ public class Loop <E> implements Iterable<E>
 
             return loopO;
         }
-        // convert teh
         public abstract O map (Loopable<E> input);
     }
 }
