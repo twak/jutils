@@ -378,6 +378,11 @@ public class Line implements Serializable
 
 	public double distance(Line l) {
 		
+		if (l.start.equals( l.end ))
+			return distance( l.start, true );
+		if (start.equals( end ))
+			return l.distance( start, true );
+		
 		if (intersects(l, true) != null)
 			return 0;
 
