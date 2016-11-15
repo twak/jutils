@@ -56,6 +56,23 @@ public class CountThings<E>
         return new Pair(val, max);
     }
     
+    public Pair<E, Integer> getMin()
+    {
+    	E val = null;
+    	int min = Integer.MAX_VALUE;
+    	
+    	for ( Map.Entry<E, MutableInteger> e : counts.cache.entrySet() ) {
+    		
+    		if (e.getValue().i < min)
+    		{
+    			min = e.getValue().i;
+    			val = e.getKey();
+    		}
+    	}
+    	
+    	return new Pair(val, min);
+    }
+    
     public Pair<Set<E>, Integer> getMaxes()
     {
         Set<E> val = null;

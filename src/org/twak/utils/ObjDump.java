@@ -142,6 +142,7 @@ public class ObjDump {
 				}
 			}
 			out.close();
+			System.out.println("done!");
 		}
 		catch (IOException e)
 		{
