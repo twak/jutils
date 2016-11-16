@@ -29,6 +29,10 @@ public class ObjDump {
 	
 	public MultiMap<Material, Face> material2Face = new MultiMap<>();
 	
+	
+	// configure output
+	public boolean writeMtlFile = true;
+	
 	public static class Material {
 		String name;
 		public String filename;
@@ -92,9 +96,8 @@ public class ObjDump {
             
 			BufferedWriter out = new BufferedWriter(new FileWriter(output));
 			
-			System.out.println("writing material file");
-			
-			if (currentMaterial != null) {
+			if (writeMtlFile && currentMaterial != null) {
+				System.out.println("writing material file");
 				StringBuffer materialFile = new StringBuffer();
 				for (Material mat : material2Face.keySet()) {
 
@@ -111,7 +114,8 @@ public class ObjDump {
 				
 				String matFile = output.getName().substring(0,output.getName().indexOf('.')) + ".mtl";
 				out.write("mtllib "+matFile+"\n" );
-				Files.write(new File (output.getParentFile(), matFile).toPath(), materialFile.toString().getBytes());
+				
+					Files.write(new File (output.getParentFile(), matFile).toPath(), materialFile.toString().getBytes());
 			}
 			
 			int c = 0;
