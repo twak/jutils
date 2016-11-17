@@ -59,6 +59,7 @@ public class ObjDump {
 	public static class Face {		
 		public List<Integer> vtIndexes = new ArrayList<>();
 		public List<Integer> uvIndexes = null;//new ArrayList<>();
+		public List<Integer> normIndexes = null;//new ArrayList<>();
 	}
 	
 	public Map<Tuple3d, Integer> vertexToNo;
@@ -66,7 +67,9 @@ public class ObjDump {
 
 	
 	public Map<Tuple2d, Integer> uvToNo;
+	public Map<Tuple3d, Integer> normToNo;
 	public List<Tuple2d> orderUV;
+	public List<Tuple3d> orderNorm;
 	
 	public ObjDump()
 	{
@@ -125,9 +128,13 @@ public class ObjDump {
 					System.out.println("written verts "+c+"/"+orderVert.size());
 			}
 			
-			if (orderUV != null)
-			for (Tuple2d uv: orderUV)
-				out.write("vt "+uv.x+" "+uv.y+"\n");
+			if ( orderUV != null )
+				for ( Tuple2d uv : orderUV )
+					out.write( "vt " + uv.x + " " + uv.y + "\n" );
+			
+			if ( orderNorm != null )
+				for ( Tuple3d norm : orderNorm )
+					out.write( "vn " + norm.x + " " + norm.y + " " + norm.z + "\n" );
             
 			for (Material mat : material2Face.keySet()) {
 				if (mat != null) {
@@ -140,7 +147,8 @@ public class ObjDump {
 					out.write("f ");
 					for (int ii = 0; ii < f.vtIndexes.size(); ii ++)
 						out.write( ( f.vtIndexes.get(ii) + 1) +  /** obj's first element is 1 */
-								( f.uvIndexes == null ? "" : ("/" + ( f.uvIndexes.get(ii) + 1 ) )) +" ");
+								( f.uvIndexes   == null ? "" : ("/" + ( f.uvIndexes.get(ii) + 1 ) )) +
+								( f.normIndexes == null ? "" : ("/" + ( f.normIndexes.get(ii) + 1 ) )) +" " ) ;
 					
 					out.write("\n");
 				}
@@ -184,7 +192,7 @@ public class ObjDump {
         }
 	}
 	
-	public void addFace(double[][] points, double[][] uvs) {
+	public void addFace(double[][] points, double[][] uvs, double[][] norms) {
 		if (uvs.length != points.length)
 			throw new Error();
 		
@@ -207,34 +215,60 @@ public class ObjDump {
 //			count++;
 		}
 		
-		face.uvIndexes = new ArrayList<>();
-		
-		if (uvToNo == null) {
-			uvToNo = new HashMap<>();
-			orderUV = new ArrayList<>();
+		if ( uvs != null ) {
+			face.uvIndexes = new ArrayList<>();
+
+			if ( uvToNo == null ) {
+				uvToNo = new HashMap<>();
+				orderUV = new ArrayList<>();
+			}
+
+			for ( double[] uv : uvs ) {
+				Tuple2d v = new Point2d( uv[ 0 ], uv[ 1 ] );
+
+				if ( uvToNo.containsKey( v ) )
+					face.uvIndexes.add( uvToNo.get( v ) );
+				else {
+					int number = orderUV.size();
+					orderUV.add( v );
+					face.uvIndexes.add( number );
+					uvToNo.put( v, number );
+				}
+			}
 		}
 		
-		for ( double[] uv : uvs )
-		{
-			Tuple2d v = new Point2d( uv[0], uv[1] );
-			
-			if ( uvToNo.containsKey( v ) )
-				face.uvIndexes.add( uvToNo.get( v ) );
-			else
-			{
-				int number = orderUV.size();
-				orderUV.add( v );
-				face.uvIndexes.add( number );
-				uvToNo.put( v, number );
+		if ( norms != null ) {
+			face.normIndexes = new ArrayList<>();
+
+			if ( normToNo == null ) {
+				normToNo = new HashMap<>();
+				orderNorm = new ArrayList<>();
+			}
+
+			for ( double[] n : norms ) {
+				Tuple3d v = new Point3d( n[ 0 ], n[ 1 ], n[ 2 ] );
+
+				if ( normToNo.containsKey( v ) )
+					face.normIndexes.add( normToNo.get( v ) );
+				else {
+					int number = orderNorm.size();
+					orderNorm.add( v );
+					face.normIndexes.add( number );
+					normToNo.put( v, number );
+				}
 			}
 		}
 	}
 	
-	public void addFace(float[][] points, float[][] uvs) {
-		addFace(toDouble(points), toDouble(uvs));
+	public void addFace(float[][] points, float[][] uvs, float[][] norms) {
+		addFace(toDouble(points), toDouble(uvs), toDouble(norms));
 	}
 	
 	private static double[][] toDouble(float[][] in) {
+		
+		if (in == null)
+			return null;
+		
 		double[][] out = new double[in.length][];
 		for(int i =0; i < out.length;i++){
 			out[i] = new double[in[i].length];
