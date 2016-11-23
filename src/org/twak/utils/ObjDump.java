@@ -147,7 +147,7 @@ public class ObjDump {
 					out.write("f ");
 					for (int ii = 0; ii < f.vtIndexes.size(); ii ++)
 						out.write( ( f.vtIndexes.get(ii) + 1) +  /** obj's first element is 1 */
-								( f.uvIndexes   == null ? "" : ("/" + ( f.uvIndexes.get(ii) + 1 ) )) +
+								( f.uvIndexes   == null ? (f.normIndexes==null?"":"/") : ("/" + ( f.uvIndexes.get(ii) + 1 ) )) +
 								( f.normIndexes == null ? "" : ("/" + ( f.normIndexes.get(ii) + 1 ) )) +" " ) ;
 					
 					out.write("\n");
@@ -193,7 +193,8 @@ public class ObjDump {
 	}
 	
 	public void addFace(double[][] points, double[][] uvs, double[][] norms) {
-		if (uvs.length != points.length)
+		if (uvs   != null && uvs.length   != points.length ||
+			norms != null && norms.length != points.length )
 			throw new Error();
 		
 		Face face = new Face();

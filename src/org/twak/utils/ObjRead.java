@@ -13,8 +13,10 @@ import javax.vecmath.Point3d;
 
 public class ObjRead {
 
-	public double[][] pts;
 	public int[][] faces;
+	public int[][] normI;
+	public double[][] pts;
+	public double[][] norms;
 
 	public ObjRead(File f) {
 		BufferedReader br = null;
@@ -24,7 +26,9 @@ public class ObjRead {
 
 			String line;
 			List<Point3d> points = new ArrayList<Point3d>();
+			List<Point3d> normals = new ArrayList<Point3d>();
 			List<int[]> listFaces = new ArrayList<>();
+			List<int[]> listNorms = new ArrayList<>();
 
 			while ((line = br.readLine()) != null) {
 
@@ -34,20 +38,28 @@ public class ObjRead {
 					if (params[0].equals("v")) {
 						points.add(new Point3d(Double.parseDouble(params[1]), Double.parseDouble(params[2]),
 								Double.parseDouble(params[3])));
+						
+					} else if (params[0].equals("vn")) {
+						normals.add(new Point3d(Double.parseDouble(params[1]), Double.parseDouble(params[2]),
+								Double.parseDouble(params[3])));
+						
 					} else if (params[0].equals("f")) {
 
 						List<Integer> face = new ArrayList<>();
+						List<Integer> ni = new ArrayList<>();
 
 						for (int i = 1; i < params.length; i++) {
 							String[] inds = params[i].split("/");
+							
 							face.add(Integer.parseInt(inds[0]));
+							
+							if (inds.length > 2)
+								ni.add(Integer.parseInt(inds[2]));
 						}
 
 						if (!face.isEmpty()) {
-							int[] vals = new int[face.size()];
-							for (int i = 0; i < face.size(); i++)
-								vals[i] = face.get(i);
-							listFaces.add(vals);
+							listFaces.add(toArray(face));
+							listNorms.add(toArray(ni));
 						}
 
 					}
@@ -62,31 +74,41 @@ public class ObjRead {
 				Point3d pt = points.get(i);
 				pts[i] = new double[] { pt.x, pt.y, pt.z };
 			}
+			
+			if ( !normals.isEmpty() ) {
+				norms = new double[normals.size()][3];
+				for ( int i = 0; i < normals.size(); i++ ) {
+					Point3d n = normals.get( i );
+					norms[ i ] = new double[] { n.x, n.y, n.z };
+				}
+			}
 
 			Iterator<int[]> iit = listFaces.iterator();
+			Iterator<int[]> nit = listNorms.iterator();
 
 			iit: while (iit.hasNext()) {
 
-				int[] inds = iit.next();
+				int[] inds = iit.next(),
+					nnds = nit.next();
 
 				for (int j = 0; j < inds.length; j++) {
 
 					inds[j]--; // obj is 1 (not 0) indexed
-
-					if (inds[j] >= pts.length || inds.length < 3) { // kill
-																	// lines/invalids
+					if (nnds.length> 0)
+						nnds[j]--;
+					
+					if (inds[j] >= pts.length || inds.length < 3) { // kill lines/invalids
 						System.out.println("discarding poly w/o points " + inds[j]);
 						iit.remove();
+						nit.remove();
 						continue iit;
 					}
 				}
 			}
 
-			faces = new int[listFaces.size()][];
-
-			for (int i = 0; i < listFaces.size(); i++) {
-				faces[i] = listFaces.get(i);
-			}
+			faces =  arrayToArray (listFaces);
+			normI =  arrayToArray (listNorms);
+			
 
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -98,6 +120,25 @@ public class ObjRead {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private static int[][] arrayToArray( List<int[]> is ) {
+		int[][] out = new int[is.size()][];
+
+		for (int i = 0; i < is.size(); i++) 
+			out[i] = is.get(i);
+		
+		return out;
+	}
+
+	private static int[] toArray( List<Integer> is ) {
+		
+		int[] vals = new int[is.size()];
+		
+		for (int i = 0; i < is.size(); i++)
+			vals[i] = is.get(i);
+		
+		return vals;
 	}
 
 	public ObjRead(ObjRead obj) {

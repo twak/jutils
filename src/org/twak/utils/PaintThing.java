@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.vecmath.Point2d;
+import javax.vecmath.Point3d;
 import javax.vecmath.Vector2d;
 
 public class PaintThing {
@@ -36,6 +37,8 @@ public class PaintThing {
 			p ((Graph2D) o, g, ma);
 		else if (o instanceof Point2d)
 			p ((Point2d) o, g, ma);
+		else if (o instanceof Point3d)
+			p ((Point3d) o, g, ma);
 		else if (o instanceof Line)
 			p ((Line) o, g, ma);
 		else if (o instanceof Iterable) {
@@ -134,6 +137,10 @@ public class PaintThing {
 		g.setTransform(old);
 	}
 
+	private static void p(Point3d o, Graphics2D g, PanMouseAdaptor ma) {
+		Point3d s = (Point3d) o;
+		g.fillOval(ma.toX(s.x) - 2, ma.toY(s.z) - 2, 4, 4);
+	}
 
 	private static void p(Point2d o, Graphics2D g, PanMouseAdaptor ma) {
 		Point2d s = (Point2d) o;
