@@ -32,7 +32,9 @@ public class PaintThing {
 			((ICanPaintU)lookup.get(o.getClass())).paint(o, g, ma);
 		}
 		else if (o instanceof LoopL)
-				p ((LoopL) o, g, ma);
+			p ((LoopL) o, g, ma);
+		else if (o instanceof Loop)
+			p ((Loop) o, g, ma);
 		else if (o instanceof Graph2D)
 			p ((Graph2D) o, g, ma);
 		else if (o instanceof Point2d)
@@ -55,24 +57,35 @@ public class PaintThing {
 		int cc = 0;
 		for (Loop<Point2d> ll : o)
 		{
-			g.setColor(Rainbow.getColour(cc++));
-			
-			Polygon p = new Polygon();
-			
-			for (Point2d pt : ll)
-				p.addPoint(ma.toX(pt.x), ma.toY(pt.y));
-
-			Color c = g.getColor();
-			g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 50));
-			g.fill(p);
-			g.setColor(c);
-			g.draw(p);
-			
-			if (true)
-				for (Loopable<Point2d> able : ll.loopableIterator() )
-					drawArrow(g, ma, new Line (able.get(), able.getNext().get()), 5);
-			
+			p2 (ll, g, ma, cc);
 		}
+	}
+	
+	private static void p(Loop<Point2d> ll, Graphics2D g, PanMouseAdaptor ma) {
+		p2 (ll, g, ma, 0);
+	}
+	
+	private static void p2(Loop<Point2d> ll, Graphics2D g, PanMouseAdaptor ma, int cc) {
+		
+		g.setColor(Rainbow.getColour(cc++));
+		
+		Polygon p = new Polygon();
+		
+		for (Point2d pt : ll)
+			p.addPoint(ma.toX(pt.x), ma.toY(pt.y));
+
+		Color c = g.getColor();
+		g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 50));
+		g.fill(p);
+		g.setColor(c);
+		g.draw(p);
+		
+		for (Loop<Point2d> h : ll.holes)
+			p (h, g, ma);
+		
+		if (true)
+			for (Loopable<Point2d> able : ll.loopableIterator() )
+				drawArrow(g, ma, new Line (able.get(), able.getNext().get()), 5);
 	}
 	
 
