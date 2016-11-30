@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.vecmath.Point3d;
 
@@ -157,5 +158,9 @@ public class ObjRead {
 		System.out.println("found " + or.faces.length + " faces");
 		System.out.println("found " + or.pts.length + " pts");
 
+	}
+	
+	public List<Point3d> points() {
+		return Arrays.stream( pts ).map( x -> new Point3d(x) ).collect( Collectors.toList() );
 	}
 }
