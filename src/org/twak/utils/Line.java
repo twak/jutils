@@ -255,10 +255,16 @@ public class Line implements Serializable
         v1.sub( start );
         Vector2d v2 = new Vector2d ( pt );
         v2.sub( start );
-        double param = v2.dot( v1 ) / v1.length();
+        
+        double len = v1.length();
+        
+        if (len == 0)
+        	return new Point2d(pt);
+        
+        double param = v2.dot( v1 ) / len;
 
         if (clamp)
-            param = MUtils.clamp( param, 0, v1.length() );
+            param = MUtils.clamp( param, 0, len );
 
         v1.normalize();
         v1.scale( param );
@@ -337,7 +343,11 @@ public class Line implements Serializable
     }
     
     public double angle180(Line l2) {
-    	double a1 = normAngle (aTan2()), a2 = normAngle ( l2.aTan2());    	
+    	
+    	double 
+    			a1 = normAngle (aTan2()), 
+    			a2 = normAngle ( l2.aTan2());    	
+    	
     	return Math.abs(a1 - a2); 
     }
     private static double normAngle(double a) {

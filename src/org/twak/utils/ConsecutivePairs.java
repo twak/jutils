@@ -72,7 +72,7 @@ public class ConsecutivePairs <E> implements Iterator<Pair<E,E>>, Iterable<Pair<
         list.add( 3 );
         list.add( 4 );
         list.add( 5 );
-        for ( Pair <Integer, Integer> t : new ConsecutivePairs<Integer>( list, false ))
+        for ( Pair <Integer, Integer> t : new ConsecutivePairs<Integer>( list, true ))
         {
             System.out.println(t);
         }
