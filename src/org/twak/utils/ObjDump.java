@@ -320,4 +320,30 @@ public class ObjDump {
         for (List<Point3d> face : faces)
             addFace( face );
     }
+
+	public void addAll( ObjRead read ) {
+		
+		for ( int f = 0; f < read.faces.length; f ++ ) {
+			
+			List<double[]> pO  = new ArrayList<>(); 
+//			List<double[]> uO   = new ArrayList<>(); 
+			List<double[]> nO = new ArrayList<>(); 
+			
+			for (int i = 0; i < read.faces[f].length; i++) {
+				
+				pO.add(read.pts[read.faces[f][i]]);
+				
+				if (read.norms != null)
+					nO.add(read.norms[ read.normI[f][i] ]);
+				
+			}
+				
+			addFace( 
+					pO.toArray( new double[pO.size()][] ),
+					null,
+//					uO.toArray( uO.isEmpty() ? null : new double[uO.size()][] ),
+					nO.toArray( nO.isEmpty() ? null : new double[nO.size()][] )
+				);
+		}
+	}
 }

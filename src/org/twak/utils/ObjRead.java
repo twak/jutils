@@ -163,4 +163,21 @@ public class ObjRead {
 	public List<Point3d> points() {
 		return Arrays.stream( pts ).map( x -> new Point3d(x) ).collect( Collectors.toList() );
 	}
+
+	public double[] findExtent() {
+		
+		double[] out = new double[] { 
+				Double.MAX_VALUE,  -Double.MAX_VALUE,
+				Double.MAX_VALUE,  -Double.MAX_VALUE,
+				Double.MAX_VALUE,  -Double.MAX_VALUE };
+		
+		for (double[] pt : pts) {
+			for (int i = 0; i < 3; i++ ) {
+				out[i*2+0] = Math.min (out[i*2+0], pt[i]);
+				out[i*2+1] = Math.max (out[i*2+1], pt[i]);
+			}
+		}
+		
+		return out;
+	}
 }
