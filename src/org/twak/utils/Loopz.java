@@ -299,7 +299,8 @@ public class Loopz {
 	}
 
 	private static Loop<Point2d>  toXZLoop( Loop<Point3d> ll) {
-		Loop<Point2d> o = new Loop<>();
+		
+		Loop<Point2d> o = ll instanceof SuperLoop ? new SuperLoop(((SuperLoop)ll).properties) :new Loop<>();
 		
 		for (Point3d p : ll) 
 			o.append(new Point2d(p.x, p.z));
