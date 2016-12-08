@@ -14,6 +14,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 import org.twak.utils.Intersector.Collision;
+import org.twak.utils.results.OOB;
 import org.twak.utils.triangulate.EarCutTriangulator;
 
 
@@ -386,6 +387,39 @@ public class Loopz {
 			if (size <= 2)
 				eit.remove();
 		}
+		
+		return out;
+	}
+
+	public static LoopL<Point3d> to3d( LoopL<Point2d> gis, double h ) {
+		
+		LoopL<Point3d> out = new LoopL<>();
+		
+		for (Loop<Point2d> lp : gis) {
+			Loop<Point3d> ol = new Loop<>();
+			out.add(ol);
+			for (Point2d pt : lp)
+				ol.append( new Point3d (pt.x, h, pt.y) );
+		}
+		
+		return out;
+	}
+
+	public static List<Point3d> intersect( LoopL<Point3d> gis, LinearForm3D lf ) {
+		
+		List<Point3d> out = new ArrayList();
+		
+		for (Loop<Point3d> loop : gis)
+			for (Loopable<Point3d> pt : loop.loopableIterator()) {
+				
+				Vector3d dir = new Vector3d(pt.getNext().get());
+				dir.sub(pt.get());
+				
+				Point3d res = lf.collide( pt.get(), dir, dir.length() );
+				if (!(res instanceof OOB ) ) {
+					out.add(res);
+				}
+			}
 		
 		return out;
 	}
