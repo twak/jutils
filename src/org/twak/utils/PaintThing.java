@@ -11,6 +11,9 @@ import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector2d;
 
+import org.twak.utils.HalfMesh2.HalfEdge;
+import org.twak.utils.HalfMesh2.HalfFace;
+
 public class PaintThing {
 	
 	public interface ICanPaint {
@@ -43,14 +46,39 @@ public class PaintThing {
 			p ((Point3d) o, g, ma);
 		else if (o instanceof Line)
 			p ((Line) o, g, ma);
+		else if (o instanceof HalfMesh2)
+			p ((HalfMesh2) o, g, ma);
 		else if (o instanceof Iterable) {
-			int c = 0;
+//			int c = 0;
 			for (Object o2 : (Iterable) o) {
 //				g.setColor(Rainbow.getColour(c++));
 				paint(o2, g, ma);
 			}
 		}
 		else throw new Error( "can't paint " + o.getClass() );
+	}
+
+	private static void p( HalfMesh2 o, Graphics2D g2, PanMouseAdaptor ma ) {
+
+		double scatterRadius = 0.0;
+
+		int fc = 0;
+		for ( HalfFace f : o.faces ) {
+
+			Polygon pwt = new Polygon();
+
+			for ( HalfEdge e : f.edges() )
+				pwt.addPoint( ma.toX( e.start.x + Math.random() * scatterRadius ), ma.toY( e.start.y + Math.random() * scatterRadius ) );
+
+			Color c = Rainbow.getColour( fc++ );
+
+			g2.setColor( c );
+			g2.fill( pwt );
+
+			g2.setColor( c.darker().darker() );
+			g2.draw( pwt );
+
+		}
 	}
 
 	private static void p(LoopL<Point2d> o, Graphics2D g, PanMouseAdaptor ma) {

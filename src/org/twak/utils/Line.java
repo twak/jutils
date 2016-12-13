@@ -15,7 +15,7 @@ import javax.vecmath.Vector2d;
  */
 public class Line implements Serializable
 {
-    public Point2d start, end;
+	public Point2d start, end;
     
     public Line() {};
     
@@ -378,6 +378,16 @@ public class Line implements Serializable
         }
     }
 
+    public static Comparator<Line> lineLengthComparator;
+	static {
+		lineLengthComparator = new Comparator<Line>() {
+			@Override
+			public int compare( Line o1, Line o2 ) {
+				return Double.compare( o2.lengthSquared(), o1.lengthSquared() );
+			}
+		};
+	}
+    
 	public Point2d[] points() {
 		return new Point2d[] {start, end};
 	}
@@ -402,5 +412,13 @@ public class Line implements Serializable
 				  distance(l.start, true),
 				  distance(l.end  , true)
 				);
+	}
+
+	public void moveLeft( double d ) {
+		Vector2d perp = dir();
+		perp.scale ( d / perp.length() );
+
+		start.add( perp );
+		end  .add( perp );
 	}
 }

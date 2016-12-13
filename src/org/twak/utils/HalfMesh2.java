@@ -1,8 +1,5 @@
 package org.twak.utils;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
@@ -153,30 +150,6 @@ public class HalfMesh2 {
 			return out;
 		}
 
-	};
-
-	public void paint(Graphics2D g2, PanMouseAdaptor ma) {
-
-		double scatterRadius = 0.0;
-
-		int fc = 0;
-		for (HalfFace f : faces) {
-
-			Polygon pwt = new Polygon();
-
-			for (HalfEdge e : f.edges())
-				pwt.addPoint(ma.toX(e.start.x + Math.random() * scatterRadius),
-						ma.toY(e.start.y + Math.random() * scatterRadius));
-
-			Color c = Rainbow.getColour(fc++);
-
-			g2.setColor(c);
-			g2.fill(pwt);
-
-			g2.setColor(c.darker().darker());
-			g2.draw(pwt);
-
-		}
 	}
 
 	public void apply(AffineTransform af) {

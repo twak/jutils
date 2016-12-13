@@ -1,5 +1,6 @@
 package org.twak.utils;
 
+import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -7,11 +8,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
@@ -38,11 +37,20 @@ public class ObjDump {
 		public String filename;
 		public int w, h;
 		
+		float[] diffuse = new float[] {1,1,1},
+				ambient = new float[] {1,1,1};
+		
 		public Material(String filename, String name, int w, int h) {
 			this.name = name;
 			this.filename = filename;
 			this.w = w;
 			this.h = h;
+		}
+
+		public Material( float[] ambient, float[] diffuse ) {
+			this.ambient = ambient;
+			this.diffuse = diffuse;
+			this.name = this.filename = Math.random() +"_" +ambient[0]+ambient[1]+ambient[2];
 		}
 
 		@Override
@@ -102,17 +110,19 @@ public class ObjDump {
 			if (writeMtlFile && currentMaterial != null) {
 				System.out.println("writing material file");
 				StringBuffer materialFile = new StringBuffer();
-				for (Material mat : material2Face.keySet()) {
+				for ( Material mat : material2Face.keySet() ) {
 
-					materialFile.append("newmtl " + mat.name + "\n");
-					materialFile.append("Ka 1.000 1.000 1.000\n");
-					materialFile.append("Kd 1.000 1.000 1.000\n");
-					materialFile.append("Ks 0.000 0.000 0.000\n");
-					materialFile.append("d 1.0\n");
-					materialFile.append("illum 2\n");
-					materialFile.append("map_Ka "+mat.filename+"\n");
-					materialFile.append("map_Kd "+mat.filename+"\n");
-					materialFile.append("map_Ks "+mat.filename+"\n\n");
+					materialFile.append( "newmtl " + mat.name + "\n" );
+					materialFile.append( "Ka " + mat.ambient[ 0 ] + " " + mat.ambient[ 1 ] + " " + mat.ambient[ 2 ] + "\n" );
+					materialFile.append( "Kd " + mat.diffuse[ 0 ] + " " + mat.diffuse[ 1 ] + " " + mat.diffuse[ 2 ] + "\n" );
+					materialFile.append( "Ks 0.000 0.000 0.000\n" );
+					materialFile.append( "d 1.0\n" );
+					materialFile.append( "illum 2\n" );
+					if ( mat.filename != null ) {
+						materialFile.append( "map_Ka " + mat.filename + "\n" );
+						materialFile.append( "map_Kd " + mat.filename + "\n" );
+						materialFile.append( "map_Ks " + mat.filename + "\n\n" );
+					}
 				}
 				
 				String matFile = output.getName().substring(0,output.getName().indexOf('.')) + ".mtl";
@@ -310,11 +320,22 @@ public class ObjDump {
      * Sets the texture map for following verts
      */
 	public void setCurrentTexture(String textureFile, int w, int h) {
-
 		currentMaterial = new Material (textureFile, textureFile.replace(".", "_"), w, h );
-		
 	}
 
+	public void setCurrentTexture(Color color, double ambientScale ) {
+		
+		float[] res = new float[4];
+		color.getComponents( res );
+		
+		currentMaterial = new Material ( 
+				new float[] {
+						(float)(res[0] * ambientScale),
+						(float)(res[1] * ambientScale),
+						(float)(res[2] * ambientScale) }, 
+				res  );
+	}
+	
     public void addAll( List<List<Point3d>> faces )
     {
         for (List<Point3d> face : faces)
