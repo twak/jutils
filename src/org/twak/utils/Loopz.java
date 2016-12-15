@@ -13,6 +13,8 @@ import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
+import org.twak.utils.HalfMesh2.HalfEdge;
+import org.twak.utils.HalfMesh2.HalfFace;
 import org.twak.utils.Intersector.Collision;
 import org.twak.utils.results.OOB;
 import org.twak.utils.triangulate.EarCutTriangulator;
@@ -41,13 +43,13 @@ public class Loopz {
 		
 		MultiMap<Line, Point2d> cutLineAt = new MultiMap<>();
 		
-		Set<Point2d> debug = new HashSet<>();
+//		Set<Point2d> debug = new HashSet<>();
 		
 		for (Collision c : cols)
 			for (Line l : c.lines)
 				if (!l.start.equals(c.location) && !l.end.equals(c.location)) {
 					cutLineAt.put(l, c.location);
-					debug.add(c.location );
+//					debug.add(c.location );
 				}
 		
 //		System.out.println("found " + debug.size() + " collisions from " + a.count() +" + " + b.count() +" inputs ");
@@ -280,6 +282,25 @@ public class Loopz {
 		return out;
 	}
 	
+
+	public static double[] minMax2d( Loop<Point2d> in ) {
+		
+		double[] out = new double[] { 
+				Double.MAX_VALUE, -Double.MAX_VALUE, 
+				Double.MAX_VALUE, -Double.MAX_VALUE
+			};
+
+			for (Point2d p : in) {
+				out[0] = Math.min(out[0], p.x);
+				out[1] = Math.max(out[1], p.x);
+				out[2] = Math.min(out[2], p.y);
+				out[3] = Math.max(out[3], p.y);
+			}
+
+		return out;
+	}
+	
+	
 	public static void expand(double[] minMax, double i) {
 		
 		for (int j = 0; j < minMax.length; j+=2) {
@@ -425,7 +446,27 @@ public class Loopz {
 	}
 
 	
-	
+	public static LoopL<Point2d> from (HalfMesh2 hm) {
+		
+		LoopL<Point2d> out = new LoopL<>();
 
+		
+		for (HalfFace hf : hm.faces) {
+			out.add(from( hf ));
+		}
+		
+		return out;
+	}
 
+	public static Loop<Point2d> from( HalfFace hf ) {
+		Loop<Point2d> loop = new Loop();
+		for (HalfEdge he : hf.edges())
+			loop.append( he.start );
+		return loop;
+	}
+
+	public static boolean inside( Point2d point2d, Loop<Point2d> pts ) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

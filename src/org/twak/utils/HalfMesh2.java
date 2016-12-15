@@ -26,11 +26,12 @@ public class HalfMesh2 {
 		HalfMesh2 mesh = new HalfMesh2();
 		Point2d last, first; 
 		HalfEdge lastEdge, firstEdge;
-		Class edgeClass = HalfEdge.class;
+		Class edgeClass = HalfEdge.class, faceClass = HalfFace.class;
 		
 		public Builder(){}
-		public Builder(Class edgeClass) {
+		public Builder(Class edgeClass, Class faceClass) {
 			this.edgeClass = edgeClass;
+			this.faceClass = faceClass;
 		}
 		
 		public void newPoint(Point2d pt) {
@@ -53,7 +54,7 @@ public class HalfMesh2 {
 				lastEdge.next = edge;
 				edge.next = firstEdge;
 				
-				HalfFace face = new HalfFace(edge);
+				HalfFace face = createFace( edgeClass, edge);
 				for (HalfEdge e : face.edges()) { 
 					e.face = face;
 				}
@@ -227,8 +228,8 @@ public class HalfMesh2 {
 			HalfEdge e12 = createEdge ( prev1.getClass(), prev1.end, prev2.end, null ),
 					 e21 = createEdge ( prev1.getClass(), prev2.end, prev1.end, null );
 			
-			HalfFace left = new HalfFace( e12 ),
-					right = new HalfFace( e21 );
+			HalfFace left = createFace( this.getClass(), e12 ),
+					right = createFace( this.getClass(), e21 );
 			
 			m.faces.add(left);
 			m.faces.add(right);
@@ -344,4 +345,13 @@ public class HalfMesh2 {
 		}
 	}
 
+	private static HalfFace createFace( Class<? extends HalfFace> klazz, HalfEdge e ) {
+		
+		try {
+			return (HalfFace) klazz.getConstructor( HalfEdge.class ).newInstance( e );
+		} catch ( Throwable f ) {
+			f.printStackTrace();
+			return null;
+		}
+	}
 }
