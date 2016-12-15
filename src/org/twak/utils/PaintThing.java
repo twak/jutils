@@ -1,5 +1,6 @@
 package org.twak.utils;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -67,18 +68,41 @@ public class PaintThing {
 
 			Polygon pwt = new Polygon();
 
-			for ( HalfEdge e : f.edges() )
+			for ( HalfEdge e : f.edges() ) {
 				pwt.addPoint( ma.toX( e.start.x + Math.random() * scatterRadius ), ma.toY( e.start.y + Math.random() * scatterRadius ) );
+				p(e.start, g2, ma);
+			}
 
 			Color c = Rainbow.getColour( fc++ );
-
-			g2.setColor( c );
+			
+			g2.setColor( new Color (c.getRed(), c.getGreen(), c.getBlue(), 50) );
 			g2.fill( pwt );
 
-			g2.setColor( c.darker().darker() );
+			g2.setColor( c );
 			g2.draw( pwt );
 
+			
+			for ( HalfEdge e : f.edges() ) {
+				drawArrow(g2, ma, e.line(), 5);
+
+			}
 		}
+			
+		for ( HalfFace f : o.faces ) 
+				for ( HalfEdge e : f.edges() ) {
+			if (	e.face  != f ||
+					(e.over  != null && (e.over.face == f || e.over.over != e ) ) ||
+					e.face  == null ||
+					e.start == null ||
+					e.end   == null ||
+					e.next  == null )
+			{
+				g2.setColor( Color.red );
+				g2.setStroke(  new BasicStroke( 4 ) );
+				p (e.line(), g2, ma);
+			}
+		}
+		g2.setStroke(  new BasicStroke( 1 ) );
 	}
 
 	private static void p(LoopL<Point2d> o, Graphics2D g, PanMouseAdaptor ma) {

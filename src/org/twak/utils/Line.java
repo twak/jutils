@@ -93,7 +93,7 @@ public class Line implements Serializable
 
         double tol = 0;//0.000001;
         // lines cross...now check segments ( this is the place to add and remove tolerances from)
-        if ( x >= Math.min( start.x, end.x ) - tol &&
+        if (    x >= Math.min( start.x, end.x ) - tol &&
                 x <= Math.max( start.x, end.x ) + tol &&
                 y >= Math.min( start.y, end.y ) - tol &&
                 y <= Math.max( start.y, end.y ) + tol &&
@@ -108,7 +108,45 @@ public class Line implements Serializable
         return null;
     }
     
-    @Override
+
+	public Point2d intersects( Point2d origin, Vector2d dir ) {
+
+        double a1 = end.y - start.y;
+        double b1 = start.x-end.x;
+        double c1 = a1 * start.x + b1 * start.y;
+        
+        double a2 = dir.y;
+        double b2 = -dir.x;
+        double c2 = a2 * origin.x + b2 * origin.y;
+        
+        double det = a1 * b2 - a2 * b1;
+        
+        if (det == 0)
+            return null; // parallel lines!
+        
+        double x = (b2 * c1 - b1 * c2) / det;
+        double y = (a1 * c2 - a2 * c1) / det;
+
+        double tol = 0.000001;
+        
+        if (    x >= Math.min( start.x, end.x ) - tol &&
+                x <= Math.max( start.x, end.x ) + tol &&
+                y >= Math.min( start.y, end.y ) - tol &&
+                y <= Math.max( start.y, end.y ) + tol )
+        	
+        {
+        	Vector2d d = new Vector2d(x,y);
+        	d.sub( origin );
+        	if (d.dot( dir ) > -tol) {
+        		return new Point2d(x,y);
+        	}
+        }
+                
+        // no intersect :(
+        return null;	
+    }
+    
+	@Override
     public String toString()
     {
         return "new Line ( new Point2d ( "+start.x+","+start.y+"), " +
@@ -421,4 +459,5 @@ public class Line implements Serializable
 		start.add( perp );
 		end  .add( perp );
 	}
+
 }
