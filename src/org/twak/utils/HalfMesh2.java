@@ -54,7 +54,7 @@ public class HalfMesh2 {
 				lastEdge.next = edge;
 				edge.next = firstEdge;
 				
-				HalfFace face = createFace( edgeClass, edge);
+				HalfFace face = createFace( faceClass, edge);
 				for (HalfEdge e : face.edges()) { 
 					e.face = face;
 				}
@@ -144,6 +144,34 @@ public class HalfMesh2 {
 		@Override
 		public String toString() {
 			return "("+start+", "+end+")";
+		}
+
+		public void dissolve( HalfMesh2 mesh ) {
+
+			HalfEdge ob = over.findBefore();
+			
+			findBefore().next = over.next;
+			ob.next = next;
+			
+			mesh.faces.remove (over.face);
+			if (face.e == this)
+				face.e = next;
+		}
+
+		private HalfEdge findBefore() {
+			
+			HalfEdge last = this.next;
+			
+			do {
+				HalfEdge n = last.next;
+				if (n == this)
+					return last;
+				
+				last = n;
+			} 
+			while (last != this);
+			
+			return null;
 		}
 	}
 
@@ -275,6 +303,15 @@ public class HalfMesh2 {
 					count++;
 
 			return count % 2 == 1;
+		}
+
+		public void remove( HalfMesh2 mesh ) {
+
+			for (HalfEdge e : edges()) 
+				if (e.over != null)
+					e.over.over = null;
+			
+			mesh.faces.remove (this);
 		}
 	}
 

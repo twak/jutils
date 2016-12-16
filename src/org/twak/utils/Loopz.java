@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
+import javax.vecmath.Vector2d;
 import javax.vecmath.Vector3d;
 
 import org.twak.utils.HalfMesh2.HalfEdge;
@@ -465,8 +466,23 @@ public class Loopz {
 		return loop;
 	}
 
-	public static boolean inside( Point2d point2d, Loop<Point2d> pts ) {
-		// TODO Auto-generated method stub
-		return false;
+	public static boolean inside( Point2d pt, Loop<Point2d> poly ) {
+
+		int crossings = 0;
+		Vector2d left = new Vector2d(-1, 0);
+		
+		for (Loopable<Point2d> ll : poly.loopableIterator()) {
+			
+			Line l = new Line (ll.get(), ll.getNext().get());
+			if (
+			   (l.start.y < pt.y && l.end.y > pt.y ||
+				l.start.y > pt.y && l.end.y < pt.y ) && 
+				l.intersects( pt, left ) != null ) {
+				
+				crossings++;
+			}
+		}
+		
+		return crossings % 2 == 1;
 	}
 }
