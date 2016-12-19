@@ -197,7 +197,7 @@ public class HalfMesh2 {
 			
 		}
 
-		private HalfEdge findBefore() {
+		public HalfEdge findBefore() {
 			
 			HalfEdge last = this.next;
 			
