@@ -148,14 +148,53 @@ public class HalfMesh2 {
 
 		public void dissolve( HalfMesh2 mesh ) {
 
-			HalfEdge ob = over.findBefore();
+			// special case if me and over have same face?
+			// if same face and trace loops returns to same edge, without passing through other end: 
+			//		remove face on inside?
 			
-			findBefore().next = over.next;
-			ob.next = next;
+			// create a loop on the inside?
 			
-			mesh.faces.remove (over.face);
-			if (face.e == this)
-				face.e = next;
+			if (next == over && over.next == this ) {
+
+				if (face.e == this || face.e == over ) {
+					// brute force search for another edge in the face
+					
+				}
+				
+				
+				return; // nothing to do!
+			}
+			else if (next == over) {
+				findBefore().next = over.next;
+				
+				if (face.e == this || face.e == over)
+					face.e = over.next;
+			}
+			else if (over.next == this) {
+				over.findBefore().next = next;
+				
+				if (face.e == this || face.e == over)
+					face.e = next;
+				
+			}
+			else {
+				
+				
+				HalfEdge ob = over.findBefore();
+				findBefore().next = over.next;
+				ob.next = next;
+				
+				if (face.e == this)
+					face.e = next;
+				
+				for (HalfEdge e : face.edges())
+					e.face = face;
+			}
+			
+			if (over.face != face)
+				mesh.faces.remove (over.face);
+			
+			
 		}
 
 		private HalfEdge findBefore() {
@@ -177,7 +216,7 @@ public class HalfMesh2 {
 
 	public static class HalfFace {
 
-		HalfEdge e;
+		public HalfEdge e;
 
 		public HalfFace(HalfEdge e) {
 			this.e = e;
