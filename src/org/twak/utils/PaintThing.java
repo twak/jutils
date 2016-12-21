@@ -226,7 +226,7 @@ public class PaintThing {
 		int count = 0;
 		
 		for (Object k : debug.keySet()) {
-//			g.setColor(Rainbow.getColour(count++));
+			g.setColor(Rainbow.getColour(count++));
 			
 			for (Object o : debug.get(k) ) {
 				paint(o, g, ma);
