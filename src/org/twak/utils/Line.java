@@ -260,7 +260,17 @@ public class Line implements Serializable
         v2.sub( start );
         return v1.dot( v2 ) / v1.dot( v1);
     }
+    
+    
+    public Point2d fromPPram( double fParam )
+    {
+        Vector2d v2 = new Vector2d ( end );
+        v2.sub( start );
+        v2.scale( fParam / length() );
+        v2.add( start );
 
+        return new Point2d (v2);
+    }
 
     /**
      * Assume point on line, find position as fraction
