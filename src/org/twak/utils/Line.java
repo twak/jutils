@@ -252,6 +252,9 @@ public class Line implements Serializable
         return num/den;
     }
 
+    /**
+     * @return /in {0...1} if within line.
+     */
     public double findPPram(Point2d pt)
     {
         Vector2d v1 = new Vector2d( end );
