@@ -1,10 +1,6 @@
 
 package org.twak.utils;
 
-import Jama.Matrix;
-
-import java.util.Arrays;
-
 import javax.vecmath.Matrix3d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Tuple3d;
@@ -12,6 +8,8 @@ import javax.vecmath.Vector3d;
 
 import org.twak.utils.results.LineOnPlane;
 import org.twak.utils.results.OOB;
+
+import Jama.Matrix;
 
 /**
  * Definition of a plane in form
@@ -62,6 +60,17 @@ public class LinearForm3D implements Cloneable
         double num = A * point.x + B * point.y + C * point.z + D;
         return num/den;
     }   
+    
+    public Point3d project (Tuple3d pt) {
+    	
+    	Point3d out = new Point3d( pt );
+    	
+    	Vector3d dir = normal();
+    	dir.scale ( - pointDistance( pt ) / dir.length() );
+    	out.add( dir );
+    	
+    	return out;
+    }
     
     /**
      * @return a Point3d on success, 
@@ -197,25 +206,11 @@ public class LinearForm3D implements Cloneable
         return A == other.A && B == other.B && C == other.C && D == other.D;
     }
     
-    public static void main (String[] args)
-    {
-        LinearForm3D l1 = new LinearForm3D( 
-                new Vector3d(0,1,0), 
-                new Point3d( 0, 0, 0 )
-                );
-        
-        LinearForm3D l2 = new LinearForm3D( 
-                new Vector3d(1,0,0), 
-                new Point3d( 0, 0, 0 )
-                );
-        
-        System.out.println( "result: " + l1.collide( l2 ) );
-    }
-
     public Vector3d normal()
     {
         return new Vector3d (A,B,C);
     }
+    
 
     /**
      * Keeps plane in the same place, but flips the normal

@@ -15,6 +15,10 @@ import static java.lang.Math.*;
 public class MUtils
 {
 
+	public static final Vector2d UP = new Vector2d(0,1);
+
+	public static double PI2 = Math.PI / 2;
+	
     public static Color[] rainbow = new Color[]
     {
         Color.red,
