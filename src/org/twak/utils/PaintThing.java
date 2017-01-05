@@ -49,6 +49,8 @@ public class PaintThing {
 			p ((Line) o, g, ma);
 		else if (o instanceof HalfMesh2)
 			p ((HalfMesh2) o, g, ma);
+		else if (o instanceof String)
+			p ((String) o, g, ma);
 		else if (o instanceof Iterable) {
 //			int c = 0;
 			for (Object o2 : (Iterable) o) {
@@ -217,6 +219,11 @@ public class PaintThing {
 		g.drawLine(ma.toX(l.start.x), ma.toY(l.start.y), ma.toX(l.end.x), ma.toY(l.end.y));
 
 		drawArrow(g, ma, l, 5);
+	}
+
+	private static void p(String o, Graphics2D g, PanMouseAdaptor ma) {
+		g.setColor( Color.black );
+		g.drawString( o, 10, 30 );
 	}
 
 	public static MultiMap<Object, Object> debug = new MultiMap();

@@ -264,12 +264,11 @@ public class Line implements Serializable
         return v1.dot( v2 ) / v1.dot( v1);
     }
     
-    
     public Point2d fromPPram( double fParam )
     {
         Vector2d v2 = new Vector2d ( end );
         v2.sub( start );
-        v2.scale( fParam / length() );
+        v2.scale( fParam );
         v2.add( start );
 
         return new Point2d (v2);
@@ -467,6 +466,7 @@ public class Line implements Serializable
 
 	public void moveLeft( double d ) {
 		Vector2d perp = dir();
+		perp = new Vector2d(-perp.y, perp.x);
 		perp.scale ( d / perp.length() );
 
 		start.add( perp );
