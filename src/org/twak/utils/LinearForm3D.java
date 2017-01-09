@@ -18,7 +18,7 @@ import Jama.Matrix;
  */
 public class LinearForm3D implements Cloneable
 {
-    double 
+    public double 
             A, //x
             B, //y
             C, //z
