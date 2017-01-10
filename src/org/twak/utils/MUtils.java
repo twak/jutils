@@ -45,6 +45,14 @@ public class MUtils
         return a < min ? min : a > max ? max : a;
     }
 
+	public static double signedAngle( Vector2d a, Vector2d b ) {
+
+        if ( cross( b, a ) >= 0 )
+        	return a.angle( b );
+        else
+        	return -a.angle( b );
+	}
+    
     public static double interiorAngle( Vector2d a, Vector2d b )
     {
         if ( cross( b, a ) >= -10E-15 )
