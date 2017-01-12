@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +52,8 @@ public class PaintThing {
 			p ((HalfMesh2) o, g, ma);
 		else if (o instanceof String)
 			p ((String) o, g, ma);
+		else if (o instanceof Rectangle2D)
+			p ((Rectangle2D) o, g, ma);
 		else if (o instanceof Iterable) {
 //			int c = 0;
 			for (Object o2 : (Iterable) o) {
@@ -59,6 +62,11 @@ public class PaintThing {
 			}
 		}
 		else throw new Error( "can't paint " + o.getClass() );
+	}
+
+	private static void p( Rectangle2D o, Graphics2D g, PanMouseAdaptor ma ) {
+		Rectangle2D r = (Rectangle2D) o;
+		g.drawRect( ma.toX(r.getX()), ma.toY(-r.getY()), ma.toZoom( r.getWidth()), ma.toZoom( r.getHeight()) );
 	}
 
 	private static void p( HalfMesh2 o, Graphics2D g2, PanMouseAdaptor ma ) {

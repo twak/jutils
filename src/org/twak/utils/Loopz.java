@@ -485,4 +485,35 @@ public class Loopz {
 		
 		return crossings % 2 == 1;
 	}
+
+	public static LinearForm3D findPlane( LoopL<Point3d> loopL ) {
+		
+		Vector3d normal = new Vector3d();
+		Point3d cen = new Point3d();
+		int count = 0;
+		
+		for (Loop<Point3d> loop : loopL)
+		for ( Loopable<Point3d> pt : loop.loopableIterator() ) {
+
+			Vector3d l = new Vector3d( pt.get() );
+			l.sub(pt.getPrev().get());
+
+			Vector3d n = new Vector3d(pt.getNext().get());
+			n.sub(pt.get());
+			if (l.lengthSquared() > 0 && n.lengthSquared() > 0) {
+				l.normalize();
+				n.normalize();
+
+				l.cross(l, n);
+				normal.add(l);
+			}
+			
+			cen.add(pt.get());
+			count++;
+		}
+		
+		cen.scale( 1./count );
+		
+		return new LinearForm3D( normal, cen );
+	}
 }
