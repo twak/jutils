@@ -117,7 +117,7 @@ public class Loopz {
 			}
 		}
 		
-		obj.allDone( file );
+		obj.dump( file );
 	}
 
 	public static Graph2D toGraph( LoopL<Point2d> edges ) {

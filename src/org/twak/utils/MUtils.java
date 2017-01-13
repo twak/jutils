@@ -1,12 +1,15 @@
 package org.twak.utils;
 
+import static java.lang.Math.PI;
+
 import java.awt.Color;
 import java.awt.geom.Point2D;
+
 import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
 import javax.vecmath.Tuple2d;
+import javax.vecmath.Tuple3d;
 import javax.vecmath.Vector2d;
-import static java.lang.Math.*;
+import javax.vecmath.Vector3d;
 
 /**
  *
@@ -16,6 +19,10 @@ public class MUtils
 {
 
 	public static final Vector2d UP = new Vector2d(0,1);
+
+	public static final Tuple3d X_POS = new Vector3d(1,0,0);
+	public static final Tuple3d Y_POS = new Vector3d(0,1,0);
+	public static final Tuple3d Z_POS = new Vector3d(0,0,1);
 
 	public static double PI2 = Math.PI / 2;
 	

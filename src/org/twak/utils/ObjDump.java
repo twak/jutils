@@ -1,8 +1,10 @@
 package org.twak.utils;
 
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
@@ -28,17 +31,20 @@ public class ObjDump {
 	
 	public MultiMap<Material, Face> material2Face = new MultiMap<>();
 	
-	
 	// configure output
 	public boolean writeMtlFile = true;
 	
 	public static class Material {
-		String name;
+		public String name;
 		public String filename;
 		public int w, h;
 		
-		float[] diffuse = new float[] {1,1,1},
-				ambient = new float[] {1,1,1};
+		public
+		double[] diffuse  = new double[] {1,1,1},
+				 ambient  = new double[] {1,1,1},
+				 specular = new double[] {1,1,1};
+		
+		public Material(){}
 		
 		public Material(String filename, String name, int w, int h) {
 			this.name = name;
@@ -47,10 +53,26 @@ public class ObjDump {
 			this.h = h;
 		}
 
-		public Material( float[] ambient, float[] diffuse ) {
+		public Material( double[] ambient, double[] diffuse ) {
+			
 			this.ambient = ambient;
 			this.diffuse = diffuse;
 			this.name = this.filename = Math.random() +"_" +ambient[0]+ambient[1]+ambient[2];
+		}
+
+		public Material(Material mat ) {
+			
+			this.name = mat.name;
+			this.filename = mat.filename;
+			this.w = mat.w;
+			this.h = mat.h;
+			this.diffuse = mat.diffuse;
+			this.ambient = mat.ambient;
+			this.specular = mat.specular;
+		}
+
+		public Material( String name ) {
+			this.name = name;
 		}
 
 		@Override
@@ -85,6 +107,8 @@ public class ObjDump {
 		material2Face = new MultiMap<>();
 		vertexToNo = new LinkedHashMap<Tuple3d, Integer>();
 		orderVert = new ArrayList<Tuple3d>();
+		orderNorm = new ArrayList<Tuple3d>();
+		orderUV   = new ArrayList<Tuple2d>();
 	}
 
     public ObjDump(ObjDump in) {
@@ -98,7 +122,7 @@ public class ObjDump {
  		this.material2Face = new MultiMap<Material, Face>( in.material2Face );
 	}
 
-	public void allDone( File output )
+	public void dump( File output )
 	{
 		try
 		{
@@ -117,11 +141,11 @@ public class ObjDump {
 					materialFile.append( "Kd " + mat.diffuse[ 0 ] + " " + mat.diffuse[ 1 ] + " " + mat.diffuse[ 2 ] + "\n" );
 					materialFile.append( "Ks 0.000 0.000 0.000\n" );
 					materialFile.append( "d 1.0\n" );
-					materialFile.append( "illum 2\n" );
+					materialFile.append( "illum 1\n" );
 					if ( mat.filename != null ) {
-						materialFile.append( "map_Ka " + mat.filename + "\n" );
+//						materialFile.append( "map_Ka " + mat.filename + "\n" );
 						materialFile.append( "map_Kd " + mat.filename + "\n" );
-						materialFile.append( "map_Ks " + mat.filename + "\n\n" );
+//						materialFile.append( "map_Ks " + mat.filename + "\n\n" );
 					}
 				}
 				
@@ -180,15 +204,22 @@ public class ObjDump {
         return pt;
     }
 
-	public void addFace(List<Point3d> lv)
-	{
+	public void addFace(List<Point3d> lv) {
+		addFace (lv, null, null);
+	}
+
+	public void addFace( List<Point3d> fVerts, List<Point3d> fNorms, List<Point2d> fUVs ) {
 		Face face = new Face();
 		material2Face.put(currentMaterial, face);
 		
+		if ( fVerts == null || 
+				(fNorms != null && fNorms.size() != fVerts.size() ) ||
+				(fUVs   != null && fUVs  .size() != fVerts.size() ) )
+			throw new Error("bad length input");
 
-        for ( Tuple3d uv : lv )
+        for ( Tuple3d vert : fVerts )
         {
-            Tuple3d v = convertVertex( uv );
+            Tuple3d v = convertVertex( vert );
 
             if ( vertexToNo.containsKey( v ) )
                 face.vtIndexes.add( vertexToNo.get( v ) );
@@ -200,6 +231,45 @@ public class ObjDump {
                 vertexToNo.put( v, number );
             }
         }
+        
+        if (fNorms != null) {
+        	
+        	normToNo = new HashMap<>();
+        	face.normIndexes = new ArrayList<>();
+        	
+        	for ( Tuple3d norm: fNorms )
+        	{
+        		if ( normToNo.containsKey( norm ) )
+        			face.normIndexes.add( normToNo.get( norm ) );
+        		else
+        		{
+        			int number = orderNorm.size(); // size will be next index
+        			face.normIndexes.add( number );
+        			orderNorm.add( norm );
+        			normToNo.put( norm, number );
+        		}
+        	}
+        }
+        
+        if (fUVs != null) {
+        	
+        	uvToNo = new HashMap<>();
+        	face.uvIndexes = new ArrayList<>();
+        	
+        	for ( Tuple2d uv: fUVs )
+        	{
+        		if ( uvToNo.containsKey( uv ) )
+        			face.uvIndexes.add( uvToNo.get( uv ) );
+        		else {
+        			
+        			int number = orderUV.size(); // size will be next index
+        			face.uvIndexes.add( number );
+        			orderUV.add( uv );
+        			uvToNo .put( uv, number );
+        		}
+        	}
+        }
+        
 	}
 	
 	public void addFace(double[][] points, double[][] uvs, double[][] norms) {
@@ -327,13 +397,14 @@ public class ObjDump {
 		
 		float[] res = new float[4];
 		color.getComponents( res );
+		double[] resD = new double[] {res[0], res[1], res[2], res[3]};
 		
 		currentMaterial = new Material ( 
-				new float[] {
-						(float)(res[0] * ambientScale),
-						(float)(res[1] * ambientScale),
-						(float)(res[2] * ambientScale) }, 
-				res  );
+				new double[] {
+						(resD[0] * ambientScale),
+						(resD[1] * ambientScale),
+						(resD[2] * ambientScale) }, 
+				resD  );
 	}
 	
     public void addAll( List<List<Point3d>> faces )
@@ -366,5 +437,124 @@ public class ObjDump {
 					nO.toArray( nO.isEmpty() ? null : new double[nO.size()][] )
 				);
 		}
+	}
+	
+	public ObjDump(File file) { 
+		this();
+		
+		BufferedReader br = null;
+		currentMaterial = null;
+		try {
+			System.out.println("reading " + file);
+			br = new BufferedReader(new FileReader(file), 10 * 1024 * 1024);
+
+			String line;
+			
+			while ((line = br.readLine()) != null) {
+
+				try {
+					String[] params = line.split(" ");
+
+					if (params[0].equals("v")) 
+						orderVert.add(new Point3d( Double.parseDouble(params[1]), Double.parseDouble(params[2]), Double.parseDouble(params[3])));
+					else if (params[0].equals("vn")) 
+						orderNorm.add(new Point3d( Double.parseDouble(params[1]), Double.parseDouble(params[2]), Double.parseDouble(params[3])));
+					else if (params[0].equals("vt")) 
+						orderUV.add( new Point2d( Double.parseDouble( params[ 1 ] ), Double.parseDouble( params[ 2 ] ) ) );
+					else if (params[0].equals("usemtl")) 
+						currentMaterial = readMaterial (file, params[1]);
+					else if (params[0].equals("f")) {
+
+						Face face = new Face();
+						
+						for (int i = 1; i < params.length; i++) {
+							String[] inds = params[i].split("/");
+							
+							face.vtIndexes.add(Integer.parseInt(inds[0])-1);
+							
+							if (inds.length > 1) {
+								if (face.uvIndexes == null)
+									face.uvIndexes = new ArrayList<>();
+								face.uvIndexes.add(Integer.parseInt(inds[1])-1);
+							}
+							
+							if (inds.length > 2) {
+								if (face.normIndexes == null)
+									face.normIndexes = new ArrayList<>();
+								face.normIndexes.add(Integer.parseInt(inds[2])-1);
+							}
+						}
+
+						if (!face.vtIndexes.isEmpty())
+							material2Face.put (currentMaterial, face);
+					}
+				} catch (Throwable th) {
+					System.err.println("at line " + line);
+					th.printStackTrace(System.err);
+				}
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				br.close();
+				System.out.println("done reading " + file);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	
+	Map<String, Material> namedMaterials = new HashMap<>();
+	File namedMatFile;
+	
+	private Material readMaterial( File f, String name ) {
+
+		File mFile = new File( f.getParentFile(), FileUtils.stripExtn( f.getName() ) + ".mtl" );
+		BufferedReader br = null;
+
+		if ( namedMatFile != mFile ) {
+			try {
+				br = new BufferedReader( new FileReader( mFile ), 10 * 1024 * 1024 );
+
+				String line;
+
+				Material mat = new Material();
+				
+				while ( ( line = br.readLine() ) != null ) {
+					String[] params = line.split( " " );
+					if ( params[ 0 ].equals( "newmtl" ) )
+						namedMaterials.put( params[ 1 ], mat = new Material(params[1]) );
+					else if ( params[ 0 ].equals( "Ka" ) )
+						mat.ambient = new double[] { Double.parseDouble( params[ 1 ] ), Double.parseDouble( params[ 2 ] ), Double.parseDouble( params[ 3 ] ) };
+					else if ( params[ 0 ].equals( "Kd" ) )
+						mat.diffuse = new double[] { Double.parseDouble( params[ 1 ] ), Double.parseDouble( params[ 2 ] ), Double.parseDouble( params[ 3 ] ) };
+					else if ( params[ 0 ].equals( "Ks" ) )
+						mat.specular = new double[] { Double.parseDouble( params[ 1 ] ), Double.parseDouble( params[ 2 ] ), Double.parseDouble( params[ 3 ] ) };
+					//				else if (params[0].equals("map_Ka"))
+					//					currentMaterial.filename = params[0];
+					else if ( params[ 0 ].equals( "map_Kd" ) )
+						mat.filename = params[ 1 ];
+					//				else if (params[0].equals("map_Ks"))
+					//					currentMaterial.filename = params[0];
+				}
+			} catch ( Throwable th ) {
+				th.printStackTrace();
+			} finally {
+				if ( br != null )
+					try {
+						br.close();
+					} catch ( IOException e ) {
+						e.printStackTrace();
+					}
+			}
+		}
+
+		return namedMaterials.get( name );
+	}
+
+	public void setCurrentMaterial( Material mat ) {
+		currentMaterial = mat;
 	}
 }

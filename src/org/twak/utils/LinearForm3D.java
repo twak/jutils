@@ -59,7 +59,7 @@ public class LinearForm3D implements Cloneable
             throw new Error("I'm not a plane " + this +"!");
         double num = A * point.x + B * point.y + C * point.z + D;
         return num/den;
-    }   
+    }
     
     public Point3d project (Tuple3d pt) {
     	

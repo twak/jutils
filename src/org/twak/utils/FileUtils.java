@@ -59,6 +59,10 @@ public class FileUtils
             System.out.println( e.getMessage() );
         }
     }
+    
+    public static String stripExtn(String name) {
+    	return name.substring( 0, name.lastIndexOf( '.' ) );
+    }
 //  public static void main(String[] args){
 //    switch(args.length){
 //      case 0: System.out.println("File has not mentioned.");
@@ -71,4 +75,11 @@ public class FileUtils
 //            System.exit(0);
 //    }
 //  }
+    
+	public static String getExtn( String filename ) {
+		int i = filename.lastIndexOf( '.' );
+		if (i >= 0)
+			return filename.substring( i+1, filename.length() );
+		return "";
+	}
 }
