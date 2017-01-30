@@ -147,7 +147,7 @@ public class Loopz {
 //	}
 	
 	
-	public static void triangulate (Loop<Point3d> loop, boolean reverseTriangles, 
+	public static void triangulate (Loop<? extends Point3d> loop, boolean reverseTriangles, 
 			List<Integer> indsO, List<Float> posO, List<Float> normsO) {
 		
 		List<Float> pos = new ArrayList();
@@ -157,7 +157,7 @@ public class Loopz {
 		
 		int[] order = reverseTriangles ? new int[] {2,1,0} : new int[] {0,1,2};
 		
-		for ( Loopable<Point3d> pt : loop.loopableIterator() ) {
+		for ( Loopable<? extends Point3d> pt : loop.loopableIterator() ) {
 
 			inds.add( inds.size() );
 
