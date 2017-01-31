@@ -466,6 +466,10 @@ public class Loopz {
 		return loop;
 	}
 
+	public static boolean inside( Point2d pt, LoopL<Point2d> poly ) {
+		return poly.stream().anyMatch( l -> inside( pt, l ) );
+	}
+
 	public static boolean inside( Point2d pt, Loop<Point2d> poly ) {
 
 		int crossings = 0;
