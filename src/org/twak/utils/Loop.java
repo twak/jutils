@@ -62,6 +62,11 @@ public class Loop<E> implements Iterable<E> {
 			return toAdd;
 		}
 	}
+	
+	public Loopable<E> prepend(E prepend) {
+		start = append(prepend);
+		return start;
+	}
 
 	public Loopable<E> addAfter(Loopable<E> loopable, E bar) {
 

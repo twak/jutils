@@ -12,7 +12,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 /**
  *
@@ -51,6 +53,7 @@ public class WindowManager {
                 icon = ImageIO.read(WindowManager.class.getResourceAsStream(iconName));
             } catch (IOException ex) {
                 ex.printStackTrace();
+                icon = (BufferedImage)((ImageIcon) UIManager.getIcon("OptionPane.warningIcon")).getImage();
             }
         }
         return icon;

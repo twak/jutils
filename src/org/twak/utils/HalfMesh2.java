@@ -148,12 +148,6 @@ public class HalfMesh2 {
 
 		public void dissolve( HalfMesh2 mesh ) {
 
-			// special case if me and over have same face?
-			// if same face and trace loops returns to same edge, without passing through other end: 
-			//		remove face on inside?
-			
-			// create a loop on the inside?
-			
 			if (next == over && over.next == this ) {
 
 				if (face.e == this || face.e == over ) {
@@ -195,6 +189,47 @@ public class HalfMesh2 {
 				mesh.faces.remove (over.face);
 			
 			
+		}
+		
+		public boolean replaceByPoint ( HalfMesh2 mesh, Point2d pt ) {
+			
+			for ( HalfEdge start : new HalfEdge[] { this, over } ) {
+
+				HalfEdge n = start;
+				
+				while ( n != null && n.next != start.over ) {
+					n = n.next;
+
+					n.start = pt;
+
+					if ( n.over != null )
+						n.over.end = pt;
+
+					n = n.over;
+				}
+			}
+			
+			HalfEdge before = findBefore();
+			
+			if (over != null) {
+				over.findBefore().next = over.next;
+				if (over.face.e == over )
+					over.face.e = over.next;
+			}
+			else {
+				before.end = pt;
+			}
+			
+			before.next = next;
+			if (face.e == this)
+				face.e = next;
+			
+			if (face.e.next.next == face.e) {
+				face.remove( mesh );
+				return true;
+			}
+			
+			return false;
 		}
 
 		public HalfEdge findBefore() {

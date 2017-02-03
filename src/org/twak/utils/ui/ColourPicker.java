@@ -16,10 +16,17 @@ public abstract class ColourPicker extends JFrame {
 
 	JColorChooser chooser;
 	
-	public ColourPicker() {
+	public ColourPicker(Color existing) {
 		super ("pick a color");
+
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.add(chooser = new JColorChooser(), BorderLayout.CENTER);
+
+		if (existing == null)
+			chooser = new JColorChooser();
+		else
+			chooser = new JColorChooser(existing);
+		
+		panel.add( chooser, BorderLayout.CENTER );
 
 		JButton ok = new JButton ("ok");
 		ok.addActionListener(new ActionListener() {
