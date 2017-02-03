@@ -14,7 +14,6 @@ public class HalfMesh2 {
 
 	public List<HalfFace> faces = new ArrayList();
 
-	public static boolean DBG = false;
 	
 	public interface EdgeFactory {
 		public HalfEdge create (Point2d s, Point2d e);
