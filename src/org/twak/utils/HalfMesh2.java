@@ -10,10 +10,11 @@ import java.util.Map;
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 
-public class HalfMesh2 {
+import org.twak.utils.HalfMesh2.HalfFace;
+
+public class HalfMesh2 implements Iterable<HalfFace>{
 
 	public List<HalfFace> faces = new ArrayList();
-
 	
 	public interface EdgeFactory {
 		public HalfEdge create (Point2d s, Point2d e);
@@ -248,7 +249,7 @@ public class HalfMesh2 {
 		}
 	}
 
-	public static class HalfFace {
+	public static class HalfFace implements Iterable<HalfEdge> {
 
 		public HalfEdge e;
 
@@ -304,7 +305,12 @@ public class HalfMesh2 {
 					if (e2 == e)
 						continue e;
 				
-				Point2d p = e.line().intersects (origin, dir);
+				Line el = e.line();
+				
+				if (!el.isOnLeft( origin ))
+					continue;
+				
+				Point2d p = el.intersects (origin, dir);
 				if ( p != null ){
 					double dist = p.distanceSquared( origin );
 					if (dist < bestDist) {
@@ -386,6 +392,11 @@ public class HalfMesh2 {
 			
 			mesh.faces.remove (this);
 		}
+
+		@Override
+		public Iterator<HalfEdge> iterator() {
+			return edges().iterator();
+		}
 	}
 
 	public static class EdgeIterator implements Iterator<HalfEdge> {
@@ -463,5 +474,10 @@ public class HalfMesh2 {
 			f.printStackTrace();
 			return null;
 		}
+	}
+
+	@Override
+	public Iterator<HalfFace> iterator() {
+		return faces.iterator();
 	}
 }

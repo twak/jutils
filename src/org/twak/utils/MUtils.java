@@ -24,7 +24,7 @@ public class MUtils
 	public static final Tuple3d Y_POS = new Vector3d(0,1,0);
 	public static final Tuple3d Z_POS = new Vector3d(0,0,1);
 
-	public static double PI2 = Math.PI / 2;
+	public static double PI2 = Math.PI / 2, TwoPI = Math.PI * 2;
 	
     public static Color[] rainbow = new Color[]
     {
@@ -87,6 +87,11 @@ public class MUtils
     public static boolean inRange( double query, double min, double max )
     {
         return query >= min && query <= max;
+    }
+    
+    public static boolean inRangeTol( double query, double value, double tol )
+    {
+    	return query >= value - tol && query <= value + tol;
     }
 
     public static double min (double ... vals)
