@@ -247,6 +247,42 @@ public class HalfMesh2 implements Iterable<HalfFace>{
 			
 			return null;
 		}
+
+		public List<HalfEdge> collectAroundEnd() {
+			List<HalfEdge> out = new ArrayList();
+			
+			out.add(this);
+			HalfEdge c= this;
+
+			do {
+				out.add(c);
+				c = c.next;
+				out.add( c );
+				c = c.over;
+				
+			} while ( c!= null && c != this );
+			
+			if (c == this)
+				return out;
+			
+			c = next;
+			
+			do {
+				
+				if (c != next)
+					out.add(c);
+				
+				c = c.findBefore();
+				
+				if (c != this)
+					out.add(c);
+				
+				c = c.over;
+				
+			} while (c != null);
+			
+			return out;
+		}
 	}
 
 	public static class HalfFace implements Iterable<HalfEdge> {

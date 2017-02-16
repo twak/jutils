@@ -172,4 +172,15 @@ public class MUtils
 				b.x * c.y
 				);
 	}
+
+	public static boolean order( double ... pairs ) {
+		for (int i =0; i < pairs.length; i+=2) {
+			double score = pairs[i] - pairs[i+1];
+			if (score < 0)
+				return false;
+			else if (score > 0)
+				return true;
+		}
+		return false;
+	}
 }

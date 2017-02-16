@@ -1,6 +1,8 @@
 package org.twak.utils;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,4 +32,8 @@ public abstract class Cache<I,O>
     {
         cache.clear();
     }
+
+	public static <J> void  sort   ( List<J> ps, Cache<J, Double> scores ) {
+		Collections.sort(ps, (a,b) -> Double.compare(scores.get(a), scores.get(b)));
+	}
 }
