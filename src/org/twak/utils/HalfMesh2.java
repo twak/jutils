@@ -2,10 +2,12 @@ package org.twak.utils;
 
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
@@ -302,17 +304,14 @@ public class HalfMesh2 implements Iterable<HalfFace>{
 			};
 		}
 
-		public List<HalfFace> getNeighbours() {
+		public Set<HalfFace> getNeighbours() {
 
-			List<HalfFace> out = new ArrayList<>();
+			Set<HalfFace> out = new HashSet<>();
 
-			HalfEdge c = e;
-
-			do {
-				out.add(e.face);
-				c = e.next;
-			} while (c != e);
-
+			for (HalfEdge e : this)
+				if (e.over != null)
+					out.add(e.over.face);
+			
 			return out;
 		}
 
