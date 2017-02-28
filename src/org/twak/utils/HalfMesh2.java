@@ -432,6 +432,13 @@ public class HalfMesh2 implements Iterable<HalfFace>{
 		public Iterator<HalfEdge> iterator() {
 			return edges().iterator();
 		}
+
+		public int edgeCount() {
+			int i = 0;
+			for (HalfEdge e : this)
+				i++;
+			return i;
+		}
 	}
 
 	public static class EdgeIterator implements Iterator<HalfEdge> {

@@ -51,6 +51,10 @@ public class MUtils
     {
         return a < min ? min : a > max ? max : a;
     }
+    
+	public static double clamp01( double a ) {
+		return clamp( a, 0, 1 );
+	}
 
 	public static double signedAngle( Vector2d a, Vector2d b ) {
 
@@ -183,4 +187,5 @@ public class MUtils
 		}
 		return false;
 	}
+
 }
