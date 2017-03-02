@@ -284,51 +284,49 @@ public class DRectangle {
         envelop (pt.x, pt.y);
     }
     
-    public interface WidthGen {
-    	public List<Double> gen (DRectangle in);
+    public static class RectDir {
+    	public boolean dirX;
+    	public DRectangle rect;
+    	public RectDir (boolean dir, DRectangle rect) {
+    		this.rect = rect;
+    		this.dirX = dir;
+    	}
     }
     
+    public interface WidthGen {
+    	public List<Double> gen (RectDir in);
+    }
+    
+    
+    public List<DRectangle> split (boolean dir, WidthGen gen) {
+    	
+    	List <DRectangle> out =new ArrayList<>();
+    	
+    	List<Double> loc = gen.gen( new RectDir(dir, this ) );
+    	
+    	if (loc.isEmpty())
+    		return out;
+    	
+    	double sum = (dir ? width : height )/loc.stream().mapToDouble( xx -> xx ).sum();
+    	
+    	double o = 0;
+    	
+    	for (double d : loc) {
+    		if (dir)
+    			out.add(new DRectangle(o + x, y, d * sum, height ));
+    		else
+    			out.add(new DRectangle(x, o + y, width, d * sum ));
+    		o+= d;
+    	}
+    	
+    	return out;
+    }
     
     public List<DRectangle> splitX (WidthGen gen) {
-    	
-    	List <DRectangle> out =new ArrayList<>();
-    	
-    	List<Double> loc = gen.gen( this );
-    	
-    	if (loc.isEmpty())
-    		return out;
-    	
-    	double sum = width/loc.stream().mapToDouble( xx -> xx ).sum();
-    	
-    	double xa = 0;
-    	
-    	for (double d : loc) {
-    		out.add(new DRectangle(xa + x, y, d * sum, height ));
-    		xa+= d;
-    	}
-    	
-    	return out;
+    	return split(true, gen);
     }
-    
     public List<DRectangle> splitY (WidthGen gen) {
-    	
-    	List <DRectangle> out =new ArrayList<>();
-    	
-    	List<Double> loc = gen.gen( this );
-    	
-    	if (loc.isEmpty())
-    		return out;
-    	
-    	double sum = height/loc.stream().mapToDouble( yy -> yy ).sum();
-    	
-    	double ya = 0;
-    	
-    	for (double d : loc) {
-    		out.add(new DRectangle(x, ya + y, width, d * sum ));
-    		ya+= d;
-    	}
-    	
-    	return out;
+    	return split(false, gen);
     }
     
 	public Point2d[] points() {

@@ -531,7 +531,7 @@ public class Loopz {
 		return new LinearForm3D( normal, cen );
 	}
 
-	public static Loop<Point3d> transform( Loop<Point3d> ll, Matrix4d mat ) {
+	public static Loop<Point3d> transform( Loop<? extends Point3d> ll, Matrix4d mat ) {
 		Loop<Point3d> out = new Loop<>();
 		
 		for (Point3d p : ll) {
@@ -543,13 +543,34 @@ public class Loopz {
 		return out;
 	}
 	
-	public static LoopL<Point3d> transform( LoopL<Point3d> ll, Matrix4d mat ) {
+	public static LoopL<Point3d> transform( LoopL<? extends Point3d> ll, Matrix4d mat ) {
 		
 		LoopL<Point3d> out = new LoopL<>();
 		
-		for (Loop<Point3d> lp : ll)
+		for (Loop<? extends Point3d> lp : ll)
 			out.add(transform(lp, mat));
 		
 		return out;
+	}
+
+	public static LoopL<Point2d>[] cut( Loop<Point2d> loop, LinearForm c ) {
+		
+		LoopL<Point2d>[] out = new LoopL[] {new LoopL<>(), new LoopL<>()};
+		
+		int addingTo = 0;
+		for (Loopable<Point2d> l : loop.loopableIterator()) {
+			
+			boolean a = c.isInFront( l.get() ), b = c.isInFront( l.getNext().get() ); 
+			
+			if ( ) {
+				start = l.
+			}
+			
+		}
+		
+		return out;
+		
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
