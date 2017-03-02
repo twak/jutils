@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.vecmath.Matrix4d;
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector2d;
@@ -338,17 +339,23 @@ public class Loopz {
 		LoopL<Point2d> out = new LoopL<>();
 		
 		for (Loop<Point3d> ll : in) {
-			Loop<Point2d> ol = new Loop<>();
+			Loop<Point2d> ol = to2dLoop (ll, axis, to3d); 
 			out.add(ol);
-
-			for (Point3d p3 : ll) {
-				Point2d p2 = axis == 0? new Point2d( p3.y, p3.z ) : axis == 1 ? new Point2d (p3.x, p3.z) : new Point2d (p3.y, p3.z);
-				to3d.put (p2, p3);
-				ol.append(p2);
-			}
 		}
 		
 		return out;
+	}
+	
+	public static Loop<Point2d> to2dLoop(Loop<Point3d> in, int axis, Map<Point2d, Point3d> to3d) {
+
+		Loop<Point2d> out = new Loop<>();
+		for (Point3d p3 : in) {
+			Point2d p2 = axis == 0? new Point2d( p3.y, p3.z ) : axis == 1 ? new Point2d (p3.x, p3.z) : new Point2d (p3.y, p3.z);
+			to3d.put (p2, p3);
+			out.append(p2);
+		}
+		return out;
+
 	}
 
 	public static LoopL<Point2d> removeNegativeArea( LoopL<Point2d> gis, double sign ) {
@@ -413,7 +420,7 @@ public class Loopz {
 		return out;
 	}
 
-	public static LoopL<Point3d> to3d( LoopL<Point2d> gis, double h ) {
+	public static LoopL<Point3d> to3d( LoopL<Point2d> gis, double h, int i ) {
 		
 		LoopL<Point3d> out = new LoopL<>();
 		
@@ -421,7 +428,10 @@ public class Loopz {
 			Loop<Point3d> ol = new Loop<>();
 			out.add(ol);
 			for (Point2d pt : lp)
-				ol.append( new Point3d (pt.x, h, pt.y) );
+				ol.append( i == 1 ? 
+						new Point3d (pt.x, h, pt.y) : i == 2 ? 
+						new Point3d (pt.x, pt.y, h ) : 
+						new Point3d (h, pt.x, pt.y) );
 		}
 		
 		return out;
@@ -519,5 +529,27 @@ public class Loopz {
 		cen.scale( 1./count );
 		
 		return new LinearForm3D( normal, cen );
+	}
+
+	public static Loop<Point3d> transform( Loop<Point3d> ll, Matrix4d mat ) {
+		Loop<Point3d> out = new Loop<>();
+		
+		for (Point3d p : ll) {
+			Point3d pn = new Point3d(p);
+			mat.transform( pn );
+			out.append( pn );
+		}
+		
+		return out;
+	}
+	
+	public static LoopL<Point3d> transform( LoopL<Point3d> ll, Matrix4d mat ) {
+		
+		LoopL<Point3d> out = new LoopL<>();
+		
+		for (Loop<Point3d> lp : ll)
+			out.add(transform(lp, mat));
+		
+		return out;
 	}
 }

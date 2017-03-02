@@ -1,6 +1,7 @@
 package org.twak.utils;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import javax.vecmath.Point2d;
@@ -282,4 +283,60 @@ public class DRectangle {
     public void envelop (Point2d pt) {
         envelop (pt.x, pt.y);
     }
+    
+    public interface WidthGen {
+    	public List<Double> gen (DRectangle in);
+    }
+    
+    
+    public List<DRectangle> splitX (WidthGen gen) {
+    	
+    	List <DRectangle> out =new ArrayList<>();
+    	
+    	List<Double> loc = gen.gen( this );
+    	
+    	if (loc.isEmpty())
+    		return out;
+    	
+    	double sum = width/loc.stream().mapToDouble( xx -> xx ).sum();
+    	
+    	double xa = 0;
+    	
+    	for (double d : loc) {
+    		out.add(new DRectangle(xa + x, y, d * sum, height ));
+    		xa+= d;
+    	}
+    	
+    	return out;
+    }
+    
+    public List<DRectangle> splitY (WidthGen gen) {
+    	
+    	List <DRectangle> out =new ArrayList<>();
+    	
+    	List<Double> loc = gen.gen( this );
+    	
+    	if (loc.isEmpty())
+    		return out;
+    	
+    	double sum = height/loc.stream().mapToDouble( yy -> yy ).sum();
+    	
+    	double ya = 0;
+    	
+    	for (double d : loc) {
+    		out.add(new DRectangle(x, ya + y, width, d * sum ));
+    		ya+= d;
+    	}
+    	
+    	return out;
+    }
+    
+	public Point2d[] points() {
+		return new Point2d[] {
+				new Point2d(x      ,y),
+				new Point2d(x      ,y+height) ,
+				new Point2d(x+width,y+height),
+				new Point2d(x+width,y),
+				};
+	}
 }

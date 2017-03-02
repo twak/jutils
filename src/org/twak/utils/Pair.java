@@ -3,7 +3,7 @@ package org.twak.utils;
 /**
  * Adapted from ibm.com
  * 
- * @author tomkelly
+ * @author twak
  * 
  * @param <A>
  * @param <B>
