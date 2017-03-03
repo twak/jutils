@@ -553,24 +553,58 @@ public class Loopz {
 		return out;
 	}
 
-	public static LoopL<Point2d>[] cut( Loop<Point2d> loop, LinearForm c ) {
+	public static Loop<Point2d>[] cutConvex ( Loop<Point2d> loop, LinearForm cut ) { // dirty method; does a single cut
 		
-		LoopL<Point2d>[] out = new LoopL[] {new LoopL<>(), new LoopL<>()};
+		Loop<Point2d>[] out = new Loop[] {new Loop<>(), new Loop<>()};
 		
-		int addingTo = 0;
+		
+		Loopable<Point2d> start = null;
+		int cuI = -1;
+		
 		for (Loopable<Point2d> l : loop.loopableIterator()) {
+			boolean a = cut.isInFront( l.get() ), b = cut.isInFront( l.getNext().get() ); 
 			
-			boolean a = c.isInFront( l.get() ), b = c.isInFront( l.getNext().get() ); 
-			
-			if ( ) {
-				start = l.
+			if (a ^ b) {
+				start = l;
+				cuI = a? 1 : 0;
+				break;
 			}
-			
+			cuI = a? 1 : 0;
 		}
 		
-		return out;
+		if (start == null) {
+			out[ cuI ] = loop;
+			return out;
+		}
 		
-		// TODO Auto-generated method stub
-		return null;
+		Loopable<Point2d> current = start;
+		
+		do {
+			
+			boolean a = cut.isInFront( current.get() ), b = cut.isInFront( current.getNext().get() ); 
+			
+			out[cuI].append( current.get() );
+			
+			if (a ^ b) {
+				
+				Point2d sec = new LinearForm (current.get(), current.getNext().get()) .intersect( cut );
+				
+				if (sec == null)
+					sec = current.get();
+				
+				out[cuI].append( sec );
+				
+				cuI = 1-cuI;
+				
+				out[cuI].append( sec );
+			}
+			
+			
+			current = current.next;
+			
+		} while (current != start);
+		
+		
+		return out;
 	}
 }
