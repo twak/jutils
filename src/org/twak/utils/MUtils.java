@@ -24,7 +24,7 @@ public class MUtils
 	public static final Tuple3d Y_POS = new Vector3d(0,1,0);
 	public static final Tuple3d Z_POS = new Vector3d(0,0,1);
 
-	public static double PI2 = Math.PI / 2;
+	public static double PI2 = Math.PI / 2, TwoPI  = 2 * Math.PI;
 	
     public static Color[] rainbow = new Color[]
     {
