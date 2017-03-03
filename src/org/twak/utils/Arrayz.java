@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -113,6 +114,15 @@ public class Arrayz {
 		for (int i = 0; i < coords.size(); i++)
 			out[i] = coords.get(i);
 
+		return out;
+	}
+	
+	public static double[] toDoubleArray(List<Double> coords) {
+		
+		double[] out = new double[coords.size()];
+		for (int i = 0; i < coords.size(); i++)
+			out[i] = coords.get(i);
+		
 		return out;
 	}
 

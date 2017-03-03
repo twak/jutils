@@ -1,6 +1,7 @@
 package org.twak.utils;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import javax.vecmath.Point2d;
@@ -282,4 +283,58 @@ public class DRectangle {
     public void envelop (Point2d pt) {
         envelop (pt.x, pt.y);
     }
+    
+    public static class RectDir {
+    	public boolean dirX;
+    	public DRectangle rect;
+    	public RectDir (boolean dir, DRectangle rect) {
+    		this.rect = rect;
+    		this.dirX = dir;
+    	}
+    }
+    
+    public interface WidthGen {
+    	public List<Double> gen (RectDir in);
+    }
+    
+    
+    public List<DRectangle> split (boolean dir, WidthGen gen) {
+    	
+    	List <DRectangle> out =new ArrayList<>();
+    	
+    	List<Double> loc = gen.gen( new RectDir(dir, this ) );
+    	
+    	if (loc.isEmpty())
+    		return out;
+    	
+    	double sum = (dir ? width : height )/loc.stream().mapToDouble( xx -> xx ).sum();
+    	
+    	double o = 0;
+    	
+    	for (double d : loc) {
+    		if (dir)
+    			out.add(new DRectangle(o + x, y, d * sum, height ));
+    		else
+    			out.add(new DRectangle(x, o + y, width, d * sum ));
+    		o+= d;
+    	}
+    	
+    	return out;
+    }
+    
+    public List<DRectangle> splitX (WidthGen gen) {
+    	return split(true, gen);
+    }
+    public List<DRectangle> splitY (WidthGen gen) {
+    	return split(false, gen);
+    }
+    
+	public Point2d[] points() {
+		return new Point2d[] {
+				new Point2d(x      ,y),
+				new Point2d(x      ,y+height) ,
+				new Point2d(x+width,y+height),
+				new Point2d(x+width,y),
+				};
+	}
 }

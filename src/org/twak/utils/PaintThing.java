@@ -66,7 +66,7 @@ public class PaintThing {
 
 	private static void p( Rectangle2D o, Graphics2D g, PanMouseAdaptor ma ) {
 		Rectangle2D r = (Rectangle2D) o;
-		g.drawRect( ma.toX(r.getX()), ma.toY(-r.getY()), ma.toZoom( r.getWidth()), ma.toZoom( r.getHeight()) );
+		g.drawRect( ma.toX(r.getX()), ma.toY(r.getY()), ma.toZoom( r.getWidth()), ma.toZoom( r.getHeight()) );
 	}
 
 	private static void p( HalfMesh2 o, Graphics2D g2, PanMouseAdaptor ma ) {
@@ -241,8 +241,8 @@ public class PaintThing {
 		int count = 0;
 		
 		for (Object k : debug.keySet()) {
-			g.setColor(Rainbow.getColour(count++));
 			
+			g.setColor(Rainbow.getColour(count++));
 			for (Object o : debug.get(k) ) {
 				paint(o, g, ma);
 			}

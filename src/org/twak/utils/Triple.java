@@ -1,7 +1,7 @@
 package org.twak.utils;
 
 /**
- * @author tomkelly
+ * @author twak
  */
 public class Triple<A, B, C>
 {

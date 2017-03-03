@@ -51,6 +51,10 @@ public class MUtils
     {
         return a < min ? min : a > max ? max : a;
     }
+    
+	public static double clamp01( double a ) {
+		return clamp( a, 0, 1 );
+	}
 
 	public static double signedAngle( Vector2d a, Vector2d b ) {
 
@@ -87,6 +91,11 @@ public class MUtils
     public static boolean inRange( double query, double min, double max )
     {
         return query >= min && query <= max;
+    }
+    
+    public static boolean inRangeTol( double query, double value, double tol )
+    {
+    	return query >= value - tol && query <= value + tol;
     }
 
     public static double min (double ... vals)
@@ -167,4 +176,16 @@ public class MUtils
 				b.x * c.y
 				);
 	}
+
+	public static boolean order( double ... pairs ) {
+		for (int i =0; i < pairs.length; i+=2) {
+			double score = pairs[i] - pairs[i+1];
+			if (score < 0)
+				return false;
+			else if (score > 0)
+				return true;
+		}
+		return false;
+	}
+
 }

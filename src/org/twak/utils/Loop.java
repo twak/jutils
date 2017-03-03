@@ -8,6 +8,8 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import javax.vecmath.Point3d;
+
 /**
  * Double linked-list wrapper around an arbitrary object
  * 
@@ -246,5 +248,11 @@ public class Loop<E> implements Iterable<E> {
 				};
 			}
 		};
+	}
+
+	public LoopL<E> singleton() {
+		LoopL<E> out = new LoopL<E>();
+		out.add(this);
+		return out;
 	}
 }

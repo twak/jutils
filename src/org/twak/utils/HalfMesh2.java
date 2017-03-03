@@ -2,19 +2,21 @@ package org.twak.utils;
 
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 
-public class HalfMesh2 {
+import org.twak.utils.HalfMesh2.HalfFace;
+
+public class HalfMesh2 implements Iterable<HalfFace>{
 
 	public List<HalfFace> faces = new ArrayList();
-
-	public static boolean DBG = false;
 	
 	public interface EdgeFactory {
 		public HalfEdge create (Point2d s, Point2d e);
@@ -247,9 +249,45 @@ public class HalfMesh2 {
 			
 			return null;
 		}
+
+		public List<HalfEdge> collectAroundEnd() {
+			List<HalfEdge> out = new ArrayList();
+			
+			out.add(this);
+			HalfEdge c= this;
+
+			do {
+				out.add(c);
+				c = c.next;
+				out.add( c );
+				c = c.over;
+				
+			} while ( c!= null && c != this );
+			
+			if (c == this)
+				return out;
+			
+			c = next;
+			
+			do {
+				
+				if (c != next)
+					out.add(c);
+				
+				c = c.findBefore();
+				
+				if (c != this)
+					out.add(c);
+				
+				c = c.over;
+				
+			} while (c != null);
+			
+			return out;
+		}
 	}
 
-	public static class HalfFace {
+	public static class HalfFace implements Iterable<HalfEdge> {
 
 		public HalfEdge e;
 
@@ -266,17 +304,14 @@ public class HalfMesh2 {
 			};
 		}
 
-		public List<HalfFace> getNeighbours() {
+		public Set<HalfFace> getNeighbours() {
 
-			List<HalfFace> out = new ArrayList<>();
+			Set<HalfFace> out = new HashSet<>();
 
-			HalfEdge c = e;
-
-			do {
-				out.add(e.face);
-				c = e.next;
-			} while (c != e);
-
+			for (HalfEdge e : this)
+				if (e.over != null)
+					out.add(e.over.face);
+			
 			return out;
 		}
 
@@ -305,7 +340,12 @@ public class HalfMesh2 {
 					if (e2 == e)
 						continue e;
 				
-				Point2d p = e.line().intersects (origin, dir);
+				Line el = e.line();
+				
+				if (!el.isOnLeft( origin ))
+					continue;
+				
+				Point2d p = el.intersects (origin, dir);
 				if ( p != null ){
 					double dist = p.distanceSquared( origin );
 					if (dist < bestDist) {
@@ -387,6 +427,18 @@ public class HalfMesh2 {
 			
 			mesh.faces.remove (this);
 		}
+
+		@Override
+		public Iterator<HalfEdge> iterator() {
+			return edges().iterator();
+		}
+
+		public int edgeCount() {
+			int i = 0;
+			for (HalfEdge e : this)
+				i++;
+			return i;
+		}
 	}
 
 	public static class EdgeIterator implements Iterator<HalfEdge> {
@@ -464,5 +516,10 @@ public class HalfMesh2 {
 			f.printStackTrace();
 			return null;
 		}
+	}
+
+	@Override
+	public Iterator<HalfFace> iterator() {
+		return faces.iterator();
 	}
 }
