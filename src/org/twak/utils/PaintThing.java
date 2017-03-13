@@ -200,7 +200,7 @@ public class PaintThing {
 	public static void drawArrow(Graphics2D g, PanMouseAdaptor ma, Line l, int size) {
 		
 		Vector2d dir = l.dir();
-		Point2d mid = l.fromFrac(0.5);
+		Point2d mid = l.fromPPram(0.5);
 		
 		AffineTransform old = g.getTransform();
 		g.translate(ma.toX(mid.x), ma.toY(mid.y));

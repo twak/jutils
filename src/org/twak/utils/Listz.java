@@ -1,8 +1,10 @@
 package org.twak.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -31,4 +33,8 @@ public class Listz {
         while (in.size() > n)
             in.remove( randy.nextInt( in.size()) );
     }
+
+	public static List from( Object ... in ) {
+		return Arrays.stream( in ).collect( Collectors.toList() );
+	}
 }

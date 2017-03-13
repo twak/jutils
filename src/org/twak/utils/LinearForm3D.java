@@ -31,7 +31,7 @@ public class LinearForm3D implements Cloneable
         this.C = l.C;
         this.D = l.D;
     }
-
+    
     /**
      * @param normal normal to the plane
      * @param offset a point the plane passes through
@@ -50,6 +50,17 @@ public class LinearForm3D implements Cloneable
         this.B = B;
         this.C = C;
         this.D = D;
+    }
+    
+    public LinearForm3D (double A,double B,double C )
+    {
+    	this.A = A;
+    	this.B = B;
+    	this.C = C;
+    }
+    
+    public void findD (Tuple3d offset) {
+        D = -normal().dot( new Vector3d( offset) );
     }
 
     public double pointDistance (Tuple3d point)

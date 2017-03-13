@@ -65,7 +65,7 @@ public class Loopz {
 			cutPoints.sort(new Comparator<Point2d>() {
 				@Override
 				public int compare(Point2d o1, Point2d o2) {
-					return Double.compare ( ll.findFrac(o1), ll.findFrac(o2) );
+					return Double.compare ( ll.findPPram(o1), ll.findPPram(o2) );
 				}
 			} );
 			

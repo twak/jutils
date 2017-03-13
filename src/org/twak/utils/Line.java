@@ -266,39 +266,13 @@ public class Line implements Serializable
     
     public Point2d fromPPram( double fParam )
     {
-        Vector2d v2 = new Vector2d ( end );
-        v2.sub( start );
+        Vector2d v2 = dir();
         v2.scale( fParam );
         v2.add( start );
 
         return new Point2d (v2);
     }
-
-    /**
-     * Assume point on line, find position as fraction
-     * @param pt
-     * @return
-     */
-    public double findFrac(Point2d pt)
-    {
-        return start.distance( pt ) / length();
-    }
-    /**
-     * Restore a point from a fraction
-     * @param fParam
-     * @return
-     */
-    public Point2d fromFrac( double fParam )
-    {
-        Vector2d v2 = new Vector2d ( end );
-        v2.sub( start );
-        v2.scale( fParam );
-        v2.add( start );
-
-        return new Point2d (v2);
-    }
-
-    
+        
     public Point2d project( Point2d pt, boolean clamp )
     {
         Vector2d v1 = new Vector2d( end );

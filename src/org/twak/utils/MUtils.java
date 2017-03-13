@@ -5,7 +5,9 @@ import static java.lang.Math.PI;
 import java.awt.Color;
 import java.awt.geom.Point2D;
 
+import javax.vecmath.Matrix4d;
 import javax.vecmath.Point2d;
+import javax.vecmath.Point3d;
 import javax.vecmath.Tuple2d;
 import javax.vecmath.Tuple3d;
 import javax.vecmath.Vector2d;
@@ -186,6 +188,62 @@ public class MUtils
 				return true;
 		}
 		return false;
+	}
+
+	public static class Frame {
+		Matrix4d to, from;
+		public Frame (Matrix4d to) {
+			this.to = to;
+			this.from = new Matrix4d(to);
+			this.from.invert();
+		}
+	} 
+	
+	public static Frame buildFrame( Vector3d x, Vector3d y, Vector3d z, Point3d ref ) {
+		
+		x = norm (x);
+		y = norm (y);
+		z = norm (z);
+		
+		Matrix4d out = new Matrix4d();
+
+		out.setRow( 0, x.x, x.y, x.z, 0 );
+		out.setRow( 1, y.x, y.y, y.z, 0 );
+		out.setRow( 2, z.x, z.y, z.z, 0 );
+
+		Point3d start = new Point3d( ref );
+		out.transform( start );
+		out.m03 = -start.x;
+		out.m13 = -start.y;
+		out.m23 = -start.z;
+		out.m33 = 1;
+		
+		return new Frame ( out );
+	}
+
+	private static Vector3d norm( Vector3d v ) {
+		
+		if (v.lengthSquared() == 1)
+			return v;
+		Vector3d out = new Vector3d( v);
+		out.normalize();
+		
+		return out;
+	}
+
+	public static Vector2d toXY( Frame mat, Vector3d u2 ) {
+		
+		Vector3d  o3 = new Vector3d(u2);
+		mat.to.transform( o3 );
+		return new Vector2d( o3.x, o3.y );
+	}
+
+	public static Point3d fromXY( Frame mat, Point2d p ) {
+		
+		Point3d out = new Point3d(p.x, p.y, 0);
+		mat.from.transform( out );
+		
+		return out;
 	}
 
 }

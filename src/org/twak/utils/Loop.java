@@ -27,6 +27,11 @@ public class Loop<E> implements Iterable<E> {
 		for (E e : toAdd)
 			append(e);
 	}
+	
+	public Loop(E ... toAdd) {
+		for (E e : toAdd)
+			append(e);
+	}
 
 	public Loop(Loop<E> toClone) {
 		for (E e : toClone)
