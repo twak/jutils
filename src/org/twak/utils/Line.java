@@ -366,14 +366,14 @@ public class Line implements Serializable
         return Math.atan2( end.y - start.y, end.x - start.x );
     }
     
-    public double angle180(Line l2) {
-    	
-    	double 
-    			a1 = normAngle (aTan2()), 
-    			a2 = normAngle ( l2.aTan2());    	
-    	
-    	return Math.abs(a1 - a2); 
-    }
+//    public double angle180(Line l2) {
+//    	
+//    	double 
+//    			a1 = normAngle (aTan2()), 
+//    			a2 = normAngle ( l2.aTan2());    	
+//    	
+//    	return Math.abs(a1 - a2); 
+//    }
     private static double normAngle(double a) {
     	if (a > Math.PI / 2)
     		a -= Math.PI;

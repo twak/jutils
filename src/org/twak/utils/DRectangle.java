@@ -337,4 +337,16 @@ public class DRectangle {
 				new Point2d(x+width,y),
 				};
 	}
+	public float heightF() {
+		return (float) height;
+	}
+	public float widthF() {
+		return (float) width;
+	}
+	public float xF() {
+		return (float) x;
+	}
+	public float yF() {
+		return (float) y;
+	}
 }

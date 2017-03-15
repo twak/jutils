@@ -51,7 +51,7 @@ public class WindowManager {
         {
             try {
                 icon = ImageIO.read(WindowManager.class.getResourceAsStream(iconName));
-            } catch (IOException ex) {
+            } catch (Throwable ex) {
                 ex.printStackTrace();
                 icon = (BufferedImage)((ImageIcon) UIManager.getIcon("OptionPane.warningIcon")).getImage();
             }

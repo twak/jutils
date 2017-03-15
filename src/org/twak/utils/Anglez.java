@@ -1,5 +1,7 @@
 package org.twak.utils;
 
+import javax.vecmath.Vector2d;
+
 public class Anglez {
 	
 	/**
@@ -19,6 +21,19 @@ public class Anglez {
 			around = 2 * Math.PI - b + a;
 		
 		return Math.min ( tween, around );
+		
+	}
+	
+	/**
+	 * 0Math.pi to pi
+	 */
+	public static double signed (Vector2d a, Vector2d b) {
+		
+		double angle = a.angle( b );
+		if (a.x * b.y - a.y * b.x < 0)
+			angle = -angle;
+		
+		return angle;
 		
 	}
 	
