@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import javax.vecmath.Point2d;
+import javax.vecmath.Tuple2d;
 
 /**
  *
@@ -39,26 +40,27 @@ public class DRectangle {
             envelop( pt );
     }
 
-    public boolean contains( double X, double Y )
-    {
-        double w = this.width;
-	double h = this.height;
-        
-	if ( w < 0 || h < 0)
-        {
-	    // At least one of the dimensions is negative...
-	    return false;
-	}
-        
-	if (X < x || Y < y) {
-	    return false;
-	}
-	w += x;
-	h += y;
-	//    overflow || intersect
-	return ((w < x || w > X) &&
-		(h < y || h > Y));
+    public boolean contains( Tuple2d pt ) {
+    	return contains (pt.x, pt.y);
     }
+    
+	public boolean contains( double X, double Y ) {
+		double w = this.width;
+		double h = this.height;
+
+		if ( w < 0 || h < 0 ) {
+			// At least one of the dimensions is negative...
+			return false;
+		}
+
+		if ( X < x || Y < y ) {
+			return false;
+		}
+		w += x;
+		h += y;
+		//    overflow || intersect
+		return ( ( w < x || w > X ) && ( h < y || h > Y ) );
+	}
 
     // not sure about this, I like width, height being +ve
     public boolean containsAllowingNegative( double X, double Y )
