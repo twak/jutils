@@ -40,7 +40,17 @@ public class DRectangle {
             envelop( pt );
     }
 
-    public boolean contains( Tuple2d pt ) {
+    public DRectangle( Point2d start ) {
+    	this.x = start.x;
+    	this.y = start.y;
+    	this.width = this.height = 0;
+	}
+    
+	public DRectangle( Line line ) {
+		this (line.start);
+		envelop( line.end );
+	}
+	public boolean contains( Tuple2d pt ) {
     	return contains (pt.x, pt.y);
     }
     
@@ -83,6 +93,13 @@ public class DRectangle {
         return ( ( w < x || w > X ) &&
                 ( h < y || h > Y ) );
     }
+    
+	public void grow( double e ) {
+		x -= e;
+		y -= e;
+		width += 2 * e;
+		height += 2 * e;
+	}
 
     public boolean intersects( DRectangle other )
     {

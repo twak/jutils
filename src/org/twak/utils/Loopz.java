@@ -378,6 +378,7 @@ public class Loopz {
 		Iterator<Loop<Point2d>> eit = out.iterator();
 		
 		while (eit.hasNext()) {
+			
 			Loop<Point2d> loop = eit.next();
 			Loopable<Point2d> start = loop.start, current = start;
 			int size = loop.count();
