@@ -236,6 +236,9 @@ public class PaintThing {
 
 	public static MultiMap<Object, Object> debug = new MultiMap();
 	
+	
+	
+	
 	public static void paintDebug(Graphics2D g, PanMouseAdaptor ma) {
 		
 		int count = 0;
@@ -243,9 +246,30 @@ public class PaintThing {
 		for (Object k : debug.keySet()) {
 			
 			g.setColor(Rainbow.getColour(count++));
+			
+			if (k instanceof Style)
+				((Style)k).activate(g);
+			
 			for (Object o : debug.get(k) ) {
 				paint(o, g, ma);
 			}
 		}
+	}
+
+	private static class Style {
+		Color color;
+		float width;
+		public Style (Color color, float width) {
+			this.color = color;
+			this.width = width;
+		}
+		public void activate( Graphics2D g ) {
+			g.setColor (color);
+			g.setStroke( new BasicStroke( width ) );
+		}
+	}
+	
+	public static void debug( Color c, float f, Object clean ) {
+		debug.put (new Style(c, f), clean );
 	}
 }

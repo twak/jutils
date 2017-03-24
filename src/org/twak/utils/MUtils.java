@@ -149,6 +149,13 @@ public class MUtils
         return max;
     }
 
+ 	public static double inax( boolean min, double ... vals ) {
+ 		if (min)
+ 			return min (vals);
+ 		else
+ 			return max(vals);
+ 	}
+
     public static Integer clip( int a, int min, int max )
     {
         return a < min ? null : a > max ? null : a;
@@ -245,5 +252,4 @@ public class MUtils
 		
 		return out;
 	}
-
 }

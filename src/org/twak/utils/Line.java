@@ -266,6 +266,9 @@ public class Line implements Serializable
     
     public Point2d fromPPram( double fParam )
     {
+    	if (Double.isNaN( fParam ))
+    		return null;
+    	
         Vector2d v2 = dir();
         v2.scale( fParam );
         v2.add( start );
@@ -418,6 +421,12 @@ public class Line implements Serializable
 
 	public Line reverse() {
 		return new Line (end, start);
+	}
+	
+	public void reverseLocal() {
+		Point2d t = start;
+		start = end;
+		end = t;
 	}
 
 	public double distance(Line l) {
