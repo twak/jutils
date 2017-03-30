@@ -303,6 +303,66 @@ public class HalfMesh2 implements Iterable<HalfFace>{
 				}
 			};
 		}
+		
+		public LoopL<HalfEdge> findHoles() {
+			
+			Graph2D g2 = new Graph2D();
+			
+			class L2 extends Line
+			{
+				HalfEdge edge;
+				public L2 (HalfEdge e) {
+					super (e.start, e.end);
+					this.edge= e;
+				}
+			}
+			
+			for (HalfEdge e : this)
+				g2.add( new L2(e) );
+			
+			g2.removeInnerEdges();
+			
+			UnionWalker uw = new UnionWalker();
+			
+			for (Point2d a : g2.map.keySet()) {
+				for (Line l : g2.get(a)) {
+					uw.addEdge(l.start, l.end);
+				}
+			}
+			
+			LoopL<Point2d>pointLoop = uw.findAll();
+
+			if (pointLoop.isEmpty())
+				return new LoopL<>();
+			
+			int outer = -1;
+			double bestArea = -Double.MAX_VALUE;
+			
+			for (int i = 0; i < pointLoop.size(); i++) {
+				double area = Math.abs ( Loopz.area ( pointLoop.get(i) ) );
+				if (area > bestArea) {
+					outer = 0;
+					bestArea = area;
+				}
+			}
+			
+			
+			pointLoop.add(0, pointLoop.remove( outer ) ); //
+			
+			LoopL<HalfEdge> out = pointLoop.new Map<HalfEdge>() {
+				@Override
+				public HalfEdge map( Loopable<Point2d> input ) {
+					for (Line l : g2.map.get( input.get() ) ) {
+						if (l.end.equals (input.next.get())) {
+							return ((L2)l).edge;
+						}
+					}
+					throw new Error();
+				}
+			}.run();
+			
+			return out;
+		}
 
 		public Set<HalfFace> getNeighbours() {
 
