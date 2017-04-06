@@ -499,6 +499,40 @@ public class HalfMesh2 implements Iterable<HalfFace>{
 				i++;
 			return i;
 		}
+
+		public List<List<HalfEdge>> parallelFaces( double d ) {
+			
+			List<List<HalfEdge>> out = new ArrayList<>();
+			
+			HalfEdge s = e;
+			
+			while (s.line().absAngle( s.next.line() ) < d)
+				s = s.next;
+			
+			s = s.next;
+			HalfEdge c = s;
+			
+			List<HalfEdge> ce = new ArrayList<>();
+			
+			do {
+				
+				ce.add(c);
+				
+				if (c.line().absAngle( c.next.line() ) >= d) {
+					if (!ce.isEmpty())
+						out.add(ce);
+					ce = new ArrayList();
+				}
+				
+				c = c.next;
+				
+			} while ( c != s);
+			
+			if (!ce.isEmpty())
+				out.add(ce);
+			
+			return out;
+		}
 	}
 
 	public static class EdgeIterator implements Iterator<HalfEdge> {

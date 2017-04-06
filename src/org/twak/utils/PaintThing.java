@@ -54,6 +54,8 @@ public class PaintThing {
 			p ((String) o, g, ma);
 		else if (o instanceof Rectangle2D)
 			p ((Rectangle2D) o, g, ma);
+		else if (o instanceof DRectangle)
+			p ((DRectangle) o, g, ma);
 		else if (o instanceof Iterable) {
 //			int c = 0;
 			for (Object o2 : (Iterable) o) {
@@ -67,6 +69,11 @@ public class PaintThing {
 	private static void p( Rectangle2D o, Graphics2D g, PanMouseAdaptor ma ) {
 		Rectangle2D r = (Rectangle2D) o;
 		g.drawRect( ma.toX(r.getX()), ma.toY(r.getY()), ma.toZoom( r.getWidth()), ma.toZoom( r.getHeight()) );
+	}
+	
+	private static void p( DRectangle o, Graphics2D g, PanMouseAdaptor ma ) {
+		DRectangle r = (DRectangle) o;
+		g.drawRect( ma.toX(r.x), ma.toY(r.y), ma.toZoom( r.width ), ma.toZoom( r.height ) );
 	}
 
 	private static void p( HalfMesh2 o, Graphics2D g2, PanMouseAdaptor ma ) {
