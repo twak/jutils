@@ -306,6 +306,7 @@ public class HalfMesh2 implements Iterable<HalfFace>{
 		
 		public LoopL<HalfEdge> findHoles() {
 			
+			
 			Graph2D g2 = new Graph2D();
 			
 			class L2 extends Line
@@ -341,13 +342,13 @@ public class HalfMesh2 implements Iterable<HalfFace>{
 			for (int i = 0; i < pointLoop.size(); i++) {
 				double area = Math.abs ( Loopz.area ( pointLoop.get(i) ) );
 				if (area > bestArea) {
-					outer = 0;
+					outer = i;
 					bestArea = area;
 				}
 			}
 			
 			
-			pointLoop.add(0, pointLoop.remove( outer ) ); //
+			pointLoop.add(0, pointLoop.remove( outer ) );
 			
 			LoopL<HalfEdge> out = pointLoop.new Map<HalfEdge>() {
 				@Override

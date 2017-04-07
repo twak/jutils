@@ -131,22 +131,6 @@ public class Loopz {
 		
 		return g;
 	}
-
-//	public static LoopL<Point2d> toXZLoop( List<Polygon> polies ) {
-//		
-//		LoopL<Point2d> out = new LoopL<>();
-//		
-//		for (Polygon p : polies) {
-//			Loop<Point2d>l = new Loop<>();
-//			out.add(l);
-//			for (Line3d pt : p.lines )
-//				l.append( new Point2d(pt.start.x, pt.start.z) );
-//		}
-//			
-//		
-//		return out;
-//	}
-	
 	
 	public static void triangulate (Loop<? extends Point3d> loop, boolean reverseTriangles, 
 			List<Integer> indsO, List<Float> posO, List<Float> normsO) {
@@ -216,6 +200,58 @@ public class Loopz {
 			}
 		}
 		
+	}
+	
+	/**
+	 * All faces in positions 1+ are taken to be correctly oriented holes. This
+	 * inserts edges to let a triangulator run.
+	 */
+	public static LoopL<Point3d> insertInnerEdges(LoopL<Point3d> ll) {
+		
+		while (ll.size() > 1) {
+			LoopL<Point3d> out = new LoopL<>();
+			
+			Loop <Point3d>
+				hole = ll.get(1), 
+				peri = ll.get(0);
+			
+			out.add( peri );
+			for (int i = 2; i < ll.size(); i++) 
+				out.add(ll.get(i));
+
+			Loopable <Point3d> hi = null, pi = null;
+			double bestDist = Double.MAX_VALUE;
+			for ( Loopable<Point3d> h : hole.loopableIterator() )
+				for (Loopable<Point3d> p : peri.loopableIterator()) 
+				{
+					double dist = h.get().distanceSquared( p.get() );
+					if (dist < bestDist) {
+						hi = h;
+						pi = p;
+						bestDist = dist;
+					}
+				}
+			
+			Loopable<Point3d> 
+				h2 = new Loopable<Point3d>( new Point3d ( hi.get() ) ),
+				p2 = new Loopable<Point3d>( new Point3d ( pi.get() ) );
+					
+			
+			h2.prev = hi.prev;
+			h2.next = p2;
+			p2.next = pi.next;
+			p2.prev = h2; 
+			pi.next.prev = p2;
+			hi.prev.next = h2;
+			
+			
+			hi.prev = pi;
+			pi.next = hi;
+			
+			ll = out;
+		}
+		
+		return ll;
 	}
 	
 	public static LoopL<Point2d> removeInnerEdges(LoopL<Point2d> edges) {
