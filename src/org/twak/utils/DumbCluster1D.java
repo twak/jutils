@@ -109,7 +109,7 @@ public abstract class DumbCluster1D<E> extends ArrayList<Cluster<E>>
 		
 		for (int i = 0; i < dists.size(); i++) {
 			if (i > 0 )
-			 dists.get(i).p = dists.get(i-1);
+				dists.get(i).p = dists.get(i-1);
 			if (i < dists.size()-1)
 				dists.get(i).n = dists.get(i+1);
 		}

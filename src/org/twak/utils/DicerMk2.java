@@ -54,7 +54,7 @@ public class DicerMk2
                 { YMIN, yes },
                 { YMAX, yes } })
             {
-                double val = dr.get( oa[0] );
+                double val = dr.get( (Bounds) oa[0] );
                 List<Double> vals = (List) oa[1];
 
                 int res = Collections.binarySearch( vals, val );
@@ -76,7 +76,7 @@ public class DicerMk2
                     }
                 }
                 
-                dr.set( oa[0], val, true );
+                dr.set( (Bounds) oa[0], val, true );
                 
                 if ( ! vals.contains( val ) )
                 {

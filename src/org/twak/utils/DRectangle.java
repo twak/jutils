@@ -2,8 +2,10 @@ package org.twak.utils;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+
 import javax.vecmath.Point2d;
 import javax.vecmath.Tuple2d;
 
@@ -101,17 +103,12 @@ public class DRectangle {
 		height += 2 * e;
 	}
 
-    public boolean intersects( DRectangle other )
-    {
-	if (width <= 0 || height <= 0 || other.width <= 0 || other.height <= 0) {
-	    return false;
+	public boolean intersects( DRectangle other ) {
+		if ( width <= 0 || height <= 0 || other.width <= 0 || other.height <= 0 ) 
+			return false;
+
+		return other.x + other.width > x && other.y + other.height > y && other.x < x + width && other.y < y + height;
 	}
-        
-	return  other.x + other.width > x &&
-		other.y + other.height > y &&
-		other.x < x + width &&
-		other.y < y + height;
-    }
 
     public Rectangle toInteger()
     {
@@ -156,6 +153,10 @@ public class DRectangle {
     {
         return y+height;
     }
+    
+	public Point2d getCenter() {
+		return new Point2d(x + width/2, y + height/2);
+	}
 
     public DRectangle union(DRectangle b)
     {
@@ -183,45 +184,75 @@ public class DRectangle {
                 (height == o.height);
     }
 
-    public void set (Object b, double value, boolean keepMax)
+    public void set (Bounds b, double value) {
+    	set (b, value, false);
+    }
+    
+    public void set (Bounds b, double value, boolean mod)
     {
-        switch ( (Bounds) b)
+        switch (b)
         {
             case XMIN:
                 double delta = value - x;
                 x = value;
-                if (keepMax)
+                if (mod)
                     width -= delta;
                 break;
+            case XCEN:
+            	x = value - width/2;
+            	break;
             case XMAX:
                 width = value-x;
                 break;
             case YMIN:
                 delta = value - y;
                 y = value;
-                if (keepMax)
+                if (mod)
                     height -= delta;
                 break;
+            case YCEN:
+            	y = value - height/2;
+            	break;
             case YMAX:
                 height = value - y;
                 break;
+            case HEIGHT:
+            	delta = height - value;
+            	height = value;
+            	if (mod)
+            		y += delta/2;
+            	break;
+            case WIDTH:
+            	delta = width - value;
+            	width = value;
+            	if (mod)
+            		x += delta/2;
+            	break;
             default:
                 throw new Error("WtF?");
         }
     }
 
-    public double get( Object object )
+    public double get( Bounds object )
     {
-        switch ( (Bounds) object )
+        switch ( object )
         {
             case XMIN:
                 return x;
+            case XCEN:
+            	return x + width / 2;
             case XMAX:
                 return x + width;
             case YMIN:
                 return y;
+            case YCEN:
+            	return y + height / 2;
             case YMAX:
                 return y + height;
+            case WIDTH:
+            	return width;
+            case HEIGHT:
+            	return height;
             default:
                 throw new Error("WtF?");
         }
@@ -243,14 +274,18 @@ public class DRectangle {
 
     public enum Bounds
     {
-        XMIN, XMAX, YMIN, YMAX;
+        XMIN, XCEN, XMAX, YMIN, YCEN, YMAX, WIDTH, HEIGHT;
     }
 
     public final static Bounds
-            XMIN = Bounds.XMIN,
-            XMAX = Bounds.XMAX,
-            YMIN = Bounds.YMIN,
-            YMAX = Bounds.YMAX;
+            XMIN   = Bounds.XMIN,
+            XCEN   = Bounds.XCEN,
+            XMAX   = Bounds.XMAX,
+            YMIN   = Bounds.YMIN,
+            YCEN   = Bounds.YCEN,
+            YMAX   = Bounds.YMAX,
+            WIDTH  = Bounds.WIDTH,
+            HEIGHT = Bounds.HEIGHT;
 
     public static class FromComparator implements Comparator<DRectangle>
     {
@@ -340,6 +375,19 @@ public class DRectangle {
     	
     	return out;
     }
+    
+	public double distance( Line ray ) {
+		
+		double dist = Double.MAX_VALUE;
+		
+		if (contains( ray.start ) || contains( ray.end ))
+			return 0;
+		
+		for ( Pair<Point2d, Point2d> l : new ConsecutiveItPairs<>( Arrays.asList( points() ) ) )
+			dist = Math.min (dist, new Line (l.first(), l.second()).distance( ray ) );
+		
+		return dist;
+	}
     
     public List<DRectangle> splitX (WidthGen gen) {
     	return split(true, gen);
