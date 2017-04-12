@@ -180,4 +180,8 @@ public class MultiMap <A,B> //implements Map<A,List<B>>
 		
 		return false;
 	}
+
+	public long countValue() {
+		return map.values().stream().flatMap( e -> e.stream() ).count();
+	}
 }
