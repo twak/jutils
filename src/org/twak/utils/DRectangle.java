@@ -431,4 +431,19 @@ public class DRectangle {
 		};
 	}
 	
+	public static Comparator<DRectangle> comparatorArea(boolean ascending) {
+		
+		return new Comparator<DRectangle>() {
+			
+			private double score (DRectangle d) {
+				return d.area() * (ascending ? 1 : -1);
+			}
+			
+			@Override
+			public int compare( DRectangle o1, DRectangle o2 ) {
+				return Double.compare( score (o1), score(o2) );
+			}
+		};
+	}
+	
 }
