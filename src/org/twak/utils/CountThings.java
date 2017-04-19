@@ -28,6 +28,12 @@ public class CountThings<E>
         counts.get( e ).i++;
         seen++;
     }
+    
+    public void count( E e, int by )
+    {
+    	counts.get( e ).i+= by;
+    	seen += by;
+    }
 
     public void uncount( E e )
     {

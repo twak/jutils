@@ -1,6 +1,7 @@
 package org.twak.utils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -96,7 +97,14 @@ public abstract class DumbCluster1D<E> extends ArrayList<Cluster<E>>
 		}
 	}
 	
-	public DumbCluster1D (double tol, List<E> things) {
+	public DumbCluster1D(){}
+	public DumbCluster1D (double tol, Collection<E> thingsIn) {
+		setup(tol,thingsIn);
+	}		
+	
+	public void setup (double tol, Collection<E> thingsIn) {
+		
+		List<E> things = new ArrayList<>(thingsIn);
 		
 		Collections.sort(things, new Comparator<E>() {
 			@Override

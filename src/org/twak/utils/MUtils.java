@@ -4,6 +4,7 @@ import static java.lang.Math.PI;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
+import java.util.Arrays;
 
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point2d;
@@ -251,5 +252,19 @@ public class MUtils
 		mat.from.transform( out );
 		
 		return out;
+	}
+
+	public static double L2( int[] a, int[] b ) {
+		
+		double total = 0;
+		
+		for (int i = 0; i < a.length; i++) 
+			total += Math.pow(b[i]-a[i], 2);
+		
+		return Math.sqrt( total );
+	}
+
+	public static boolean notNull( Object ...objects  ) {
+		return Arrays.stream( objects ).filter( o -> o == null ).count() == 0;
 	}
 }
