@@ -168,6 +168,20 @@ public class DRectangle {
         
         return out;
     }
+    
+    public DRectangle intersect(DRectangle b)
+    {
+    	DRectangle out = new DRectangle();
+    	out.x = Math.max( x, b.x );
+    	out.y = Math.max( y, b.y );
+    	out.width = Math.min (getMaxX(), b.getMaxX()) - out.x;
+    	out.height = Math.min (getMaxY(), b.getMaxY()) - out.y;
+    	
+    	if (out.width < 0 || out.height < 0)
+    		return null;
+    	
+    	return out;
+    }
 
     @Override
     public String toString()
@@ -320,7 +334,8 @@ public class DRectangle {
 
 
     public void envelop(double px, double py) {
-        if (px < x) {
+        
+    	if (px < x) {
             width += x - px;
             x = px;
         }
@@ -332,11 +347,19 @@ public class DRectangle {
             y = py;
         }
         else if (py > y + height)
-            height = py - y;    }
+            height = py - y;    
+    }
 
     public void envelop (Point2d pt) {
-        envelop (pt.x, pt.y);
+        
+    	envelop (pt.x, pt.y);
     }
+    
+//    public void envelop (DRectangle r) {
+//    	
+//    	for (Point2d pt : r.points())
+//    		envelop (pt.x, pt.y);
+//    }
     
     public static class RectDir {
     	public boolean dirX;
@@ -445,5 +468,8 @@ public class DRectangle {
 			}
 		};
 	}
-	
+
+//	public double distance( DRectangle o ) {
+//		return 0;
+//	}
 }

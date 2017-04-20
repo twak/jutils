@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Given a function to run on a set (getObject) and a iterable set, we only return
+ * Given a function to run on a set (getObject) and an iterable set, we only return
  * unique results (.equals()) from that function applied over the set.
  * @author twak
  */
