@@ -108,7 +108,7 @@ public class Loopz {
 		
 		for ( Loop<Point2d> l : lloops ) {
 
-			if ( (!filterHoles) || area( l ) < 0 ) {
+			if ( !filterHoles || area( l ) < 0 ) {
 
 				List<Point3d> ptz = new ArrayList();
 				for ( Point2d p : l )
@@ -358,7 +358,7 @@ public class Loopz {
 		return out;
 	}
 
-	private static Loop<Point2d>  toXZLoop( Loop<Point3d> ll) {
+	public static Loop<Point2d>  toXZLoop( Loop<Point3d> ll) {
 		
 		Loop<Point2d> o = ll instanceof SuperLoop ? new SuperLoop(((SuperLoop)ll).properties) :new Loop<>();
 		
@@ -387,7 +387,8 @@ public class Loopz {
 		Loop<Point2d> out = new Loop<>();
 		for (Point3d p3 : in) {
 			Point2d p2 = axis == 0? new Point2d( p3.y, p3.z ) : axis == 1 ? new Point2d (p3.x, p3.z) : new Point2d (p3.y, p3.z);
-			to3d.put (p2, p3);
+			if (to3d != null)
+				to3d.put (p2, p3);
 			out.append(p2);
 		}
 		return out;
@@ -462,16 +463,21 @@ public class Loopz {
 		LoopL<Point3d> out = new LoopL<>();
 		
 		for (Loop<Point2d> lp : gis) {
-			Loop<Point3d> ol = new Loop<>();
+			Loop<Point3d> ol = to3d(lp, h, i);
 			out.add(ol);
-			for (Point2d pt : lp)
-				ol.append( i == 1 ? 
-						new Point3d (pt.x, h, pt.y) : i == 2 ? 
-						new Point3d (pt.x, pt.y, h ) : 
-						new Point3d (h, pt.x, pt.y) );
 		}
 		
 		return out;
+	}
+
+	public static Loop<Point3d> to3d( Loop<Point2d> lp, double h, int i) {
+		Loop<Point3d> ol = new Loop<>();
+		for (Point2d pt : lp)
+			ol.append( i == 1 ? 
+					new Point3d (pt.x, h, pt.y) : i == 2 ? 
+					new Point3d (pt.x, pt.y, h ) : 
+					new Point3d (h, pt.x, pt.y) );
+		return ol;
 	}
 
 	public static List<Point3d> intersect( LoopL<Point3d> gis, LinearForm3D lf ) {
