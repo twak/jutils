@@ -22,22 +22,33 @@ public class Rainbow
 
     public static Color[] rainbow = new Color[]
     {
-        Color.red,
-        Color.orange,
-        Color.green,
-        Color.cyan,
-        Color.blue,
-        Color.magenta,
-        Color.pink,
-        Color.gray,
-        new Color (152,0,255),
-        Color.red.darker(),
-        new Color (128,67,0),
-        Color.orange.darker(),
-        Color.yellow.darker(),
-        Color.green.darker(),
-        Color.blue.darker(),
-        Color.yellow,
+    	new Color (170,0,255),
+    	new Color (170,255,0),
+    	new Color (0,170,255),
+    	new Color (255,170,0),
+    	new Color (255,0,170),
+    	new Color (0,255,170),
+    	
+    	new Color (116,255,116),
+    	new Color (255,116,116),
+    	new Color (116,116,255),
+//    		
+//        Color.red,
+//        Color.orange,
+//        Color.green,
+//        Color.cyan,
+//        Color.blue,
+//        Color.magenta,
+//        Color.pink,
+//        Color.gray,
+//        new Color (152,0,255),
+//        Color.red.darker(),
+//        new Color (128,67,0),
+//        Color.orange.darker(),
+//        Color.yellow.darker(),
+//        Color.green.darker(),
+//        Color.blue.darker(),
+//        Color.yellow,
     };
 
     public static String lastAsString( Object key )
@@ -49,7 +60,7 @@ public class Rainbow
     {
         int val = indexes.containsKey( key ) ? indexes.get( key ) : 0;
         indexes.put( key, val+1 );
-        return rainbow[val % (rainbowStrings.length)];
+        return rainbow[val % (rainbow.length)];
     }
 
     public static Color getColour (int i ){
