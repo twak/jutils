@@ -7,6 +7,7 @@ package org.twak.utils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 /**
  * a loop of loops, with an iterator for the contained primitive (corners!)
@@ -249,6 +250,10 @@ public class LoopL<E> extends ArrayList<Loop<E>>
                 return new LoopLoopable<E>(loop, lp);
         }
         return null;
+    }
+    
+    public Stream<E> streamE() {
+    	return stream().flatMap( l -> l.stream() );
     }
 }
 

@@ -106,7 +106,7 @@ public class LinearForm3D implements Cloneable
         {
             if (pointDistance(rayOrigin) < 0.0001) // haven't tested this yet
             {
-                LineOnPlane out = new LineOnPlane(rayOrigin, rayDirection, distance);
+                LineOnPlane out = new LineOnPlane(rayOrigin, rayDirection, distance == null ? 0 : distance.doubleValue());
                 return out;
             }
             

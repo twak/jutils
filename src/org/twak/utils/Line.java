@@ -253,7 +253,7 @@ public class Line implements Serializable
     }
 
     /**
-     * @return /in {0...1} if within line.
+     * @return /in {0...1} within line.
      */
     public double findPPram(Point2d pt)
     {
