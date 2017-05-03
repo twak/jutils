@@ -543,6 +543,25 @@ public class HalfMesh2 implements Iterable<HalfFace>{
 			
 			return area;
 		}
+
+		public void merge( HalfMesh2 mesh, HalfFace togo ) {
+			
+			for ( HalfEdge e : this )
+				if ( e.over != null && e.over.face == togo ) {
+					e.dissolve( mesh );
+					break;
+				}
+			
+//			boolean again = true;   this isn't smart enough to deal with leaving splitting a loop in two....
+//			again: while ( again ) {
+//				again = false;
+//				for ( HalfEdge e : this )
+//					if ( e.over != null && e.over.face == this ) {
+//						e.dissolve( mesh );
+//						again = true;
+//						continue again;
+//					}
+			}
 	}
 
 	public static class EdgeIterator implements Iterator<HalfEdge> {
