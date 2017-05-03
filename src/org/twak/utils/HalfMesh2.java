@@ -157,7 +157,6 @@ public class HalfMesh2 implements Iterable<HalfFace>{
 					
 				}
 				
-				
 				return; // nothing to do!
 			}
 			else if (next == over) {
@@ -174,7 +173,6 @@ public class HalfMesh2 implements Iterable<HalfFace>{
 				
 			}
 			else {
-				
 				
 				HalfEdge ob = over.findBefore();
 				findBefore().next = over.next;
@@ -533,6 +531,17 @@ public class HalfMesh2 implements Iterable<HalfFace>{
 				out.add(ce);
 			
 			return out;
+		}
+
+		public double area() {
+			
+			Point2d origin = e.start;
+			double area = 0;
+			
+			for (HalfEdge e : this)
+				area += MUtils.area(origin, e.start, e.end);
+			
+			return area;
 		}
 	}
 
