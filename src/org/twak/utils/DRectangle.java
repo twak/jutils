@@ -355,12 +355,6 @@ public class DRectangle {
     	envelop (pt.x, pt.y);
     }
     
-//    public void envelop (DRectangle r) {
-//    	
-//    	for (Point2d pt : r.points())
-//    		envelop (pt.x, pt.y);
-//    }
-    
     public static class RectDir {
     	public boolean dirX;
     	public DRectangle rect;

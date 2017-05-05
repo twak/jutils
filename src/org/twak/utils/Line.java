@@ -230,27 +230,23 @@ public class Line implements Serializable
         return Math.sqrt( lengthSquared() );
     }
     
-    /**
-     * Distance to infinite line
-     */
-    public double distance (Tuple2d p) {
-        return distance(p, false);
-    }
-    
-    public double distance (Tuple2d p, boolean clamp)
-    {
-        if (clamp)
-        {
-            Point2d p2 = project( new Point2d( p ), clamp );
-            return p2.distance( new Point2d( p ) );
-        }
+	public double distance( Tuple2d p ) {
+		return distance( p, true );
+	}
 
-        double num = Math.abs((end.x - start.x) * ( start.y - p.y) - (start.x -p.x)*(end.y - start.y));
-        double den = length();
-        if (den == 0)
-            return new Point2d(p).distance(start);
-        return num/den;
-    }
+	public double distance( Tuple2d p, boolean clamp ) {
+		
+		if ( clamp ) {
+			Point2d p2 = project( new Point2d( p ), clamp );
+			return p2.distance( new Point2d( p ) );
+		}
+
+		double num = Math.abs( ( end.x - start.x ) * ( start.y - p.y ) - ( start.x - p.x ) * ( end.y - start.y ) );
+		double den = length();
+		if ( den == 0 )
+			return new Point2d( p ).distance( start );
+		return num / den;
+	}
 
     /**
      * @return /in {0...1} within line.

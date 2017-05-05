@@ -309,4 +309,11 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 	public boolean sameLocation( PanMouseAdaptor o ) {
 		return o.cenX == cenX && o.cenY == cenY && o.zoom == zoom;
 	}
+
+	public void view( DRectangle bounds ) {
+		center( bounds.getCenter() );
+		zoomInt = 0;
+		setZoom( 0 );
+		
+	}
 }

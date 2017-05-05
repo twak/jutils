@@ -69,11 +69,13 @@ public class PaintThing {
 	private static void p( Rectangle2D o, Graphics2D g, PanMouseAdaptor ma ) {
 		Rectangle2D r = (Rectangle2D) o;
 		g.drawRect( ma.toX(r.getX()), ma.toY(r.getY()), ma.toZoom( r.getWidth()), ma.toZoom( r.getHeight()) );
+		setBounds( new Point2d (o.getX(), o.getY()) );
 	}
 	
 	private static void p( DRectangle o, Graphics2D g, PanMouseAdaptor ma ) {
 		DRectangle r = (DRectangle) o;
 		g.drawRect( ma.toX(r.x), ma.toY(r.y), ma.toZoom( r.width ), ma.toZoom( r.height ) );
+		setBounds( o );
 	}
 
 	private static void p( HalfMesh2 o, Graphics2D g2, PanMouseAdaptor ma ) {
@@ -88,6 +90,7 @@ public class PaintThing {
 			for ( HalfEdge e : f.edges() ) {
 				pwt.addPoint( ma.toX( e.start.x + Math.random() * scatterRadius ), ma.toY( e.start.y + Math.random() * scatterRadius ) );
 				p(e.start, g2, ma);
+				setBounds( e.start );
 			}
 
 			Color c = Rainbow.getColour( fc++ );
@@ -140,8 +143,10 @@ public class PaintThing {
 		
 		Polygon p = new Polygon();
 		
-		for (Point2d pt : ll)
+		for (Point2d pt : ll) {
 			p.addPoint(ma.toX(pt.x), ma.toY(pt.y));
+			setBounds( pt );
+		}
 
 		Color c = g.getColor();
 		g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 50));
@@ -168,6 +173,8 @@ public class PaintThing {
 
 			if (l.length() < 0.001)
 				g.setColor(Color.red);
+
+			setBounds( l.start );
 			
 			g.drawLine(
 					ma.toX(l.start.x + Math.random() * scatterRadius),
@@ -233,6 +240,9 @@ public class PaintThing {
 		Line l = (Line) o;
 		g.drawLine(ma.toX(l.start.x), ma.toY(l.start.y), ma.toX(l.end.x), ma.toY(l.end.y));
 
+		setBounds( o.start );
+		setBounds( o.end );
+		
 		drawArrow(g, ma, l, 5);
 	}
 
@@ -278,5 +288,29 @@ public class PaintThing {
 	
 	public static void debug( Color c, float f, Object clean ) {
 		debug.put (new Style(c, f), clean );
+	}
+	
+	private static DRectangle drawBounds = new DRectangle();
+	
+	public static DRectangle getBounds () {
+		return drawBounds;
+	}
+	
+	public static void resetBounds() {
+		drawBounds = null;
+	}
+	
+	private static void setBounds( DRectangle p ) {
+		if (drawBounds == null)
+			drawBounds = new DRectangle(p);
+		else
+			drawBounds = drawBounds.union( p );		
+	}
+	
+	private static void setBounds(Point2d p) {
+		if (drawBounds == null)
+			drawBounds = new DRectangle(p);
+		else
+			drawBounds.envelop( p );
 	}
 }
