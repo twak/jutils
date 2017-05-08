@@ -97,11 +97,28 @@ public class Loopz {
 		
 		return area;
 	}
+	
 
 	public static double area( LoopL<Point2d> insideOutside ) {
 		return insideOutside.stream().mapToDouble( x -> area (x) ).sum();
 	}
+	
+	public static double area3(Loop<Point3d> loop) {
+		
+		Point3d origin = loop.iterator().next();
+		
+		double area = 0;
+		
+		for (Loopable<Point3d> pt : loop.loopableIterator()) 
+			area += MUtils.area(origin, pt.getNext().get(), pt.get());
+		
+		return area;
+	}
 
+	public static double area3( LoopL<Point3d> insideOutside ) {
+		return insideOutside.stream().mapToDouble( x -> area3 (x) ).sum();
+	}
+	
 	public static void writeXZObj( LoopL<Point2d> lloops, File file, boolean filterHoles ) {
 
 		ObjDump obj = new ObjDump();

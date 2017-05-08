@@ -186,6 +186,18 @@ public class MUtils
 				b.x * c.y
 				);
 	}
+	
+	public static double area( Point3d a, Point3d b, Point3d c ) {
+		
+		Vector3d ab = new Vector3d(b), ac = new Vector3d(c);
+		
+		ab.sub( a );
+		ac.sub( a );
+		
+		ab.cross( ab, ac );
+		
+		return 0.5 * ab.length(); 
+	}
 
 	public static boolean order( double ... pairs ) {
 		for (int i =0; i < pairs.length; i+=2) {
@@ -267,4 +279,5 @@ public class MUtils
 	public static boolean notNull( Object ...objects  ) {
 		return Arrays.stream( objects ).filter( o -> o == null ).count() == 0;
 	}
+
 }

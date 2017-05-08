@@ -248,12 +248,13 @@ public class PaintThing {
 
 	private static void p(String o, Graphics2D g, PanMouseAdaptor ma) {
 		g.setColor( Color.black );
-		g.drawString( o, 10, 30 );
+		g.drawString( o, 10, 30 * stringCount );
+		stringCount++;
 	}
 
 	public static MultiMap<Object, Object> debug = new MultiMap();
 	
-	
+	static int stringCount = 0;
 	
 	
 	public static void paintDebug(Graphics2D g, PanMouseAdaptor ma) {
@@ -297,17 +298,18 @@ public class PaintThing {
 	}
 	
 	public static void resetBounds() {
+		stringCount = 1;
 		drawBounds = null;
 	}
 	
-	private static void setBounds( DRectangle p ) {
+	public static void setBounds( DRectangle p ) {
 		if (drawBounds == null)
 			drawBounds = new DRectangle(p);
 		else
 			drawBounds = drawBounds.union( p );		
 	}
 	
-	private static void setBounds(Point2d p) {
+	public static void setBounds(Point2d p) {
 		if (drawBounds == null)
 			drawBounds = new DRectangle(p);
 		else

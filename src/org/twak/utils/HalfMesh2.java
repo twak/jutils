@@ -1,6 +1,7 @@
 package org.twak.utils;
 
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -14,7 +15,7 @@ import javax.vecmath.Vector2d;
 
 import org.twak.utils.HalfMesh2.HalfFace;
 
-public class HalfMesh2 implements Iterable<HalfFace>{
+public class HalfMesh2 implements Iterable<HalfFace> {
 
 	public List<HalfFace> faces = new ArrayList();
 	
@@ -221,6 +222,7 @@ public class HalfMesh2 implements Iterable<HalfFace>{
 			}
 			
 			before.next = next;
+			
 			if (face.e == this)
 				face.e = next;
 			
