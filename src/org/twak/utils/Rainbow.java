@@ -1,7 +1,9 @@
 package org.twak.utils;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,10 +31,9 @@ public class Rainbow
     	new Color (255,0,170),
     	new Color (0,255,170),
     	
-    	new Color (116,255,116),
-    	new Color (255,116,116),
-    	new Color (116,116,255),
-//    		
+//    	new Color (116,255,116),
+//    	new Color (255,116,116),
+//    	new Color (116,116,255),
 //        Color.red,
 //        Color.orange,
 //        Color.green,
@@ -51,6 +52,21 @@ public class Rainbow
 //        Color.yellow,
     };
 
+    static {
+    	
+    	List<Color> cols = new ArrayList();
+    	for (Color c : rainbow)
+    		cols.add(c);
+    	
+    	for (int i = 0; i < 100; i++) {
+    		
+    		cols.add ( Color.getHSBColor( (float) Math.random(), 1f, 0.5f ) );
+    		
+    	}
+    	
+    	rainbow = cols.toArray( new Color[cols.size()] );
+    }
+    
     public static String lastAsString( Object key )
     {
         return rainbowStrings[(indexes.get( key ) -1 )% (rainbowStrings.length)];

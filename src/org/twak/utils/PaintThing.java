@@ -243,7 +243,7 @@ public class PaintThing {
 		setBounds( o.start );
 		setBounds( o.end );
 		
-		drawArrow(g, ma, l, 5);
+//		drawArrow(g, ma, l, 5);
 	}
 
 	private static void p(String o, Graphics2D g, PanMouseAdaptor ma) {
