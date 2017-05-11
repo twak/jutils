@@ -1,5 +1,6 @@
 package org.twak.utils;
 
+import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -666,5 +667,30 @@ public class Loopz {
 		
 		
 		return out;
+	}
+
+	public static void dirtySnap( Loop<Point3d> poly, double snapFootprintVert ) {
+		dirtySnap( poly, snapFootprintVert, new ArrayList<Point3d>() );
+	}
+
+	private static void dirtySnap( Loop<Point3d> poly, double snapFootprintVert, List<Point3d> seen) {
+		
+		pt:
+		for (Loopable<Point3d> pt : poly.loopableIterator()) {
+			
+			for (Point3d pt2 : seen) {
+				if (pt.get().distance( pt2 ) < snapFootprintVert) {
+					pt.me = new Point3d (pt2);
+					continue pt;
+				}
+			}
+			seen.add(pt.get());
+		}
+	}
+
+	public static void dirtySnap( LoopL<Point3d> polies, double snapFootprintVert ) {
+		List<Point3d> seen = new ArrayList<>();
+		for (Loop <Point3d> loop : polies) 
+			dirtySnap( loop, snapFootprintVert, seen );
 	}
 }
