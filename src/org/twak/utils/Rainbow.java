@@ -60,7 +60,7 @@ public class Rainbow
     	
     	for (int i = 0; i < 100; i++) {
     		
-    		cols.add ( Color.getHSBColor( (float) Math.random(), 1f, 0.5f ) );
+    		cols.add ( Color.getHSBColor( (float) Math.random(), 0.5f, 1f ) );
     		
     	}
     	

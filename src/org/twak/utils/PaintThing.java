@@ -140,6 +140,7 @@ public class PaintThing {
 	private static void p2(Loop<Point2d> ll, Graphics2D g, PanMouseAdaptor ma, int cc) {
 		
 		g.setColor(Rainbow.getColour(cc++));
+//		g.setColor(new Color( 170, 255, 0 ) );//c.getRed(), c.getGreen(), c.getBlue(), 50));
 		
 		Polygon p = new Polygon();
 		
@@ -149,7 +150,8 @@ public class PaintThing {
 		}
 
 		Color c = g.getColor();
-		g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 50));
+		
+//		g.setColor(new Color( c.getRed(), c.getGreen(), c.getBlue(), 50));
 		g.fill(p);
 		g.setColor(c);
 		g.draw(p);
@@ -157,7 +159,7 @@ public class PaintThing {
 		for (Loop<Point2d> h : ll.holes)
 			p (h, g, ma);
 		
-		if (true)
+		if (false)
 			for (Loopable<Point2d> able : ll.loopableIterator() )
 				drawArrow(g, ma, new Line (able.get(), able.getNext().get()), 5);
 	}
@@ -233,7 +235,7 @@ public class PaintThing {
 
 	private static void p(Point2d o, Graphics2D g, PanMouseAdaptor ma) {
 		Point2d s = (Point2d) o;
-		g.fillOval(ma.toX(s.x) - 2, ma.toY(s.y) - 2, 4, 4);
+		g.fillOval(ma.toX(s.x) - 4, ma.toY(s.y) - 4, 8, 8);
 	}
 	
 	private static void p(Line o, Graphics2D g, PanMouseAdaptor ma) {
