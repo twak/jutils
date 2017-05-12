@@ -119,6 +119,13 @@ public class MultiMap <A,B> //implements Map<A,List<B>>
         return map.remove( key );
     }
 
+    public void putAll( MultiMap<? extends A, ? extends B> m )
+    {
+    	for (A a : m.map.keySet())
+    		for (B b : m.map.get(a))
+    			put (a, b);
+    }
+    
     public void putAll( Map<? extends A, ? extends B> m )
     {
         for (Map.Entry<? extends A, ? extends B> entry : m.entrySet())

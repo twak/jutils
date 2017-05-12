@@ -1,5 +1,6 @@
 package org.twak.utils;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -30,4 +31,12 @@ public abstract class Cache2<I1, I2,O>
 //    {
 //        cache.put( start, start0);
 //    }
+
+    public static void main (String[] args) {
+    	
+    	Cach2 flibble = new Cach2<>( (a,b ) -> new ArrayList<>() );
+    	
+    	flibble.get  (new Object(), new Object() );
+    	
+    }
 }

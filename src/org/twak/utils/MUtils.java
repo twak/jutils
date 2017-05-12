@@ -81,9 +81,16 @@ public class MUtils
         Vector2d right = new Vector2d( c );
         left.sub( a );
         right.sub( b );
-//        left.normalize();
-//        right.normalize();
         return interiorAngle( left, right );
+    }
+    
+    public static double absAngleBetween( Tuple2d a, Tuple2d b, Tuple2d c )
+    {
+    	Vector2d left = new Vector2d( b );
+    	Vector2d right = new Vector2d( c );
+    	left.sub( a );
+    	right.sub( b );
+    	return left.angle( right );
     }
 
     public static double cross( Tuple2d a, Tuple2d b )
