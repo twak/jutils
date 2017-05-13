@@ -3,11 +3,14 @@ package org.twak.utils;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Tuple2d;
+
+import org.twak.utils.DRectangle.RectDir;
 
 /**
  *
@@ -368,7 +371,6 @@ public class DRectangle {
     	public List<Double> gen (RectDir in);
     }
     
-    
     public List<DRectangle> split (boolean dir, WidthGen gen) {
     	
     	List <DRectangle> out =new ArrayList<>();
@@ -409,6 +411,22 @@ public class DRectangle {
     public List<DRectangle> splitX (WidthGen gen) {
     	return split(true, gen);
     }
+    
+    public List<DRectangle> splitY (double l) {
+    	List<DRectangle> out = new ArrayList();
+
+    	if (l > height) {
+    		out.add( new DRectangle(this) );
+    	}
+    	else
+    	{
+    		out.add(new DRectangle(x, y, width, l));
+    		out.add(new DRectangle(x, x+l, width, height-l));
+    	}
+    	
+    	return out;
+    }
+    
     public List<DRectangle> splitY (WidthGen gen) {
     	return split(false, gen);
     }

@@ -14,7 +14,10 @@ public class Cach <I,O> extends Cache<I, O> {
 	
 	@Override
 	public O create( I i ) {
+		
+		if (make == null)
+			return null;
+		
 		return make.make( i );
 	}
-
 }
