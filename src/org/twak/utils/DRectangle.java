@@ -421,7 +421,7 @@ public class DRectangle {
     	else
     	{
     		out.add(new DRectangle(x, y, width, l));
-    		out.add(new DRectangle(x, x+l, width, height-l));
+    		out.add(new DRectangle(x, y+l, width, height-l));
     	}
     	
     	return out;

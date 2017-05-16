@@ -693,4 +693,22 @@ public class Loopz {
 		for (Loop <Point3d> loop : polies) 
 			dirtySnap( loop, snapFootprintVert, seen );
 	}
+
+	public static Point2d average( LoopL<Point2d> polies ) {
+
+		Point2d out = new Point2d();
+		int count = 0;
+
+		for ( Loop<Point2d> ll : polies )
+			for ( Point2d pt : ll ) {
+				out.x += pt.x;
+				out.y += pt.y;
+				count++;
+			}
+
+		out.x /= count;
+		out.y /= count;
+
+		return out;
+	}
 }
