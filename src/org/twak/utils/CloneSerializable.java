@@ -5,6 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
 /**
  *
  * @author twak
@@ -28,5 +31,10 @@ public class CloneSerializable
             th.printStackTrace();
             return null;
         }
+    }
+    
+    public static Object xClone (Object orig) {
+        XStream XSTREAM = new XStream(new DomDriver());
+        return XSTREAM.fromXML(XSTREAM.toXML(orig));
     }
 }

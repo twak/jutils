@@ -89,7 +89,7 @@ public class PaintThing {
 
 			for ( HalfEdge e : f.edges() ) {
 				pwt.addPoint( ma.toX( e.start.x + Math.random() * scatterRadius ), ma.toY( e.start.y + Math.random() * scatterRadius ) );
-				p(e.start, g2, ma);
+//				p(e.start, g2, ma);
 				setBounds( e.start );
 			}
 
