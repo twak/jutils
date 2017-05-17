@@ -4,8 +4,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PipedOutputStream;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.binary.BinaryStreamDriver;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
@@ -34,6 +36,9 @@ public class CloneSerializable
     }
     
     public static Object xClone (Object orig) {
+    	
+    	//todo / delme http://x-stream.github.io/javadoc/com/thoughtworks/xstream/io/binary/BinaryStreamDriver.html
+    	
         XStream XSTREAM = new XStream(new DomDriver());
         return XSTREAM.fromXML(XSTREAM.toXML(orig));
     }
