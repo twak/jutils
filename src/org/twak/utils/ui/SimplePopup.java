@@ -22,7 +22,7 @@ public class SimplePopup
 {
     DefaultListModel dlm = new DefaultListModel();
     MouseEvent evt;
-
+    
     public SimplePopup( MouseEvent evt )
     {
         this.evt = evt;

@@ -10,6 +10,7 @@ import java.util.List;
 import javax.vecmath.Point2d;
 import javax.vecmath.Tuple2d;
 
+import org.twak.utils.DRectangle.Bounds;
 import org.twak.utils.DRectangle.RectDir;
 
 /**
@@ -292,6 +293,8 @@ public class DRectangle {
     public enum Bounds
     {
         XMIN, XCEN, XMAX, YMIN, YCEN, YMAX, WIDTH, HEIGHT;
+    	
+    	boolean horizontal;
     }
 
     public final static Bounds
@@ -430,6 +433,20 @@ public class DRectangle {
     public List<DRectangle> splitY (WidthGen gen) {
     	return split(false, gen);
     }
+    
+	public Line getEdge( Bounds b ) {
+		switch (b) {
+		case XMAX:
+			return new Line (get( Bounds.XMAX ), get( Bounds.YMIN ), get( Bounds.XMAX ), get( Bounds.YMAX ));
+		case XMIN:
+			return new Line (get( Bounds.XMIN ), get( Bounds.YMIN ), get( Bounds.XMIN ), get( Bounds.YMAX ));
+		case YMAX:
+			return new Line (get( Bounds.XMIN ), get( Bounds.YMAX ), get( Bounds.XMAX ), get( Bounds.YMAX ));
+		case YMIN:
+			return new Line (get( Bounds.XMIN ), get( Bounds.YMIN ), get( Bounds.XMAX ), get( Bounds.YMIN ));
+		}
+		throw new Error();
+	}
     
 	public Point2d[] points() {
 		return new Point2d[] {
