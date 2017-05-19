@@ -37,9 +37,13 @@ public class CloneSerializable
     
     public static Object xClone (Object orig) {
     	
-    	//todo / delme http://x-stream.github.io/javadoc/com/thoughtworks/xstream/io/binary/BinaryStreamDriver.html
+    	XStream x = new XStream(new BinaryStreamDriver());
+
+    	ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    	x.toXML( orig, bos );
     	
-        XStream XSTREAM = new XStream(new DomDriver());
-        return XSTREAM.fromXML(XSTREAM.toXML(orig));
+    	return x.fromXML( new ByteArrayInputStream( bos.toByteArray() ) );
+    	
+//        return XSTREAM.fromXML(XSTREAM.toXML(orig));
     }
 }

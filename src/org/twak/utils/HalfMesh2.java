@@ -482,11 +482,12 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 
 		public void remove( HalfMesh2 mesh ) {
 
+			mesh.faces.remove (this);
+			
 			for (HalfEdge e : edges()) 
 				if (e.over != null)
 					e.over.over = null;
 			
-			mesh.faces.remove (this);
 		}
 
 		@Override
@@ -570,6 +571,8 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 
 		HalfEdge start, current;
 
+//		Set<HalfEdge> seen = new IdentityHashSet<>();
+		
 		public EdgeIterator(HalfEdge first) {
 			start = first;
 		}
@@ -587,6 +590,11 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			
 			if (current == null) {
 				current = start.next;
+				
+//				if (seen.contains( start ))
+//					throw new Error("infinite loop!");
+//				seen.add(start);
+				
 				return start;
 			}
 			
@@ -595,6 +603,11 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			
 			if (current == null)
 				start = current;
+			
+//			if (seen.contains( out )) {
+//				throw new Error("infinite loop!");
+//			}
+//			seen.add(out);
 			
 			return out;
 		}
