@@ -238,12 +238,19 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			
 			HalfEdge last = this.next;
 			
+			Set<HalfEdge> seen = new HashSet<>();
+			
 			do {
 				HalfEdge n = last.next;
 				if (n == this)
 					return last;
 				
 				last = n;
+				
+				if (seen.contains( n ))
+					throw new Error("loop detected");
+				seen.add(n);
+				
 			} 
 			while (last != this);
 			
