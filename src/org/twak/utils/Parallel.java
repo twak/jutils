@@ -24,7 +24,7 @@ public class Parallel <I,O> {
 		
 		togo.addAll( in );
 		
-		int tCount = Runtime.getRuntime().availableProcessors();
+		int tCount = Runtime.getRuntime().availableProcessors() / 2 /*hyperthreads are shite*/;
 		
 		Set<O> os = Collections.synchronizedSet( new HashSet<>() );
 		

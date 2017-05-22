@@ -144,7 +144,7 @@ public class ObjDump {
 					materialFile.append( "illum 1\n" );
 					if ( mat.filename != null ) {
 //						materialFile.append( "map_Ka " + mat.filename + "\n" );
-						materialFile.append( "map_Kd " + mat.filename + "\n" );
+//						materialFile.append( "map_Kd " + mat.filename + "\n" );
 //						materialFile.append( "map_Ks " + mat.filename + "\n\n" );
 					}
 				}
