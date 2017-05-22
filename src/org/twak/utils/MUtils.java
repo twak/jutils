@@ -23,6 +23,8 @@ public class MUtils
 
 	public static final Vector2d UP = new Vector2d(0,1);
 
+	public static final Vector3d Y_UP = new Vector3d(0,1,0);
+	
 	public static final Tuple3d X_POS = new Vector3d(1,0,0);
 	public static final Tuple3d Y_POS = new Vector3d(0,1,0);
 	public static final Tuple3d Z_POS = new Vector3d(0,0,1);
