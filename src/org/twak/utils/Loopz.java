@@ -475,6 +475,48 @@ public class Loopz {
 		
 		return out;
 	}
+	
+
+	public static Loop<Point2d> mergeAdjacentEdges2( Loop<Point2d> in, double angleTol ) {
+		
+		Loop<Point2d> out = new Loop<>(in);
+		
+		Loopable<Point2d> start = out.start, current = start;
+		int size = out.count();
+		
+		boolean again;
+		do {
+			again = false;
+			Point2d a = current.getPrev().get(),
+					b = current.get(),
+					c = current.getNext().get();
+			
+			Line ab = new Line(a,b),
+					bc = new Line (b,c);
+			
+			double angle = Anglez.dist( ab.aTan2(), bc.aTan2() );
+			
+			if ( 
+					a.distanceSquared(b) < 0.0001 ||
+					b.distanceSquared(c) < 0.0001 ||
+					angle < angleTol ) 
+			{
+				current.getPrev().setNext(current.getNext());
+				current.getNext().setPrev(current.getPrev());
+				size--;
+				if (start == current)
+					out.start = start = current.getPrev();
+				
+				again = true;
+				current = current.getPrev();
+			}
+			else
+				current = current.getNext();
+		}
+		while ( ( again || current != start) && size > 2);
+		
+		return out;
+	}
 
 	public static LoopL<Point3d> to3d( LoopL<Point2d> gis, double h, int i ) {
 		

@@ -354,7 +354,6 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 				}
 			}
 			
-			
 			pointLoop.add(0, pointLoop.remove( outer ) );
 			
 			LoopL<HalfEdge> out = pointLoop.new Map<HalfEdge>() {
@@ -365,6 +364,7 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 							return ((L2)l).edge;
 						}
 					}
+					
 					throw new Error();
 				}
 			}.run();
