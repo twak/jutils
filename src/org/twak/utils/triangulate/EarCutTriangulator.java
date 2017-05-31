@@ -8,9 +8,6 @@ package org.twak.utils.triangulate;
  *
  ****************************************************************************/
 
-// Local imports
-
-
 /**
  * Utility routines for triangulating arbitrary polygons.
  * <p>
@@ -34,6 +31,7 @@ package org.twak.utils.triangulate;
  * @author Justin Couch
  * @version $Revision: 1.3 $
  */
+
 public class EarCutTriangulator
 {
     /** The default size of the polygon values */

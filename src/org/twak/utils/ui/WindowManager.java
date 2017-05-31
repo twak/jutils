@@ -1,20 +1,28 @@
 package org.twak.utils.ui;
 
+import java.awt.Color;
 import java.awt.Frame;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
+
+import org.twak.utils.ImageU;
 
 /**
  *
@@ -26,24 +34,54 @@ public class WindowManager {
 
     static List<WeakReference<JFrame>> frames = new ArrayList();
 
-    public static void register (JFrame frame)
-    {
-        frame.setIconImage(getIcon());
-        frame.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-               for (WeakReference<JFrame> wrf : frames)
-               {
-                   Frame f = wrf.get();
-                   if (f != null)
-                   {
-                       f.setAlwaysOnTop(true);
-                       f.setAlwaysOnTop(false);
-                   }
-                }
-            }
-        });
+    static long last = System.currentTimeMillis();
+    
+    static String appName = "super happy fun app";
+    
+    public  static void init (String name, String iconName ) {
+    	appName = name;
+    	icon = ImageU.cacheResource.get( iconName );
     }
+    
+	public static void register( JFrame frame ) {
+		frame.setIconImage( getIcon() );
+		frame.setTitle( appName );
+		frame.addWindowFocusListener( new WindowFocusListener() {
+
+			@Override
+			public void windowLostFocus( WindowEvent e ) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowGainedFocus( WindowEvent e ) {
+				
+				long nowTime = System.currentTimeMillis();
+				
+				if (nowTime - last < 500)
+					return;
+				
+				last = nowTime;
+				
+				for ( WeakReference<JFrame> wrf : frames ) {
+					
+					
+					Frame f = wrf.get();
+					if ( f != null && f != e.getComponent() ) {
+//						f.set
+						f.toFront();
+//						setAlwaysOnTop( true );
+//						f.setAlwaysOnTop( false );
+					}
+				}
+				
+				((JFrame)e.getComponent()).toFront();
+			}
+		} );
+		
+		frames.add( new WeakReference<JFrame>( frame ));
+	}
 
     static Image getIcon()
     {
@@ -53,7 +91,16 @@ public class WindowManager {
                 icon = ImageIO.read(WindowManager.class.getResourceAsStream(iconName));
             } catch (Throwable ex) {
                 ex.printStackTrace();
-                icon = (BufferedImage)((ImageIcon) UIManager.getIcon("OptionPane.warningIcon")).getImage();
+                
+                icon = new BufferedImage( 256, 256, BufferedImage.TYPE_4BYTE_ABGR );
+                Graphics2D g = (Graphics2D) icon.getGraphics();
+                
+                g.setColor(Color.white);
+                g.fillRect( 0, 0, icon.getWidth(), icon.getHeight() );
+                g.setColor( Color.black );
+                g.drawString( System.currentTimeMillis()+"", 30, 30 );
+                
+                g.dispose();
             }
         }
         return icon;

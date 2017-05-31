@@ -578,7 +578,7 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 
 		HalfEdge start, current;
 
-//		Set<HalfEdge> seen = new IdentityHashSet<>();
+		Set<HalfEdge> seen = new IdentityHashSet<>();
 		
 		public EdgeIterator(HalfEdge first) {
 			start = first;
@@ -598,9 +598,9 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			if (current == null) {
 				current = start.next;
 				
-//				if (seen.contains( start ))
-//					throw new Error("infinite loop!");
-//				seen.add(start);
+				if (seen.contains( start ))
+					throw new Error("infinite loop!");
+				seen.add(start);
 				
 				return start;
 			}
@@ -611,10 +611,10 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			if (current == null)
 				start = current;
 			
-//			if (seen.contains( out )) {
-//				throw new Error("infinite loop!");
-//			}
-//			seen.add(out);
+			if (seen.contains( out )) {
+				throw new Error("infinite loop!");
+			}
+			seen.add(out);
 			
 			return out;
 		}

@@ -24,32 +24,32 @@ public class Rainbow
 
     public static Color[] rainbow = new Color[]
     {
-    	new Color (170,0,255),
-    	new Color (170,255,0),
-    	new Color (0,170,255),
-    	new Color (255,170,0),
-    	new Color (255,0,170),
-    	new Color (0,255,170),
+//    	new Color (170,0,255),
+//    	new Color (170,255,0),
+//    	new Color (0,170,255),
+//    	new Color (255,170,0),
+//    	new Color (255,0,170),
+//    	new Color (0,255,170),
     	
 //    	new Color (116,255,116),
 //    	new Color (255,116,116),
 //    	new Color (116,116,255),
-//        Color.red,
-//        Color.orange,
-//        Color.green,
-//        Color.cyan,
-//        Color.blue,
-//        Color.magenta,
-//        Color.pink,
-//        Color.gray,
-//        new Color (152,0,255),
-//        Color.red.darker(),
-//        new Color (128,67,0),
-//        Color.orange.darker(),
-//        Color.yellow.darker(),
-//        Color.green.darker(),
-//        Color.blue.darker(),
-//        Color.yellow,
+        Color.red,
+        Color.orange,
+        Color.green,
+        Color.cyan,
+        Color.blue,
+        Color.magenta,
+        Color.pink,
+        Color.gray,
+        new Color (152,0,255),
+        Color.red.darker(),
+        new Color (128,67,0),
+        Color.orange.darker(),
+        Color.yellow.darker(),
+        Color.green.darker(),
+        Color.blue.darker(),
+        Color.yellow,
     };
 
     static {
@@ -58,11 +58,11 @@ public class Rainbow
     	for (Color c : rainbow)
     		cols.add(c);
     	
-    	for (int i = 0; i < 100; i++) {
-    		
-    		cols.add ( Color.getHSBColor( (float) Math.random(), 1f, 1f ) );
-    		
-    	}
+//    	for (int i = 0; i < 100; i++) {
+//    		
+//    		cols.add ( Color.getHSBColor( (float) Math.random(), 1f, 1f ) );
+//    		
+//    	}
     	
     	rainbow = cols.toArray( new Color[cols.size()] );
     }
