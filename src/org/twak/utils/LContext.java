@@ -2,6 +2,10 @@ package org.twak.utils;
 
 import java.util.Iterator;
 
+import org.twak.utils.collections.Loop;
+import org.twak.utils.collections.LoopL;
+import org.twak.utils.collections.Loopable;
+
 /**
  * Loopl context - an item and it's location in a lopp of loops
  * @author twak

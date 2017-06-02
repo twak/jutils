@@ -21,6 +21,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.twak.utils.ImageU;
 
@@ -41,6 +42,11 @@ public class WindowManager {
     public  static void init (String name, String iconName ) {
     	appName = name;
     	icon = ImageU.cacheResource.get( iconName );
+		try {
+			UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
+		} catch ( Throwable e ) {
+			e.printStackTrace();
+		}
     }
     
 	public static void register( JFrame frame ) {
@@ -49,10 +55,7 @@ public class WindowManager {
 		frame.addWindowFocusListener( new WindowFocusListener() {
 
 			@Override
-			public void windowLostFocus( WindowEvent e ) {
-				// TODO Auto-generated method stub
-
-			}
+			public void windowLostFocus( WindowEvent e ) {}
 
 			@Override
 			public void windowGainedFocus( WindowEvent e ) {
@@ -69,10 +72,7 @@ public class WindowManager {
 					
 					Frame f = wrf.get();
 					if ( f != null && f != e.getComponent() ) {
-//						f.set
 						f.toFront();
-//						setAlwaysOnTop( true );
-//						f.setAlwaysOnTop( false );
 					}
 				}
 				
@@ -85,24 +85,18 @@ public class WindowManager {
 
     static Image getIcon()
     {
-        if (icon == null)
-        {
-            try {
-                icon = ImageIO.read(WindowManager.class.getResourceAsStream(iconName));
-            } catch (Throwable ex) {
-                ex.printStackTrace();
-                
-                icon = new BufferedImage( 256, 256, BufferedImage.TYPE_4BYTE_ABGR );
-                Graphics2D g = (Graphics2D) icon.getGraphics();
-                
-                g.setColor(Color.white);
-                g.fillRect( 0, 0, icon.getWidth(), icon.getHeight() );
-                g.setColor( Color.black );
-                g.drawString( System.currentTimeMillis()+"", 30, 30 );
-                
-                g.dispose();
-            }
-        }
+		if ( icon == null ) {
+			icon = new BufferedImage( 256, 256, BufferedImage.TYPE_4BYTE_ABGR );
+			Graphics2D g = (Graphics2D) icon.getGraphics();
+
+			g.setColor( Rainbow.random() );
+			g.fillRect( 0, 0, icon.getWidth(), icon.getHeight() );
+			g.setColor( Color.black );
+			g.drawString( System.currentTimeMillis() + "", 30, 30 );
+
+			g.dispose();
+		}
+		
         return icon;
     }
 }

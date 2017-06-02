@@ -13,8 +13,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import org.twak.utils.SimpleFileChooser;
-
 /**
  * Adds save an load via xStream to a given menu
  * @author twak

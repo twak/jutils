@@ -7,8 +7,8 @@ import java.util.List;
 
 import javax.swing.*;
 
-import org.twak.utils.Arrayz;
 import org.twak.utils.MUtils;
+import org.twak.utils.collections.Arrayz;
 
 /**
  * @author twak

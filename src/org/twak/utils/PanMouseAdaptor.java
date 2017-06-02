@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.vecmath.Point2d;
 
+import org.twak.utils.geom.DRectangle;
+
 public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 	int zoomInt = 0;
 	double cenX;

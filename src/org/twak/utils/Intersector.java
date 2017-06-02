@@ -13,6 +13,9 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.vecmath.Point2d;
 
+import org.twak.utils.collections.ItComb;
+import org.twak.utils.geom.Line;
+
 /**
  *
  * @author twak

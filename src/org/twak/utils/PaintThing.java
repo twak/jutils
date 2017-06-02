@@ -13,8 +13,17 @@ import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector2d;
 
-import org.twak.utils.HalfMesh2.HalfEdge;
-import org.twak.utils.HalfMesh2.HalfFace;
+import org.twak.utils.collections.Loop;
+import org.twak.utils.collections.LoopL;
+import org.twak.utils.collections.Loopable;
+import org.twak.utils.collections.MultiMap;
+import org.twak.utils.geom.DRectangle;
+import org.twak.utils.geom.Graph2D;
+import org.twak.utils.geom.HalfMesh2;
+import org.twak.utils.geom.Line;
+import org.twak.utils.geom.HalfMesh2.HalfEdge;
+import org.twak.utils.geom.HalfMesh2.HalfFace;
+import org.twak.utils.ui.Rainbow;
 
 public class PaintThing {
 	
