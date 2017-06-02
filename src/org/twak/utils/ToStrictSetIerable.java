@@ -1,4 +1,4 @@
-package org.twak.utils.collections;
+package org.twak.utils;
 
 import java.util.HashSet;
 import java.util.Iterator;
