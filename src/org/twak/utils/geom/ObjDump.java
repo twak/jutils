@@ -62,7 +62,7 @@ public class ObjDump {
 			
 			this.ambient = ambient;
 			this.diffuse = diffuse;
-			this.name = this.filename = Math.random() +"_" +ambient[0]+ambient[1]+ambient[2];
+			this.name = Math.random() +"_" +ambient[0]+ambient[1]+ambient[2];
 		}
 
 		public Material(Material mat ) {
@@ -82,12 +82,12 @@ public class ObjDump {
 
 		@Override
 		public boolean equals(Object m) {
-			return filename.equals( ((Material)m ).filename);
+			return filename == null ? null : filename.equals( ((Material)m ).filename);
 		}
 		
 		@Override
 		public int hashCode() {
-			return filename.hashCode();
+			return filename == null ? super.hashCode() : filename.hashCode();
 		}
 	}
 	
@@ -148,9 +148,7 @@ public class ObjDump {
 					materialFile.append( "d 1.0\n" );
 					materialFile.append( "illum 1\n" );
 					if ( mat.filename != null ) {
-//						materialFile.append( "map_Ka " + mat.filename + "\n" );
-//						materialFile.append( "map_Kd " + mat.filename + "\n" );
-//						materialFile.append( "map_Ks " + mat.filename + "\n\n" );
+						materialFile.append( "map_Kd " + mat.filename + "\n" );
 					}
 				}
 				
@@ -392,13 +390,13 @@ public class ObjDump {
     }
     
     /**
-     * Sets the texture map for following verts
+     * Sets the texture map for following verts. 
      */
 	public void setCurrentTexture(String textureFile, int w, int h) {
 		currentMaterial = new Material (textureFile, textureFile.replace(".", "_"), w, h );
 	}
 
-	public void setCurrentTexture(Color color, double ambientScale ) {
+	public void setCurrentMaterial(Color color, double ambientScale ) {
 		
 		float[] res = new float[4];
 		color.getComponents( res );
