@@ -72,14 +72,27 @@ public class SimplePopup
 
     public void show()
     {
-        if (dlm.isEmpty())
-            return; // nothing to show!
+    	DefaultListModel toShow = dlm;
+    	
+        if (dlm.isEmpty()) {
+        	toShow = new DefaultListModel<>();
+        	toShow.add(0,new Runnable() {
+				
+				@Override
+				public void run() {
+				}
+				
+				@Override
+				public String toString() {
+					return "nothing found";
+				}
+			});
+        }
 
         Point pt = evt.getPoint();
-//        pt = SwingUtilities.convertPoint( evt.getComponent(), pt, null );
         SwingUtilities.convertPointToScreen( pt, evt.getComponent() );
 
-        final JList list = new JList(dlm);
+        final JList list = new JList(toShow);
 
         list.setBorder(new LineBorder(new Color (100,100,100)));
 
@@ -100,9 +113,11 @@ public class SimplePopup
         {
             public void valueChanged( ListSelectionEvent e )
             {
+            	if (e.getValueIsAdjusting())
+            		return;
+            	
                 Object o = list.getSelectedValue();
                 if ( o != null && o instanceof Clickable )
-                    // adds to plan!
                     ((Clickable) o).runnable.run();
                 pop.hide();
             }
