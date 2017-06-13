@@ -14,6 +14,7 @@ import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 
 import org.twak.utils.IdentityHashSet;
+import org.twak.utils.Line;
 import org.twak.utils.MUtils;
 import org.twak.utils.collections.LoopL;
 import org.twak.utils.collections.Loopable;

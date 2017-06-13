@@ -1,5 +1,5 @@
 
-package org.twak.utils.geom;
+package org.twak.utils;
 
 import java.awt.Point;
 import java.io.Serializable;
@@ -9,7 +9,8 @@ import javax.vecmath.Point2d;
 import javax.vecmath.Tuple2d;
 import javax.vecmath.Vector2d;
 
-import org.twak.utils.MUtils;
+import org.twak.utils.geom.Anglez;
+import org.twak.utils.geom.LinearForm;
 
 /**
  *

@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.vecmath.Point2d;
 
+import org.twak.utils.Line;
 import org.twak.utils.collections.MultiMap;
 
 public class Graph2D extends MultiMap<Point2d, Line> {

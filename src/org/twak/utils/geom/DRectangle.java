@@ -10,6 +10,7 @@ import java.util.List;
 import javax.vecmath.Point2d;
 import javax.vecmath.Tuple2d;
 
+import org.twak.utils.Line;
 import org.twak.utils.Pair;
 import org.twak.utils.collections.ConsecutiveItPairs;
 import org.twak.utils.geom.DRectangle.Bounds;

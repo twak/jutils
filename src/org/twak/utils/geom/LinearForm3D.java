@@ -254,4 +254,13 @@ public class LinearForm3D implements Cloneable
                 Double.isNaN( C ) ||
                 Double.isNaN( D );
     }
+
+	public static LinearForm3D linePerp( Point3d s, Point3d e ) {
+		
+		Vector3d dir = new Vector3d(e);
+		dir.sub(s);
+		dir.normalize();
+		
+		return new LinearForm3D( dir, e );
+	}
 }

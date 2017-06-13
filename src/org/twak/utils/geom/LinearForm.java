@@ -5,6 +5,8 @@ import javax.vecmath.Point2d;
 import javax.vecmath.Tuple2d;
 import javax.vecmath.Vector2d;
 
+import org.twak.utils.Line;
+
 /**
  * Matrix form of a line
  * Ax + By = c

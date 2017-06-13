@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
@@ -58,11 +57,11 @@ public class ObjDump {
 			this.h = h;
 		}
 
-		public Material( double[] ambient, double[] diffuse ) {
+		public Material( String name, double[] ambient, double[] diffuse ) {
 			
 			this.ambient = ambient;
 			this.diffuse = diffuse;
-			this.name = Math.random() +"_" +ambient[0]+ambient[1]+ambient[2];
+			this.name = name +"_" +ambient[0]+ambient[1]+ambient[2];
 		}
 
 		public Material(Material mat ) {
@@ -82,12 +81,23 @@ public class ObjDump {
 
 		@Override
 		public boolean equals(Object m) {
-			return filename == null ? null : filename.equals( ((Material)m ).filename);
+			
+			Material oo = (Material)m;
+			
+			return equal ( oo.filename, filename  ) && equal (oo.name, name); 
+		}
+
+		private static boolean equal (String a, String b) {
+			if (a == null && b == null)
+				return true;
+			else if (a == null || b == null)
+				return false;
+			return a.equals (b);
 		}
 		
 		@Override
 		public int hashCode() {
-			return filename == null ? super.hashCode() : filename.hashCode();
+			return filename == null ? name.hashCode() : filename.hashCode();
 		}
 	}
 	
@@ -396,13 +406,18 @@ public class ObjDump {
 		currentMaterial = new Material (textureFile, textureFile.replace(".", "_"), w, h );
 	}
 
-	public void setCurrentMaterial(Color color, double ambientScale ) {
+	public void setCurrentMaterial( Color color, double ambientScale ) {
+		setCurrentMaterial( "mat", color, ambientScale );
+	}
+	
+	public void setCurrentMaterial( String namePrefix, Color color, double ambientScale ) {
 		
 		float[] res = new float[4];
 		color.getComponents( res );
 		double[] resD = new double[] {res[0], res[1], res[2], res[3]};
 		
-		currentMaterial = new Material ( 
+		currentMaterial = new Material (
+				namePrefix,
 				new double[] {
 						(resD[0] * ambientScale),
 						(resD[1] * ambientScale),

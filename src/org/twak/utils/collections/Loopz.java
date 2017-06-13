@@ -17,13 +17,13 @@ import javax.vecmath.Vector2d;
 import javax.vecmath.Vector3d;
 
 import org.twak.utils.Intersector;
+import org.twak.utils.Line;
 import org.twak.utils.MUtils;
 import org.twak.utils.Pair;
 import org.twak.utils.Intersector.Collision;
 import org.twak.utils.geom.Anglez;
 import org.twak.utils.geom.Graph2D;
 import org.twak.utils.geom.HalfMesh2;
-import org.twak.utils.geom.Line;
 import org.twak.utils.geom.LinearForm;
 import org.twak.utils.geom.LinearForm3D;
 import org.twak.utils.geom.ObjDump;

@@ -9,6 +9,7 @@ public class Cach <I,O> extends Cache<I, O> {
 	Make<I,O> make;
 	
 	public Cach (Make<I,O> creator) {
+		super();
 		this.make = creator;
 	}
 	

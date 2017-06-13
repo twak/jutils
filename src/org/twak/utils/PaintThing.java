@@ -20,7 +20,6 @@ import org.twak.utils.collections.MultiMap;
 import org.twak.utils.geom.DRectangle;
 import org.twak.utils.geom.Graph2D;
 import org.twak.utils.geom.HalfMesh2;
-import org.twak.utils.geom.Line;
 import org.twak.utils.geom.HalfMesh2.HalfEdge;
 import org.twak.utils.geom.HalfMesh2.HalfFace;
 import org.twak.utils.ui.Colour;
@@ -135,26 +134,26 @@ public class PaintThing {
 		g2.setStroke(  new BasicStroke( 1 ) );
 	}
 
-	private static void p(LoopL<Point3d> o, Graphics2D g, PanMouseAdaptor ma) {
+	private static void p(LoopL<Point2d> o, Graphics2D g, PanMouseAdaptor ma) {
 		int cc = 0;
-		for (Loop<Point3d> ll : o)
+		for (Loop<Point2d> ll : o)
 		{
 			p2 (ll, g, ma, cc);
 		}
 	}
 	
-	private static void p(Loop<Point3d> ll, Graphics2D g, PanMouseAdaptor ma) {
+	private static void p(Loop<Point2d> ll, Graphics2D g, PanMouseAdaptor ma) {
 		p2 (ll, g, ma, 0);
 	}
 	
-	private static void p2(Loop<Point3d> ll, Graphics2D g, PanMouseAdaptor ma, int cc) {
+	private static void p2(Loop<Point2d> ll, Graphics2D g, PanMouseAdaptor ma, int cc) {
 		
 		Color c = g.getColor();
 		g.setColor( Colour.transparent( c, 50 ) );
 		
 		Polygon p = new Polygon();
 		
-		for (Point3d pt : ll) {
+		for (Point2d pt : ll) {
 			p.addPoint(ma.toX(pt.x), ma.toY(pt.y));
 //			setBounds( pt );
 		}
@@ -167,7 +166,7 @@ public class PaintThing {
 //			p (h, g, ma);
 //		
 		if (true)
-			for (Loopable<Point3d> able : ll.loopableIterator() )
+			for (Loopable<Point2d> able : ll.loopableIterator() )
 				drawArrow(g, ma, new Line ( 
 						new Point2d ( able.get().x, able.get().y ),
 						new Point2d ( able.getNext().get().x, able.getNext().get().y ) ),5 );
