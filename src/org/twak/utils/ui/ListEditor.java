@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.swing.*;
 
-import org.twak.utils.MUtils;
+import org.twak.utils.Mathz;
 import org.twak.utils.collections.Arrayz;
 
 /**
@@ -65,7 +65,7 @@ public class ListEditor<E> extends javax.swing.JPanel {
         {
             int index = list.indexOf( o );
             list.remove( o );
-            list.add( MUtils.clamp( index+i, 0, list.size()), o);
+            list.add( Mathz.clamp( index+i, 0, list.size()), o);
         }
         fireSelection= false;
         jList.setSelectedValue(o, true);

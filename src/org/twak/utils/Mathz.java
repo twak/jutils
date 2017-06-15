@@ -18,7 +18,7 @@ import javax.vecmath.Vector3d;
  *
  * @author twak
  */
-public class MUtils
+public class Mathz
 {
 
 	public static final Vector2d UP = new Vector2d(0,1);

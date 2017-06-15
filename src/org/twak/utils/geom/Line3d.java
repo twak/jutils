@@ -3,7 +3,7 @@ package org.twak.utils.geom;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
-import org.twak.utils.MUtils;
+import org.twak.utils.Mathz;
 
 public class Line3d {
 	public Point3d start, end;
@@ -98,7 +98,7 @@ public class Line3d {
 		double fac = ap.dot( ab ) / ab.dot(ab);
 		
 		if (clamp)
-			fac = MUtils.clamp( fac, 0, 1 );
+			fac = Mathz.clamp( fac, 0, 1 );
 		
 		out.scale( fac );
 		out.add(start);

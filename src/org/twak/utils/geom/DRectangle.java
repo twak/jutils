@@ -500,8 +500,21 @@ public class DRectangle {
 			}
 		};
 	}
-
-//	public double distance( DRectangle o ) {
-//		return 0;
-//	}
+	
+	public double distance( Point2d screenPt ) {
+		if (contains (screenPt))
+			return 0;
+		return distanceFromBorder( screenPt );
+	}
+	
+	public double distanceFromBorder( Point2d screenPt ) {
+		Point2d[] pts = points();
+		
+		double out = Double.MAX_VALUE;
+		
+		for (int i = 0; i < pts.length; i++) 
+			out = Math.min (out, new Line (pts[i], pts[ ( i+1 ) % pts.length]).distance( screenPt ));
+		
+		return out;
+	}
 }

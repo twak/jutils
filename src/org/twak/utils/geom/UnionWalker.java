@@ -1,6 +1,6 @@
 package org.twak.utils.geom;
 
-import static org.twak.utils.MUtils.*;
+import static org.twak.utils.Mathz.*;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

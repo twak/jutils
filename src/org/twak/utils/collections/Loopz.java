@@ -18,7 +18,7 @@ import javax.vecmath.Vector3d;
 
 import org.twak.utils.Intersector;
 import org.twak.utils.Line;
-import org.twak.utils.MUtils;
+import org.twak.utils.Mathz;
 import org.twak.utils.Pair;
 import org.twak.utils.Intersector.Collision;
 import org.twak.utils.geom.Anglez;
@@ -105,7 +105,7 @@ public class Loopz {
 		double area = 0;
 		
 		for (Loopable<Point2d> pt : loop.loopableIterator()) 
-			area += MUtils.area(origin, pt.getNext().get(), pt.get());
+			area += Mathz.area(origin, pt.getNext().get(), pt.get());
 		
 		return area;
 	}
@@ -122,7 +122,7 @@ public class Loopz {
 		double area = 0;
 		
 		for (Loopable<Point3d> pt : loop.loopableIterator()) 
-			area += MUtils.area(origin, pt.getNext().get(), pt.get());
+			area += Mathz.area(origin, pt.getNext().get(), pt.get());
 		
 		return area;
 	}
@@ -464,7 +464,7 @@ public class Loopz {
 				if ( 
 						a.distanceSquared(b) < 0.0001 ||
 						b.distanceSquared(c) < 0.0001 ||
-						angle < angleTol && Math.abs ( MUtils.area(a, b, c) ) < 50 * areaTol * areaTol  ) 
+						angle < angleTol && Math.abs ( Mathz.area(a, b, c) ) < 50 * areaTol * areaTol  ) 
 				{
 					current.getPrev().setNext(current.getNext());
 					current.getNext().setPrev(current.getPrev());

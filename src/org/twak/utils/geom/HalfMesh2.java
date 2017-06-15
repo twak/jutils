@@ -15,7 +15,7 @@ import javax.vecmath.Vector2d;
 
 import org.twak.utils.IdentityHashSet;
 import org.twak.utils.Line;
-import org.twak.utils.MUtils;
+import org.twak.utils.Mathz;
 import org.twak.utils.collections.LoopL;
 import org.twak.utils.collections.Loopable;
 import org.twak.utils.collections.Loopz;
@@ -556,7 +556,7 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			double area = 0;
 			
 			for (HalfEdge e : this)
-				area += MUtils.area(origin, e.start, e.end);
+				area += Mathz.area(origin, e.start, e.end);
 			
 			return area;
 		}

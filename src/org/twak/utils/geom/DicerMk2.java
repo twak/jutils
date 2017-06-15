@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.twak.utils.MUtils;
+import org.twak.utils.Mathz;
 import org.twak.utils.Pair;
 
 /**
@@ -66,8 +66,8 @@ public class DicerMk2
                 {
                     int index = -(res+1);
                     
-                    double max = vals.get( MUtils.clamp( index, 0, vals.size()-1) );
-                    double min = vals.get( MUtils.clamp( index-1, 0, vals.size()-1) );
+                    double max = vals.get( Mathz.clamp( index, 0, vals.size()-1) );
+                    double min = vals.get( Mathz.clamp( index-1, 0, vals.size()-1) );
 
                     if ( Math.abs ( max - val) < TOL )
                     {

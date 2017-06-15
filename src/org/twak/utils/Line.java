@@ -290,7 +290,7 @@ public class Line implements Serializable
         double param = v2.dot( v1 ) / len;
 
         if (clamp)
-            param = MUtils.clamp( param, 0, len );
+            param = Mathz.clamp( param, 0, len );
 
         v1.normalize();
         v1.scale( param );
@@ -438,7 +438,7 @@ public class Line implements Serializable
 		if (intersects(l, true) != null)
 			return 0;
 
-		return MUtils.min (
+		return Mathz.min (
 				l.distance(  start, true),
 				l.distance(  end  , true),
 				  distance(l.start, true),
