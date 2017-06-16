@@ -529,11 +529,11 @@ public class Loopz {
 		return out;
 	}
 
-	public static LoopL<Point3d> to3d( LoopL<Point2d> gis, double h, int i ) {
+	public static LoopL<Point3d> to3d( LoopL<? extends Point2d> gis, double h, int i ) {
 		
 		LoopL<Point3d> out = new LoopL<>();
 		
-		for (Loop<Point2d> lp : gis) {
+		for (Loop<? extends Point2d> lp : gis) {
 			Loop<Point3d> ol = to3d(lp, h, i);
 			out.add(ol);
 		}
@@ -541,7 +541,7 @@ public class Loopz {
 		return out;
 	}
 
-	public static Loop<Point3d> to3d( Loop<Point2d> lp, double h, int i) {
+	public static Loop<Point3d> to3d( Loop<? extends Point2d> lp, double h, int i) {
 		Loop<Point3d> ol = new Loop<>();
 		for (Point2d pt : lp)
 			ol.append( i == 1 ? 
@@ -590,16 +590,16 @@ public class Loopz {
 		return loop;
 	}
 
-	public static boolean inside( Point2d pt, LoopL<Point2d> poly ) {
+	public static boolean inside( Point2d pt, LoopL<? extends Point2d> poly ) {
 		return poly.stream().anyMatch( l -> inside( pt, l ) );
 	}
 
-	public static boolean inside( Point2d pt, Loop<Point2d> poly ) {
+	public static boolean inside( Point2d pt, Loop<? extends Point2d> poly ) {
 
 		int crossings = 0;
 		Vector2d left = new Vector2d(-1, 0);
 		
-		for (Loopable<Point2d> ll : poly.loopableIterator()) {
+		for (Loopable<? extends Point2d> ll : poly.loopableIterator()) {
 			
 			Line l = new Line (ll.get(), ll.getNext().get());
 			if (
