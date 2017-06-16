@@ -6,9 +6,7 @@
 
 package org.twak.utils.ui;
 
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 
 /**
  *
