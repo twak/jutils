@@ -58,4 +58,13 @@ public class Colour//  import uk.british; extends Color;
                 (int)(((a / 3.) * tween + color.getGreen() * (1-tween))/2) ,
                 (int)(((a / 3.) * tween + color.getBlue() * (1-tween))/2) );
     }
+
+	public static float[] toF4( Color color ) {
+		return new float[] {
+				color.getRed()   / 255f,
+				color.getGreen() / 255f,
+				color.getBlue()  / 255f,
+				color.getAlpha() / 255f
+			};
+	}
 }

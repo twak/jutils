@@ -257,5 +257,11 @@ public class LoopL<E> extends ArrayList<Loop<E>>
     public Stream<E> streamE() {
     	return stream().flatMap( l -> l.stream() );
     }
+    
+	public Loop<E> loop() {
+		Loop<E> out = new Loop<>();
+		add( out );
+		return out;
+	}
 }
 

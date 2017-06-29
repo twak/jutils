@@ -20,9 +20,15 @@ public class AutoDoubleSlider extends JPanel{
     Object o;
     JFormattedTextField textField;
     JSlider slider;
+	private Runnable update;
 
-    public AutoDoubleSlider ( Object o, String field, final String name, final double min, final double max )
+    public AutoDoubleSlider ( Object o, String field, final String name, final double min, final double max ) {
+    	this (o, field, name, min, max, null);
+    }
+    
+    public AutoDoubleSlider ( Object o, String field, final String name, final double min, final double max, Runnable update )
     {
+    	this.update = update;
         try
         {
             UIManager.put("Slider.paintValue", Boolean.FALSE);
@@ -95,6 +101,6 @@ public class AutoDoubleSlider extends JPanel{
     
     public void updated()
     {
-        // override me
+        update.run();
     }
 }
