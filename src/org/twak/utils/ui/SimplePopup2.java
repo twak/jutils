@@ -11,6 +11,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
+import org.twak.utils.StartStop;
+
 /**
  *
  * @author twak
@@ -35,6 +37,11 @@ public class SimplePopup2 {
 	}
 
 	public void add(String simpleName, final Runnable runnable) {
+		add (simpleName, runnable, null);
+	}
+	
+	public void add(String simpleName, final Runnable runnable, final StartStop hover) {
+		
 		JMenuItem item = new JMenuItem(simpleName);
 		item.addActionListener(new ActionListener() {
 
@@ -49,6 +56,17 @@ public class SimplePopup2 {
 				});
 			}
 		});
+		
+		if (hover != null)
+		item.addMouseListener( new MouseAdapter() {
+			public void mouseEntered( MouseEvent e ) {
+				hover.start();
+			};
+
+			public void mouseExited( MouseEvent e ) {
+				hover.stop();
+			}
+		} );
 
 		menu.add(item);
 
