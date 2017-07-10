@@ -60,11 +60,11 @@ public class SimplePopup2 {
 		if (hover != null)
 		item.addMouseListener( new MouseAdapter() {
 			public void mouseEntered( MouseEvent e ) {
-				hover.start();
+				SwingUtilities.invokeLater( () -> hover.start() );
 			};
 
 			public void mouseExited( MouseEvent e ) {
-				hover.stop();
+				SwingUtilities.invokeLater( () -> hover.stop() );
 			}
 		} );
 
