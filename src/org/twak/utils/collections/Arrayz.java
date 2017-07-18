@@ -49,9 +49,12 @@ public class Arrayz {
 		return minI;
 	}
 
-	public static Set asSet(Object... to) {
-		Set h = new HashSet();
-		h.addAll(Arrays.asList(to));
+	public static <E> Set<E>  asSet(Object... to) {
+		Set<E> h = new HashSet();
+		
+		for (Object o : to)
+			h.add((E)o);
+		
 		return h;
 	}
 
