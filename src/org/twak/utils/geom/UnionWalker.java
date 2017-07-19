@@ -31,6 +31,12 @@ public class UnionWalker
     	if (!a.equals(b) && !map.contains(a, b))
     		map.put( a, b );
     }
+    
+
+	public void addEdges( Point2d a, Point2d b ) {
+		addEdge(a,b);
+		addEdge(b,a);
+	}
 
     public LoopL<Point2d> find()  {
     	
@@ -153,4 +159,5 @@ public class UnionWalker
     {
         return map.toString();
     }
+
 }
