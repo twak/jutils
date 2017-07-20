@@ -2,132 +2,118 @@ package org.twak.utils.collections;
 
 import java.util.Iterator;
 
-import javax.vecmath.Point2d;
-
-public class Loopable<E> implements Iterable<Loopable<E>>
-{
-    E me;
-    public Loopable<E> next;
+public class Loopable<E> implements Iterable<Loopable<E>> {
+	
+	E me;
+	public Loopable<E> next;
 	Loopable<E> prev;
-    
-    public Loopable (E me)
-    {
-        this.me = me;
-    }
-    
-    public E get()
-    {
-        return me;
-    }
 
-    public void set(E e)
-    {
-        me = e;
-    }
-    
-    public Loopable<E> getNext()
-    {
-        return next;
-    }
+	public Loopable( E me ) {
+		this.me = me;
+	}
 
-    public Loopable<E> getPrev()
-    {
-        return prev;
-    }
-    
-    public void setNext(Loopable<E> s)
-    {
-        next = s;
-    }
-    
-    public void setPrev(Loopable<E> s)
-    {
-        prev = s;
-    }
+	@Override
+	public String toString() {
+		return "L<" + me == null ? "null" : me + ">";
+	}
 
-    public Iterator<Loopable<E>> iterator()
-    {
-        return new LoopableIterator(this);
-    }
+	public E get() {
+		return me;
+	}
 
-    public int count()
-    {
-        int count = 0;
-        
-        for ( Loopable<E> e : this )
-            count++;
-        
-        return count;
-    }
+	public void set( E e ) {
+		me = e;
+	}
 
-    public class LoopableIterator implements Iterator<Loopable<E>>
-    {
-        Loopable<E> s, n, start;
+	public Loopable<E> getNext() {
+		return next;
+	}
 
-        public LoopableIterator( Loopable<E> start )
-        {
-            s = start;
-            n = null;
-        }
-        public boolean hasNext()
-        {
-            if (s == null)
-                return false;
-            if (n == null)
-                return true;
-            return n != s;
-        }
+	public Loopable<E> getPrev() {
+		return prev;
+	}
 
-        public Loopable<E> next()
-        {
-            if (n == null)
-                n = s;
+	public void setNext( Loopable<E> s ) {
+		next = s;
+	}
 
-            Loopable<E> out = n;
-            n = n.getNext();
-            return out;
-        }
+	public void setPrev( Loopable<E> s ) {
+		prev = s;
+	}
 
-        public void remove()
-        {
-            throw new UnsupportedOperationException( "Not supported yet." );
-        }
-    }
+	public Iterator<Loopable<E>> iterator() {
+		return new LoopableIterator( this );
+	}
 
-    public class LoopIterator implements Iterator<E>
-    {
-        public LoopableIterator lit;
+	@SuppressWarnings( "unused" )
+	public int count() {
+		int count = 0;
 
-        public LoopIterator (Loopable<E> start)
-        {
-            lit = new LoopableIterator(start);
-        }
+		for ( Loopable<E> e : this )
+			count++;
 
-        public boolean hasNext()
-        {
-            return lit.hasNext();
-        }
+		return count;
+	}
 
-        public E next()
-        {
-            return lit.next().me;
-        }
+	public class LoopableIterator implements Iterator<Loopable<E>> {
+		Loopable<E> s, n, start;
 
-        public void remove()
-        {
-            lit.remove();
-        }
-    }
+		public LoopableIterator( Loopable<E> start ) {
+			s = start;
+			n = null;
+		}
 
-	public Loopable<E> move(int dir) {
+		public boolean hasNext() {
+			if ( s == null )
+				return false;
+			if ( n == null )
+				return true;
+			return n != s;
+		}
+
+		public Loopable<E> next() {
+			if ( n == null )
+				n = s;
+
+			Loopable<E> out = n;
+			n = n.getNext();
+			return out;
+		}
+
+		public void remove() {
+			throw new UnsupportedOperationException( "Not supported yet." );
+		}
+	}
+
+	public class LoopIterator implements Iterator<E> {
+		public LoopableIterator lit;
+
+		public LoopIterator( Loopable<E> start ) {
+			lit = new LoopableIterator( start );
+		}
+
+		public boolean hasNext() {
+			return lit.hasNext();
+		}
+
+		public E next() {
+			return lit.next().me;
+		}
+
+		public void remove() {
+			lit.remove();
+		}
+	}
+
+	public Loopable<E> move( int dir ) {
 		Loopable<E> out = this;
-		while (dir > 0) {
+		while ( dir > 0 ) {
 			dir--;
 			out = out.getNext();
 		}
-		
-		while (dir < 0) {
-			dir ++;
+
+		while ( dir < 0 ) {
+			dir++;
 			out = out.getPrev();
 		}
 		return out;
