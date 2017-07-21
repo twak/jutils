@@ -155,7 +155,7 @@ public class LinearForm3D implements Cloneable
      * @param other
      * @return
      */
-    public Line3D collide (LinearForm3D other)
+    public Ray3d collide (LinearForm3D other)
     {
         // special solution is cross product of normals
         Vector3d spec = new Vector3d();
@@ -172,7 +172,7 @@ public class LinearForm3D implements Cloneable
         Matrix matrixB = new Matrix ( new double[][] {{-D},{-other.D}, {0} } );
         
         Matrix res = matrixA.solve(matrixB);
-        return new Line3D (new Point3d(res.get(0, 0), res.get(1, 0), res.get(2, 0) ), spec);
+        return new Ray3d (new Point3d(res.get(0, 0), res.get(1, 0), res.get(2, 0) ), spec);
     }
     
     /**

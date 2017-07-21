@@ -11,12 +11,12 @@ import javax.vecmath.Vector3f;
  * Is this needed? very similar to linearform3d
  * @author twak
  */
-public class Line3D
+public class Ray3d
 {
     public Point3d origin;
     public Vector3d direction;
     
-    public Line3D(Tuple3d origin, Tuple3d direction)
+    public Ray3d(Tuple3d origin, Tuple3d direction)
     {
         this.origin = new Point3d( origin );
         this.direction = new Vector3d( direction );
@@ -82,10 +82,10 @@ public class Line3D
     @Override
     public boolean equals( Object obj )
     {
-        if (!(obj instanceof Line3D))
+        if (!(obj instanceof Ray3d))
             return false;
         
-        Line3D other = (Line3D)obj;
+        Ray3d other = (Ray3d)obj;
         return origin.equals( other.origin ) && direction.equals( other.direction );
     }
 
@@ -103,11 +103,11 @@ public class Line3D
         return new Point3d( delta );
     }
 
-    public static Line3D fromStartEnd( Tuple3d start, Tuple3d end )
+    public static Ray3d fromStartEnd( Tuple3d start, Tuple3d end )
     {
         Vector3d delta= new Vector3d(end);
         delta.sub( start );
-        return new Line3D (start, delta);
+        return new Ray3d (start, delta);
     }
 
     /**
@@ -115,9 +115,9 @@ public class Line3D
      * @param v
      * @return closest point on v
      */
-	public Point3d closestPointOn(Line3D v) {
+	public Point3d closestPointOn(Ray3d v) {
 		
-		Line3D u = this;
+		Ray3d u = this;
 		
 		Vector3d w0 = new Vector3d ( u.origin);
 		w0.sub( v.origin);
