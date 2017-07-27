@@ -50,6 +50,11 @@ public class SimplePopup2 {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
+						
+						
+						if (hover != null)
+							hover.stop();
+						
 						runClick = e;
 						runnable.run();
 					}
@@ -60,7 +65,7 @@ public class SimplePopup2 {
 		if (hover != null)
 		item.addMouseListener( new MouseAdapter() {
 			public void mouseEntered( MouseEvent e ) {
-				hover.start();
+				SwingUtilities.invokeLater( () -> hover.start() );
 			};
 
 			public void mouseExited( MouseEvent e ) {
