@@ -67,4 +67,8 @@ public class Colour//  import uk.british; extends Color;
 				color.getAlpha() / 255f
 			};
 	}
+	
+	public static String toHex(Color color) {
+		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());  
+	}
 }
