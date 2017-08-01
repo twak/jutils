@@ -27,6 +27,10 @@ public class SortedList<E> extends AbstractList<E> {
         if (sorter != null)
         	Collections.sort(internalList, sorter);
     }
+	
+	protected void addNoSort( E e ) {
+		internalList.add(e);
+	}
 
     @Override
     public E get(int i) {
