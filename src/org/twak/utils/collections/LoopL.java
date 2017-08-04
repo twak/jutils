@@ -263,5 +263,11 @@ public class LoopL<E> extends ArrayList<Loop<E>>
 		add( out );
 		return out;
 	}
+	
+	public Loop<E> newLoop() {
+		Loop<E> out = new Loop<>();
+		add(out);
+		return out;
+	}
 }
 
