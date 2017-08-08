@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class SortedList<E> extends AbstractList<E> {
+public class SortedList<E> extends AbstractList<E> implements Iterable<E> {
 
     private ArrayList<E> internalList = new ArrayList<E>();
 
