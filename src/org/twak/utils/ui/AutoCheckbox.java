@@ -20,7 +20,7 @@ public class AutoCheckbox extends JCheckBox implements ActionListener
         setText(desc);
         this.source = source;
         try {
-            this.field = source.getClass().getField(fieldName);
+        	this.field = source.getClass().getField(fieldName);
             setSelected ( (Boolean) field.get(source) );
         } catch (Throwable ex) {
             ex.printStackTrace();
