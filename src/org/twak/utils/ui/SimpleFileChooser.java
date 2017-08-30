@@ -21,32 +21,46 @@ public abstract class SimpleFileChooser {
 
     public SimpleFileChooser(JFrame root, boolean saveBehavour, String description )
     {
-        this (root, saveBehavour, description, currentFolder);
+        this (root, saveBehavour, description, currentFolder, null);
     }
 
-    public SimpleFileChooser(JFrame root, boolean saveBehavour, String description, File startFolder )
+    public SimpleFileChooser(JFrame root, boolean saveBehavour, String description, File startFolder, String extension )
     {
         FileDialog fd = new FileDialog(root, description);
 
 
         fd.setMode(saveBehavour ? FileDialog.SAVE : FileDialog.LOAD);
 
-        if (startFolder != null)
+        if (startFolder != null) {
             fd.setDirectory(startFolder.getAbsolutePath());
+            if (startFolder.isFile())
+            	fd.setFile( startFolder.getName() );
+        }
 
+        if (!saveBehavour && extension != null)
+        	fd.setFilenameFilter( new FilenameFilter() {
+				@Override
+				public boolean accept( File dir, String name ) {
+					return name.toLowerCase().endsWith( extension );
+				}
+			} );
+        
         fd.setVisible(true);
 
+        if (fd.getDirectory() == null)
+        	return;
+        
         File f = new File ( fd.getDirectory(), fd.getFile() );
-
-        if (f == null)
-            return;
 
         if (f.getParentFile() != null && startFolder == currentFolder)
             currentFolder = f.getParentFile();
+        
+        if (saveBehavour && !f.getName().toLowerCase().endsWith( extension ))
+        	f = new File (f.getParentFile(), f.getName()+"."+extension);
 
-        if (saveBehavour && f.exists() &&
-            JOptionPane.NO_OPTION == JOptionPane.showConfirmDialog(root, "overwrite " + f.getName() + "?!") )
-                return;
+//        if (saveBehavour && f.exists() &&
+//            JOptionPane.NO_OPTION == JOptionPane.showConfirmDialog(root, "overwrite " + f.getName() + "?!") )
+//                return;
 
         try {
             heresTheFile(f);
