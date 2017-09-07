@@ -31,12 +31,14 @@ public abstract class SimpleFileChooser {
 
         fd.setMode(saveBehavour ? FileDialog.SAVE : FileDialog.LOAD);
 
-        if (startFolder != null)
+        if (startFolder != null) {
             fd.setDirectory(startFolder.getAbsolutePath());
+            if (startFolder.isFile())
+            	fd.setFile( startFolder.getName() );
+        }
 
         if (extension != null)
         	fd.setFilenameFilter( new FilenameFilter() {
-				
 				@Override
 				public boolean accept( File dir, String name ) {
 					return name.toLowerCase().endsWith( extension );
@@ -52,10 +54,13 @@ public abstract class SimpleFileChooser {
 
         if (f.getParentFile() != null && startFolder == currentFolder)
             currentFolder = f.getParentFile();
+        
+        if (saveBehavour && !f.getName().toLowerCase().endsWith( extension ))
+        	f = new File (f.getParentFile(), f.getName()+"."+extension);
 
-        if (saveBehavour && f.exists() &&
-            JOptionPane.NO_OPTION == JOptionPane.showConfirmDialog(root, "overwrite " + f.getName() + "?!") )
-                return;
+//        if (saveBehavour && f.exists() &&
+//            JOptionPane.NO_OPTION == JOptionPane.showConfirmDialog(root, "overwrite " + f.getName() + "?!") )
+//                return;
 
         try {
             heresTheFile(f);

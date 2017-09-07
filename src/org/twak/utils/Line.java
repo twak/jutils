@@ -456,7 +456,11 @@ public class Line implements Serializable
 	}
 
 	public boolean hasNaN() {
-		return Double.isNaN( start.x ) || Double.isNaN( start.y ) || Double.isNaN( end.x ) || Double.isNaN( end.y );
+		return 
+				Double.isNaN( start.x ) ||
+				Double.isNaN( start.y ) ||
+				Double.isNaN( end  .x ) ||
+				Double.isNaN( end  .y );
 	}
 
 }
