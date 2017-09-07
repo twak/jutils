@@ -224,7 +224,7 @@ public class SaveLoad
 
     private void saveAsMenuItemActionPerformed( final java.awt.event.ActionEvent evt )
     {
-        new SimpleFileChooser(findFrame(), true, "save", saveAs) {
+        new SimpleFileChooser(findFrame(), true, "save", saveAs, null) {
             @Override
             public void heresTheFile(File f) throws Throwable {
 

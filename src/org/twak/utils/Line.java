@@ -455,4 +455,8 @@ public class Line implements Serializable
 		end  .add( perp );
 	}
 
+	public boolean hasNaN() {
+		return Double.isNaN( start.x ) || Double.isNaN( start.y ) || Double.isNaN( end.x ) || Double.isNaN( end.y );
+	}
+
 }
