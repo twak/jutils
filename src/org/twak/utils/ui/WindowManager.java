@@ -49,6 +49,15 @@ public class WindowManager {
 		}
     }
     
+    public static void setTitle(String title) {
+    	appName = title;
+    	for (WeakReference<JFrame> r : frames ) {
+    		JFrame f  = r.get();
+    		if (f != null )
+    			f.setTitle( appName );
+    	}
+    }
+    
 	public static void register( JFrame frame ) {
 		frame.setIconImage( getIcon() );
 		frame.setTitle( appName );

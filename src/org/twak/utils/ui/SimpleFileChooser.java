@@ -28,7 +28,6 @@ public abstract class SimpleFileChooser {
     {
         FileDialog fd = new FileDialog(root, description);
 
-
         fd.setMode(saveBehavour ? FileDialog.SAVE : FileDialog.LOAD);
 
         if (startFolder != null) {
