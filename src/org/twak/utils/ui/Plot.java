@@ -60,6 +60,7 @@ public class Plot extends JComponent {
 		paint(toPaint, g2);
 		
 		DRectangle bounds = PaintThing.getBounds();
+		
 		if (firstFrame && bounds != null) {
 			if ( bounds != null )
 				ma.view( bounds );
@@ -144,25 +145,30 @@ public class Plot extends JComponent {
 
 			frame.pack();
 			frame.setVisible( true );
-			
+
 			if ( open != null ) {
-				try{ 
-				frame.setLocation( open.getLocationOnScreen() );
-				frame.setSize( open.getSize() );
-//				frame.setState( open.getState() );
-				
-				open.setVisible( false );
-				open.dispose();
+				try {
+					frame.setLocation( open.getLocationOnScreen() );
+					frame.setSize( open.getSize() );
+
+					closeLast();
+				} catch ( Throwable th ) {
 				}
-				catch (Throwable th) {}
-			}
-			
+			}		
 			
 			last = this;
 			open = frame;
 		}
 		
 		toPaint.addAll(Arrays.asList(o));
+	}
+
+	public static void closeLast() {
+		if (open != null) {
+			open.setVisible( false );
+			open.dispose();
+			open = null;
+		}
 	}
 
 	
@@ -230,7 +236,7 @@ public class Plot extends JComponent {
 			public void mousePressed(java.awt.event.MouseEvent e) {
 				
 					ICanEdit bestEdit = null;
-					double bestDist = 10;//px
+					double bestDist = Double.MAX_VALUE;//px
 
 					for ( Object o : toPaint )
 						if ( o instanceof ICanEdit ) {

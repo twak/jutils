@@ -9,12 +9,12 @@ import javax.swing.JTextField;
  *
  * @author twak
  */
-public class AutoUI
+public class AutoTextField
 {
 
     public static void linkFieldString( final JTextField sequenceVarField, final Object down, String fieldString )
     {
-        linkFieldString( sequenceVarField, down, fieldString, new AutoUI(), "toString" ); // <-- toString unlikely to have any noticable effect ;)
+        linkFieldString( sequenceVarField, down, fieldString, new AutoTextField(), "toString" ); // <-- toString unlikely to have any noticable effect ;)
     }
 
     public static void linkFieldString( final JTextField sequenceVarField, final Object down, String fieldString, final Object changeFireObject, final String changeFireField )
