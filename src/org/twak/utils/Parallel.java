@@ -38,15 +38,16 @@ public class Parallel <I,O> {
 
 					try {
 						while ( true ) {
+							
 							I i = togo.poll();
 
-							System.out.println( "jobs remaining: " + togo.size() );
+							System.out.println( "parallel jobs remaining: " + togo.size() );
 
 							if ( i == null )
 								return;
 
 							os.add( work.work( i ) );
-							System.out.println( "job done" );
+							System.out.println( "parallel job done" );
 
 						}
 					} finally {
@@ -61,8 +62,9 @@ public class Parallel <I,O> {
 
 				try {
 					cdl.await();
-					done.complete( os );
-					System.out.println( "done" );
+					if (done != null)
+						done.complete( os );
+					System.out.println( "parallel complete done" );
 				} catch ( InterruptedException e ) {
 					e.printStackTrace();
 				}
