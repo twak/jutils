@@ -71,4 +71,15 @@ public class Colour//  import uk.british; extends Color;
 	public static String toHex(Color color) {
 		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());  
 	}
+	
+	public static int asInt(int r, int g, int b, int a) {
+		return ((a & 0xFF) << 24) |
+				((r & 0xFF) << 16) |
+				((g & 0xFF) << 8)  |
+				((b & 0xFF) << 0);
+	}
+	
+	public static int asInt(int r, int g, int b) {
+		return asInt (r,g,b,255);
+	}
 }
