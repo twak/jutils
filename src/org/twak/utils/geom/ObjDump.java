@@ -19,7 +19,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Tuple2d;
 import javax.vecmath.Tuple3d;
 
-import org.twak.utils.FileUtils;
+import org.twak.utils.Filez;
 import org.twak.utils.collections.Loop;
 import org.twak.utils.collections.LoopL;
 import org.twak.utils.collections.MultiMap;
@@ -529,7 +529,7 @@ public class ObjDump {
 	
 	private Material readMaterial( File f, String name ) {
 
-		File mFile = new File( f.getParentFile(), FileUtils.stripExtn( f.getName() ) + ".mtl" );
+		File mFile = new File( f.getParentFile(), Filez.stripExtn( f.getName() ) + ".mtl" );
 		BufferedReader br = null;
 
 		if ( namedMatFile != mFile ) {

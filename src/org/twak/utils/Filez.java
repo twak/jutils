@@ -16,7 +16,7 @@ import java.io.OutputStream;
  *
  * @author twak
  */
-public class FileUtils
+public class Filez
 {
     public static boolean isFilenameValid(String file) {
         File f = new File(file);
