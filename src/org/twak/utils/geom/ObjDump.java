@@ -9,10 +9,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
@@ -102,9 +104,49 @@ public class ObjDump {
 	}
 	
 	public static class Face {		
+		
 		public List<Integer> vtIndexes = new ArrayList<>();
 		public List<Integer> uvIndexes = null;//new ArrayList<>();
 		public List<Integer> normIndexes = null;//new ArrayList<>();
+	}
+	
+	public double[][] getPoints( Face f ) {
+		double[][] out = new double[f.vtIndexes.size()][3];
+
+		for ( int v = 0; v < f.vtIndexes.size(); v++ ) {
+			Tuple3d vert = orderVert.get( f.vtIndexes.get( v ) );
+			out[ v ][ 0 ] = vert.x;
+			out[ v ][ 1 ] = vert.y;
+			out[ v ][ 2 ] = vert.z;
+		}
+
+		return out;
+	}
+
+	public double[][] getNorms( Face f ) {
+		double[][] out = new double[f.normIndexes.size()][3];
+
+		for ( int v = 0; v < f.normIndexes.size(); v++ ) {
+			Tuple3d norm = orderNorm.get( f.normIndexes.get( v ) );
+			out[ v ][ 0 ] = norm.x;
+			out[ v ][ 1 ] = norm.y;
+			out[ v ][ 2 ] = norm.z;
+		}
+
+		return out;
+	}
+
+	public double[][] getUVs( Face f ) {
+
+		double[][] out = new double[f.uvIndexes.size()][3];
+
+		for ( int v = 0; v < f.uvIndexes.size(); v++ ) {
+			Tuple2d uv = orderUV.get( f.uvIndexes.get( v ) );
+			out[ v ][ 0 ] = uv.x;
+			out[ v ][ 1 ] = uv.y;
+		}
+
+		return out;
 	}
 	
 	public Map<Tuple3d, Integer> vertexToNo;
@@ -358,6 +400,10 @@ public class ObjDump {
 		addFace(toDouble(points), toDouble(uvs), toDouble(norms));
 	}
 	
+	public void addFaceFrom ( Face f, ObjDump src ) {
+		addFace (src.getPoints(f), src.getUVs(f), src.getNorms(f) );
+	}
+	
 	private static double[][] toDouble(float[][] in) {
 		
 		if (in == null)
@@ -457,68 +503,74 @@ public class ObjDump {
 		}
 	}
 	
-	public ObjDump(File file) { 
+	public ObjDump(File file) {
+		this(Collections.singletonList( file ));
+	}
+
+	public ObjDump( Iterable<File> files ) {
 		this();
-		
-		BufferedReader br = null;
-		currentMaterial = null;
-		try {
-			System.out.println("reading " + file);
-			br = new BufferedReader(new FileReader(file), 10 * 1024 * 1024);
 
-			String line;
-			
-			while ((line = br.readLine()) != null) {
-
-				try {
-					String[] params = line.split(" ");
-
-					if (params[0].equals("v")) 
-						orderVert.add(new Point3d( Double.parseDouble(params[1]), Double.parseDouble(params[2]), Double.parseDouble(params[3])));
-					else if (params[0].equals("vn")) 
-						orderNorm.add(new Point3d( Double.parseDouble(params[1]), Double.parseDouble(params[2]), Double.parseDouble(params[3])));
-					else if (params[0].equals("vt")) 
-						orderUV.add( new Point2d( Double.parseDouble( params[ 1 ] ), Double.parseDouble( params[ 2 ] ) ) );
-					else if (params[0].equals("usemtl")) 
-						currentMaterial = readMaterial (file, params[1]);
-					else if (params[0].equals("f")) {
-
-						Face face = new Face();
-						
-						for (int i = 1; i < params.length; i++) {
-							String[] inds = params[i].split("/");
-							
-							face.vtIndexes.add(Integer.parseInt(inds[0])-1);
-							
-							if (inds.length > 1) {
-								if (face.uvIndexes == null)
-									face.uvIndexes = new ArrayList<>();
-								face.uvIndexes.add(Integer.parseInt(inds[1])-1);
-							}
-							
-							if (inds.length > 2) {
-								if (face.normIndexes == null)
-									face.normIndexes = new ArrayList<>();
-								face.normIndexes.add(Integer.parseInt(inds[2])-1);
-							}
-						}
-
-						if (!face.vtIndexes.isEmpty())
-							material2Face.put (currentMaterial, face);
-					}
-				} catch (Throwable th) {
-					System.err.println("at line " + line);
-					th.printStackTrace(System.err);
-				}
-			}
-		} catch (Throwable e) {
-			e.printStackTrace();
-		} finally {
+		for ( File file : files ) {
+			BufferedReader br = null;
+			currentMaterial = null;
 			try {
-				br.close();
-				System.out.println("done reading " + file);
-			} catch (IOException e) {
+				System.out.println( "reading " + file );
+				br = new BufferedReader( new FileReader( file ), 10 * 1024 * 1024 );
+
+				String line;
+
+				while ( ( line = br.readLine() ) != null ) {
+
+					try {
+						String[] params = line.split( " " );
+
+						if ( params[ 0 ].equals( "v" ) )
+							orderVert.add( new Point3d( Double.parseDouble( params[ 1 ] ), Double.parseDouble( params[ 2 ] ), Double.parseDouble( params[ 3 ] ) ) );
+						else if ( params[ 0 ].equals( "vn" ) )
+							orderNorm.add( new Point3d( Double.parseDouble( params[ 1 ] ), Double.parseDouble( params[ 2 ] ), Double.parseDouble( params[ 3 ] ) ) );
+						else if ( params[ 0 ].equals( "vt" ) )
+							orderUV.add( new Point2d( Double.parseDouble( params[ 1 ] ), Double.parseDouble( params[ 2 ] ) ) );
+						else if ( params[ 0 ].equals( "usemtl" ) )
+							currentMaterial = readMaterial( file, params[ 1 ] );
+						else if ( params[ 0 ].equals( "f" ) ) {
+
+							Face face = new Face();
+
+							for ( int i = 1; i < params.length; i++ ) {
+								String[] inds = params[ i ].split( "/" );
+
+								face.vtIndexes.add( Integer.parseInt( inds[ 0 ] ) - 1 );
+
+								if ( inds.length > 1 ) {
+									if ( face.uvIndexes == null )
+										face.uvIndexes = new ArrayList<>();
+									face.uvIndexes.add( Integer.parseInt( inds[ 1 ] ) - 1 );
+								}
+
+								if ( inds.length > 2 ) {
+									if ( face.normIndexes == null )
+										face.normIndexes = new ArrayList<>();
+									face.normIndexes.add( Integer.parseInt( inds[ 2 ] ) - 1 );
+								}
+							}
+
+							if ( !face.vtIndexes.isEmpty() )
+								material2Face.put( currentMaterial, face );
+						}
+					} catch ( Throwable th ) {
+						System.err.println( "at line " + line );
+						th.printStackTrace( System.err );
+					}
+				}
+			} catch ( Throwable e ) {
 				e.printStackTrace();
+			} finally {
+				try {
+					br.close();
+					System.out.println( "done reading " + file );
+				} catch ( IOException e ) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -530,9 +582,15 @@ public class ObjDump {
 	private Material readMaterial( File f, String name ) {
 
 		File mFile = new File( f.getParentFile(), Filez.stripExtn( f.getName() ) + ".mtl" );
+		
+		if (!mFile.exists())
+			return null;
+		
 		BufferedReader br = null;
 
 		if ( namedMatFile != mFile ) {
+			
+			namedMatFile = mFile;
 			try {
 				br = new BufferedReader( new FileReader( mFile ), 10 * 1024 * 1024 );
 
@@ -574,5 +632,10 @@ public class ObjDump {
 
 	public void setCurrentMaterial( Material mat ) {
 		currentMaterial = mat;
+	}
+
+	public void addFrom( ObjDump objDump ) {
+		// TODO Auto-generated method stub
+		
 	}
 }
