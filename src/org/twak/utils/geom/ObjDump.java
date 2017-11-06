@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import javax.vecmath.Matrix4d;
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Tuple2d;
@@ -513,6 +514,9 @@ public class ObjDump {
 		for ( File file : files ) {
 			BufferedReader br = null;
 			currentMaterial = null;
+			
+			int vtOffset = orderVert.size(), uvOffset = orderUV.size(), normOffset = orderNorm.size();
+			
 			try {
 				System.out.println( "reading " + file );
 				br = new BufferedReader( new FileReader( file ), 10 * 1024 * 1024 );
@@ -539,18 +543,18 @@ public class ObjDump {
 							for ( int i = 1; i < params.length; i++ ) {
 								String[] inds = params[ i ].split( "/" );
 
-								face.vtIndexes.add( Integer.parseInt( inds[ 0 ] ) - 1 );
+								face.vtIndexes.add( Integer.parseInt( inds[ 0 ] ) - 1 + vtOffset );
 
 								if ( inds.length > 1 ) {
 									if ( face.uvIndexes == null )
 										face.uvIndexes = new ArrayList<>();
-									face.uvIndexes.add( Integer.parseInt( inds[ 1 ] ) - 1 );
+									face.uvIndexes.add( Integer.parseInt( inds[ 1 ] ) - 1 + uvOffset );
 								}
 
 								if ( inds.length > 2 ) {
 									if ( face.normIndexes == null )
 										face.normIndexes = new ArrayList<>();
-									face.normIndexes.add( Integer.parseInt( inds[ 2 ] ) - 1 );
+									face.normIndexes.add( Integer.parseInt( inds[ 2 ] ) - 1 + normOffset );
 								}
 							}
 
@@ -645,5 +649,14 @@ public class ObjDump {
 		
 		for (Tuple3d v : orderVert)
 			v.sub( avg );
+	}
+
+	public void transform( Matrix4d transform ) {
+		for (Tuple3d v : orderVert) {
+			Point3d pt = new Point3d ( v );
+			transform.transform( pt );
+			v.set ( pt );
+		}
+		
 	}
 }
