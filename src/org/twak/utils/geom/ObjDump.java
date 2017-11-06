@@ -634,8 +634,16 @@ public class ObjDump {
 		currentMaterial = mat;
 	}
 
-	public void addFrom( ObjDump objDump ) {
-		// TODO Auto-generated method stub
+	public void centerVerts() {
+
+		Point3d avg = new Point3d();
 		
+		for (Tuple3d v : orderVert)
+			avg.add(v);
+		
+		avg.scale( 1./orderVert.size() );
+		
+		for (Tuple3d v : orderVert)
+			v.sub( avg );
 	}
 }
