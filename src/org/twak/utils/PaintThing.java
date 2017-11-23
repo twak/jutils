@@ -195,28 +195,6 @@ public class PaintThing {
 			drawArrow(g, ma, l, 5);
 			
 			g.setColor(Color.red);
-			
-			if (false) {
-				if (o.get(l.start).size() != 2) {
-
-					// if (o.get(l.start).size() == 1)
-					// System.out.println(" >>>--"+l.start + " to " + l.end);
-
-					g.fillOval(ma.toX(l.start.x), ma.toY(l.start.y), 5, 5);
-					g.drawString(" " + o.get(l.start).size(), ma.toX(l.start.x), ma.toY(l.start.y));
-				}
-				g.setColor(Color.green);
-
-				if (o.get(l.end).size() != 2) {
-
-					// if (o.get(l.end).size() == 1)
-					// System.out.println(" >>>++"+l.end + " from " + l.start);
-					g.fillOval(ma.toX(l.end.x), ma.toY(l.end.y), 5, 5);
-
-					g.drawString("     " + o.get(l.end).size(), ma.toX(l.end.x), ma.toY(l.end.y));
-				}
-			}
-			
 			g.setColor(c);
 		}
 	}
