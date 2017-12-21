@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.vecmath.Matrix4d;
@@ -21,6 +22,7 @@ import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Tuple2d;
 import javax.vecmath.Tuple3d;
+import javax.vecmath.Vector3d;
 
 import org.twak.utils.Filez;
 import org.twak.utils.collections.Loop;
@@ -125,6 +127,10 @@ public class ObjDump {
 	}
 
 	public double[][] getNorms( Face f ) {
+		
+		if (f.normIndexes == null)
+			return null;
+		
 		double[][] out = new double[f.normIndexes.size()][3];
 
 		for ( int v = 0; v < f.normIndexes.size(); v++ ) {
@@ -658,5 +664,41 @@ public class ObjDump {
 			v.set ( pt );
 		}
 		
+	}
+
+	public void computeMissingNormals() {
+		List<Face> noNorms = material2Face.values().stream().flatMap( x -> x.stream()).filter (f-> f.normIndexes == null).collect( Collectors.toList() );
+				
+		if (orderNorm == null )
+			orderNorm = new ArrayList<>();
+		if (normToNo == null)
+			normToNo = new HashMap<>();
+		
+		for (Face f : noNorms) {
+			
+			double[][] pts = getPoints( f );
+			
+			Vector3d ab = new Vector3d(pts[1]);
+			ab.sub( new Vector3d( pts[0] ) );
+			Vector3d bc = new Vector3d(pts[2]);
+			bc.sub( new Vector3d( pts[1] ) );
+			
+			ab.cross( ab, bc );
+			ab.normalize();
+			
+			if (f.normIndexes == null)
+				f.normIndexes = new ArrayList<>();
+			
+			Integer nIndex = normToNo.get( ab );
+			if (nIndex == null) {
+				nIndex = orderNorm.size(); // size will be next index
+    			orderNorm.add( ab);
+    			normToNo.put( ab, nIndex );
+			}
+			
+			for (int i = 0; i < f.vtIndexes.size(); i++) {
+				f.normIndexes.add( nIndex );
+			}
+		}
 	}
 }

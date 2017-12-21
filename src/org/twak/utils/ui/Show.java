@@ -19,8 +19,8 @@ public class Show extends JFrame
     public Show ( BufferedImage n )
     {
         add (new P(n));
-        setSize (n.getWidth(), n.getHeight()+40);
-        setUndecorated( true );
+        setSize (n.getWidth()+ 40, n.getHeight()+40);
+//        setUndecorated( true );
         setVisible( true );
         
         MouseAdapter ma = new MouseAdapter() {
