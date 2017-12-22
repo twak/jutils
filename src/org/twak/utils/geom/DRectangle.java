@@ -517,4 +517,16 @@ public class DRectangle {
 		
 		return out;
 	}
+	
+	public DRectangle normalize( DRectangle rect ) {
+		DRectangle out = new DRectangle(rect);
+		
+		out.x = (out.x - this.x) /this.width;
+		out.y = (out.y - this.y) /this.height;
+		
+		out.width /= this.width;
+		out.height /= this.height;
+		
+		return out;
+	}
 }
