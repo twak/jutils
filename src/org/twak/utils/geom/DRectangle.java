@@ -529,4 +529,16 @@ public class DRectangle {
 		
 		return out;
 	}
+	
+	public DRectangle scale( DRectangle rect ) {
+		DRectangle out = new DRectangle(rect);
+		
+		out.x = (out.x *this.width ) + this.x;
+		out.y = (out.y *this.height) +this.y;
+		
+		out.width  *= this.width;
+		out.height *= this.height;
+		
+		return out;
+	}
 }
