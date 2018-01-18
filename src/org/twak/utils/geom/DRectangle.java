@@ -3,7 +3,6 @@ package org.twak.utils.geom;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -13,8 +12,6 @@ import javax.vecmath.Tuple2d;
 import org.twak.utils.Line;
 import org.twak.utils.Pair;
 import org.twak.utils.collections.ConsecutiveItPairs;
-import org.twak.utils.geom.DRectangle.Bounds;
-import org.twak.utils.geom.DRectangle.RectDir;
 
 /**
  *
@@ -530,7 +527,7 @@ public class DRectangle {
 		return out;
 	}
 	
-	public DRectangle scale( DRectangle rect ) {
+	public DRectangle scale( DRectangle rect ) { 
 		DRectangle out = new DRectangle(rect);
 		
 		out.x = (out.x *this.width ) + this.x;
@@ -540,5 +537,29 @@ public class DRectangle {
 		out.height *= this.height;
 		
 		return out;
+	}
+	
+	public DRectangle scale (double s) {
+		DRectangle t = new DRectangle(this);
+		t.x *= s;
+		t.height *= s;
+		t.y *= s;
+		t.width *=s;
+		return t;
+	}
+	
+	/**
+	 * find same position in dest, as we are currently to src. linear tween.
+	 */
+
+	public DRectangle transform( DRectangle src, DRectangle dest ) {
+		DRectangle out = new DRectangle(this);
+		
+		
+		out.x -= src.x;
+		out.y -= src.y;
+		
+		
+		return null;
 	}
 }

@@ -6,185 +6,163 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.Set;
 
 import javax.vecmath.Point2d;
 
 /**
  * HashMap backed mutli-item hash. eg a list for every entry in the hash table
+ * 
  * @author twak
  */
-public class MultiMap <A,B> //implements Map<A,List<B>>
+public class MultiMap<A, B> //implements Map<A,List<B>>
 {
-    public Map <A, List<B>> map = new LinkedHashMap();
+	public Map<A, List<B>> map = new LinkedHashMap();
 
-    public MultiMap(){}
-    
-    public MultiMap(MultiMap<A, B> other) {
-    	for (A a : other.map.keySet())
-    		for (B b : other.map.get (a) )
-    			put(a,b);
+	public MultiMap() {
 	}
 
-	public void addEmpty( A a )
-    {
-        if (!map.containsKey( a ))
-            map.put ( a, new ArrayList());
-    }
+	public MultiMap( MultiMap<A, B> other ) {
+		for ( A a : other.map.keySet() )
+			for ( B b : other.map.get( a ) )
+				put( a, b );
+	}
 
-    public int size()
-    {
-        return map.size();
-    }
+	public void addEmpty( A a ) {
+		if ( !map.containsKey( a ) )
+			map.put( a, new ArrayList() );
+	}
 
-    public boolean isEmpty()
-    {
-        return map.isEmpty();
-    }
+	public int size() {
+		return map.size();
+	}
 
-    public boolean containsKey( Object key )
-    {
-        return map.containsKey( key );
-    }
+	public boolean isEmpty() {
+		return map.isEmpty();
+	}
 
-    public boolean containsValue( Object value )
-    {
-        throw new UnsupportedOperationException( "Not supported yet." );
-    }
+	public boolean containsKey( Object key ) {
+		return map.containsKey( key );
+	}
 
-    public List<B> get( A key )
-    {
-        List<B> out = map.get( key );
-        if (out == null)
-            return new ArrayList();
-        return out;
-    }
+	public boolean containsValue( Object value ) {
+		throw new UnsupportedOperationException( "Not supported yet." );
+	}
 
-    public List<B> getOrAdd( A key )
-    {
-        List<B> out = map.get( key );
-        if ( out == null )
-        {
-            List<B> b = new ArrayList();
-            map.put( key, b );
-            return b;
-        }
-        return out;
-    }
+	public List<B> get( A key ) {
+		List<B> out = map.get( key );
+		if ( out == null )
+			return new ArrayList();
+		return out;
+	}
 
-    public boolean remove (A key, B value)
-    {
-        List<B> out = map.get( key );
-        if (out == null)
-            return false;
+	public List<B> getOrAdd( A key ) {
+		List<B> out = map.get( key );
+		if ( out == null ) {
+			List<B> b = new ArrayList();
+			map.put( key, b );
+			return b;
+		}
+		return out;
+	}
 
-        boolean res = out.remove( value );
+	public boolean remove( A key, B value ) {
+		List<B> out = map.get( key );
+		if ( out == null )
+			return false;
 
-        if (out.isEmpty())
-            map.remove(key);
+		boolean res = out.remove( value );
 
-        return res;
-    }
+		if ( out.isEmpty() )
+			map.remove( key );
 
-    public void put ( A key, B value )
-    {
-        List<B> out = map.get( key );
-        if (out == null)
-        {
-            out = new ArrayList();
-            map.put( key, out );
-        }
-        out.add( value );
-    }
+		return res;
+	}
 
-    public void put ( A key, B value, boolean dupeCheck )
-    {
-        List<B> out = map.get( key );
-        if ( out == null )
-        {
-            out = new ArrayList();
-            map.put( key, out );
-        }
-        if (!dupeCheck || !out.contains( value) )
-            out.add( value );
-    }
+	public void put( A key, B value ) {
+		List<B> out = map.get( key );
+		if ( out == null ) {
+			out = new ArrayList();
+			map.put( key, out );
+		}
+		out.add( value );
+	}
 
-    /**
-     * Removes entire list indexed by key
-     * @param key
-     * @return
-     */
-    public List<B> remove( A key )
-    {
-        return map.remove( key );
-    }
+	public void put( A key, B value, boolean dupeCheck ) {
+		List<B> out = map.get( key );
+		if ( out == null ) {
+			out = new ArrayList();
+			map.put( key, out );
+		}
+		if ( !dupeCheck || !out.contains( value ) )
+			out.add( value );
+	}
 
-    public void putAll( MultiMap<? extends A, ? extends B> m )
-    {
-    	for (A a : m.map.keySet())
-    		for (B b : m.map.get(a))
-    			put (a, b);
-    }
-    
-    public void putAll( Map<? extends A, ? extends B> m )
-    {
-        for (Map.Entry<? extends A, ? extends B> entry : m.entrySet())
-            put( entry.getKey(), entry.getValue() );
-    }
+	public List<B> remove( A key ) {
+		return map.remove( key );
+	}
 
-    public void clear()
-    {
-        map.clear();
-    }
+	public void putAll( MultiMap<? extends A, ? extends B> m ) {
+		for ( A a : m.map.keySet() )
+			for ( B b : m.map.get( a ) )
+				put( a, b );
+	}
 
-    public Set<A> keySet()
-    {
-        return map.keySet();
-    }
+	public void putAll( Map<? extends A, ? extends B> m ) {
+		for ( Map.Entry<? extends A, ? extends B> entry : m.entrySet() )
+			put( entry.getKey(), entry.getValue() );
+	}
 
-    public Collection<List<B>> values()
-    {
-        return map.values();
-    }
+	public void clear() {
+		map.clear();
+	}
 
-    public Set<Entry<A, List<B>>> entrySet()
-    {
-        return map.entrySet();
-    }
+	public Set<A> keySet() {
+		return map.keySet();
+	}
 
-    public void putAll( A a, Iterable<B> bs, boolean dupeCheck )
-    {
-        for (B b : bs)
-            put( a, b, dupeCheck);
-    }
+	public List<B> valueList() {
+		return map.values().stream().flatMap( x -> x.stream() ).collect( Collectors.toList() );
+	}
 
-    @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder("[\n");
-        for (A a : map.keySet())
-        {
-            sb.append( a.toString() +" || ");
-            for (B b : map.get( a ))
-                sb.append( b +", ");
-            sb.append( "\n" );
-        }
-        sb.append("]\n");
-        return sb.toString();
-    }
+	public Collection<List<B>> values() {
+		return map.values();
+	}
 
-    public void removeAll( A...a )
-    {
-        for (A aa : a)
-            remove( aa );
-    }
+	public Set<Entry<A, List<B>>> entrySet() {
+		return map.entrySet();
+	}
 
-	public boolean contains(A a, B b) {
-		
-		for (B b2 : get(a))
-			if (b.equals(b2))
+	public void putAll( A a, Iterable<B> bs, boolean dupeCheck ) {
+		for ( B b : bs )
+			put( a, b, dupeCheck );
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder( "[\n" );
+		for ( A a : map.keySet() ) {
+			sb.append( a.toString() + " || " );
+			for ( B b : map.get( a ) )
+				sb.append( b + ", " );
+			sb.append( "\n" );
+		}
+		sb.append( "]\n" );
+		return sb.toString();
+	}
+
+	public void removeAll( A... a ) {
+		for ( A aa : a )
+			remove( aa );
+	}
+
+	public boolean contains( A a, B b ) {
+
+		for ( B b2 : get( a ) )
+			if ( b.equals( b2 ) )
 				return true;
-		
+
 		return false;
 	}
 
