@@ -555,11 +555,18 @@ public class DRectangle {
 	public DRectangle transform( DRectangle src, DRectangle dest ) {
 		DRectangle out = new DRectangle(this);
 		
+		out.x = (out.x - src.x) / src.width;
+		out.y = (out.y - src.y) / src.height;
 		
-		out.x -= src.x;
-		out.y -= src.y;
+		out.width /= src.width;
+		out.height /=src.height;
+
+		out.x = (out.x * dest.width) + dest.x;
+		out.y = (out.y * dest.height) + dest.y;
 		
+		out.width *= dest.width;
+		out.height *= dest.height;
 		
-		return null;
+		return out;
 	}
 }
