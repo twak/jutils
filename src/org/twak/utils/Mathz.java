@@ -289,4 +289,6 @@ public class Mathz
 		return Arrays.stream( objects ).filter( o -> o == null ).count() == 0;
 	}
 
+	
+	
 }

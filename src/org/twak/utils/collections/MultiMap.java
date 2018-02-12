@@ -169,4 +169,10 @@ public class MultiMap<A, B> //implements Map<A,List<B>>
 	public long countValue() {
 		return map.values().stream().flatMap( e -> e.stream() ).count();
 	}
+
+	public int minListSize() {
+		if (map.isEmpty())
+			return 0;
+		return values().stream().mapToInt( m -> m.size() ).min().getAsInt();
+	}
 }

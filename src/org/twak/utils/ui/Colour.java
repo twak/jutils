@@ -82,4 +82,11 @@ public class Colour//  import uk.british; extends Color;
 	public static int asInt(int r, int g, int b) {
 		return asInt (r,g,b,255);
 	}
+
+	public static Color lighter( Color c ) {
+		float[] hsb = new float[3];
+		Color.RGBtoHSB( c.getRed(), c.getGreen(), c.getBlue(), hsb );
+		hsb[2] = Math.max (1, hsb[1] * 1.2f );
+		return Color.getHSBColor( hsb[0], hsb[1], hsb[2] );
+	}
 }
