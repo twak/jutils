@@ -30,7 +30,8 @@ public class SocketQuery {
 		out.flush();
 
 		try {
-			return Double.parseDouble( in.readLine() );
+			String answer = in.readLine();
+			return Double.parseDouble( answer );
 		} catch ( Throwable e ) {
 			e.printStackTrace();
 		}
