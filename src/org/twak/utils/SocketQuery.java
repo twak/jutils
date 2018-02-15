@@ -31,6 +31,7 @@ public class SocketQuery {
 
 		try {
 			String answer = in.readLine();
+			System.out.println( "answer "+answer );
 			return Double.parseDouble( answer );
 		} catch ( Throwable e ) {
 			e.printStackTrace();
@@ -45,7 +46,9 @@ public class SocketQuery {
 		out.flush();
 
 		try {
-			return Integer.parseInt( in.readLine() );
+			String answer = in.readLine();		
+			System.out.println( "answer "+answer );
+			return Integer.parseInt( answer );
 		} catch ( Throwable e ) {
 			e.printStackTrace();
 		}

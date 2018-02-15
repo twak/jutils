@@ -1,5 +1,9 @@
 package org.twak.utils;
 
+import java.util.List;
+
+import org.twak.utils.geom.DRectangle;
+
 /**
  * Adapted from ibm.com
  * 
@@ -19,6 +23,11 @@ public class Pair<A, B> {
 	public Pair(A element1, B element2) {
 		this.element1 = element1;
 		this.element2 = element2;
+	}
+
+	public Pair( List<? extends A> list ) {
+		this.element1 = (A) list.get( 0 );
+		this.element2 = (B) list.get( 1 );
 	}
 
 	public A first() {
