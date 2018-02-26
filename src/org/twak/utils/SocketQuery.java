@@ -39,6 +39,32 @@ public class SocketQuery {
 		System.out.println( "warning invalid query" );
 		return Double.NaN;
 	}
+	
+	public double[] queryDA( String query ) {
+		
+		out.write( query+"\n" );
+		out.flush();
+		
+		try {
+			
+			String answer = in.readLine();
+			System.out.println( "answer "+answer );
+			
+			String[] ps = answer.split( "," );
+			double[] da = new double[ps.length];
+			
+			for (int i = 0; i < ps.length; i++)
+				da[i] = Double.parseDouble( ps[i] ); 
+			
+			return da;
+			
+		} catch ( Throwable e ) {
+			e.printStackTrace();
+		}
+		
+		System.out.println( "warning invalid query" );
+		return null;
+	}
 
 	public int queryI( String query ) {
 

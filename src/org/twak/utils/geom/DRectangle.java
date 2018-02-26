@@ -351,7 +351,7 @@ public class DRectangle {
 				out.add( new DRectangle( o + x, y, d * sum, height ) );
 			else
 				out.add( new DRectangle( x, o + y, width, d * sum ) );
-			o += d;
+			o += d * sum;
 		}
 
 		return out;
