@@ -36,7 +36,7 @@ public class SocketQuery {
 		} catch ( Throwable e ) {
 			e.printStackTrace();
 		}
-		System.out.println( "warning invalid query" );
+		System.out.println( "warning invalid response" );
 		return Double.NaN;
 	}
 	
@@ -62,7 +62,7 @@ public class SocketQuery {
 			e.printStackTrace();
 		}
 		
-		System.out.println( "warning invalid query" );
+		System.out.println( "warning invalid response" );
 		return null;
 	}
 
@@ -78,7 +78,7 @@ public class SocketQuery {
 		} catch ( Throwable e ) {
 			e.printStackTrace();
 		}
-		System.out.println( "warning invalid query" );
+		System.out.println( "warning invalid response" );
 		return -1;
 	}
 
