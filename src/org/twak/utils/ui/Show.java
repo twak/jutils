@@ -21,6 +21,7 @@ public class Show extends JFrame
         add (new P(n));
         setSize (n.getWidth()+ 40, n.getHeight()+40);
 //        setUndecorated( true );
+        WindowManager.register( this );
         setVisible( true );
         
         MouseAdapter ma = new MouseAdapter() {
