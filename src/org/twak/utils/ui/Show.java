@@ -33,8 +33,7 @@ public class Show extends JFrame
             public void mousePressed( MouseEvent e )
             {
                 last = e.getLocationOnScreen();
-                resize = (e.getPoint().x > getWidth() -20 && 
-                        e.getPoint().y > getHeight() - 20);
+                resize = true;
             }
             
             @Override
@@ -48,13 +47,6 @@ public class Show extends JFrame
                     Dimension d = Show.this.getSize();
                     Show.this.setSize(  d.width + ePt.x - last.x, d.height + ePt.y - last.y );
                     
-                }
-                else // move window
-                {
-                    System.out.println( e.getPoint() );
-
-                    Point current = Show.this.getLocation();
-                    Show.this.setLocation( current.x + ePt.x - last.x, current.y + ePt.y - last.y );
                 }
                 last = ePt;
             }
