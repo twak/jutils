@@ -17,13 +17,19 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.text.DefaultFormatter;
 
 import org.twak.utils.ui.AbstractDocumentListener;
 import org.twak.utils.ui.ListDownLayout;
@@ -53,9 +59,9 @@ public class Auto {
 
 	public JComponent build() {
 
-		JPanel out = new JPanel();
+		JPanel vals = new JPanel();
 
-		out.setLayout( new ListDownLayout() );
+		vals.setLayout( new ListDownLayout() );
 
 		int pWidth = 100;
 
@@ -75,7 +81,7 @@ public class Auto {
 			entry.setBorder( new EmptyBorder( 3, 3, 3, 3 ) );
 			pWidth = Math.max( pWidth, entry.getPreferredSize().width + 5 );
 
-			out.add( entry );
+			vals.add( entry );
 		}
 
 		JPanel okayCancel = new JPanel( new FlowLayout( FlowLayout.TRAILING ) );
@@ -90,17 +96,24 @@ public class Auto {
 				applies = null;
 			}
 		} );
+		
 		cancel.addActionListener( x -> close() );
 
 		updateOkayCancel();
 
 		okayCancel.add( okay );
 		okayCancel.add( cancel );
-		out.add( okayCancel );
 
-		out.setPreferredSize( new Dimension( pWidth, out.getPreferredSize().height ) );
+		vals.setPreferredSize( new Dimension( pWidth, vals.getPreferredSize().height ) );
 
-		return out;
+		JPanel topLevel = new JPanel (new BorderLayout());
+		JScrollPane scrollVals = new JScrollPane(vals);
+		scrollVals.getVerticalScrollBar().setUnitIncrement( 16 );
+		
+		topLevel.add(scrollVals, BorderLayout.CENTER);
+		topLevel.add(okayCancel, BorderLayout.SOUTH);
+		
+		return topLevel;
 	}
 
 	public void updateOkayCancel() {
@@ -167,6 +180,8 @@ public class Auto {
 
 		frame.setContentPane( build() );
 		frame.pack();
+		frame.setSize( frame.getWidth() + ((Integer)UIManager.get("ScrollBar.width")).intValue(), 
+				Math.min( 600, frame.getHeight() ) );
 		frame.setVisible( true );
 
 		return frame;
@@ -178,13 +193,13 @@ public class Auto {
 
 	private class AutoInteger extends JSpinner implements Apply {
 
-		int orig;
+		String orig;
 		Field f;
 
 		public AutoInteger( Field f ) throws IllegalArgumentException, IllegalAccessException {
 			super( new SpinnerNumberModel( f.getInt( o ), -Integer.MAX_VALUE, Integer.MAX_VALUE, 1 ) );
 			this.f = f;
-			this.orig = f.getInt( o );
+			this.orig = getCurrentString();
 			addChangeListener( c -> updateOkayCancel() );
 		}
 
@@ -199,7 +214,11 @@ public class Auto {
 
 		@Override
 		public boolean changed() {
-			return (Integer) getValue() != orig;
+			return !getCurrentString().equals( orig );
+		}
+
+		private String getCurrentString() {
+			return ((JSpinner.DefaultEditor)getEditor()).getTextField().getText();
 		}
 	}
 
