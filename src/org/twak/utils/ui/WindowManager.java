@@ -61,6 +61,7 @@ public class WindowManager {
 	public static void register( JFrame frame ) {
 		frame.setIconImage( getIcon() );
 		frame.setTitle( appName );
+		if (false)
 		frame.addWindowFocusListener( new WindowFocusListener() {
 
 			@Override

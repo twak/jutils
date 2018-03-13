@@ -278,16 +278,19 @@ public class Plot extends JComponent {
 			};
 			
 			public void mouseReleased(java.awt.event.MouseEvent e) {
-				if (clickedOn != null)
+				if (clickedOn != null) {
 					clickedOn.mouseReleased( e, ma );
 				repaint();
+				
+				if (e.getButton() == MouseEvent.BUTTON3)
 				for (Changed c : onChange)
 					c.changed();
+				}
 			};
 			
 			public void mouseExited(java.awt.event.MouseEvent e) {
 				setText("");
-				mouseReleased( e );
+//				mouseReleased( e );
 			};
 		};
 		
