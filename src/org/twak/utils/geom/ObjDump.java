@@ -186,8 +186,11 @@ public class ObjDump {
  		this.material2Face = new MultiMap<Material, Face>( in.material2Face );
 	}
 
-	public void dump( File output )
+    public void dump( File output ) {dump(output, null);}
+	public void dump( File output, File resourceOrigin )
 	{
+		int uniqueResource = 0;
+		
 		try
 		{
             if (output.getParentFile() != null)
@@ -206,15 +209,32 @@ public class ObjDump {
 					materialFile.append( "Ks 0.000 0.000 0.000\n" );
 					materialFile.append( "d 1.0\n" );
 					materialFile.append( "illum 1\n" );
+					
 					if ( mat.filename != null ) {
-						materialFile.append( "map_Kd " + mat.filename + "\n" );
+
+						String ext = Filez.getExtn( mat.filename ); 
+						String newName = uniqueResource +"." + ext ;
+						materialFile.append( "map_Kd " + newName + "\n" );
+
+						if ( resourceOrigin != null ) {
+							
+							File dest = new File( output.getParentFile() + File.separator + newName );
+							if ( dest.exists() )
+								dest.delete();
+							
+							System.out.println( "writing "+dest );
+
+							Files.copy( new File( resourceOrigin + File.separator + mat.filename ).toPath(), dest.toPath() );
+						}
+						
+						uniqueResource++;
 					}
 				}
 				
 				String matFile = output.getName().substring(0,output.getName().indexOf('.')) + ".mtl";
 				out.write("mtllib "+matFile+"\n" );
 				
-					Files.write(new File (output.getParentFile(), matFile).toPath(), materialFile.toString().getBytes());
+				Files.write(new File (output.getParentFile(), matFile).toPath(), materialFile.toString().getBytes());
 			}
 			
 			int c = 0;
@@ -458,6 +478,12 @@ public class ObjDump {
 	public void setCurrentTexture(String textureFile, int w, int h) {
 		currentMaterial = new Material (textureFile, textureFile.replace(".", "_"), w, h );
 	}
+	
+	public void setCurrentTexture(String textureFile, String namePrefix, Color color, double ambientScale ) {
+
+		setCurrentMaterial( namePrefix, color, ambientScale );
+		currentMaterial.filename = textureFile;
+	}	
 
 	public void setCurrentMaterial( Color color, double ambientScale ) {
 		setCurrentMaterial( "mat", color, ambientScale );
