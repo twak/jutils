@@ -128,6 +128,15 @@ public class Arrayz {
 		
 		return out;
 	}
+	
+	public static double[] toDoubleArray(float[] coords) {
+		
+		double[] out = new double[coords.length];
+		for (int i = 0; i < coords.length; i++)
+			out[i] = coords[i];
+		
+		return out;
+	}
 
 	public static int[] toIntArray(List<Integer> inds) {
 		int[] out = new int[inds.size()];
