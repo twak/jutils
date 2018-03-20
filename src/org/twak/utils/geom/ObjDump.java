@@ -186,6 +186,11 @@ public class ObjDump {
  		this.material2Face = new MultiMap<Material, Face>( in.material2Face );
 	}
 
+    String[][] RESOURCES = new String[][] { 
+    	{"", "map_Kd", "map_Ka"},  // texture --> use for ambient and diffuse
+    	{"_spec", "map_Ks"}, // specular 
+    	{"_norm", "map_bump", "bump" } }; // bump 
+    
     public void dump( File output ) {dump(output, null);}
 	public void dump( File output, File resourceOrigin )
 	{
@@ -206,27 +211,37 @@ public class ObjDump {
 					materialFile.append( "newmtl " + mat.name + "\n" );
 					materialFile.append( "Ka " + mat.ambient[ 0 ] + " " + mat.ambient[ 1 ] + " " + mat.ambient[ 2 ] + "\n" );
 					materialFile.append( "Kd " + mat.diffuse[ 0 ] + " " + mat.diffuse[ 1 ] + " " + mat.diffuse[ 2 ] + "\n" );
-					materialFile.append( "Ks 0.000 0.000 0.000\n" );
-					materialFile.append( "d 1.0\n" );
-					materialFile.append( "illum 1\n" );
+					materialFile.append( "Ks 1.0 1.0 1.0\n" );
+//					materialFile.append( "d 1.0\n" );
+//					materialFile.append( "illum 1\n" );
 					
-					if ( mat.filename != null ) {
+					if ( mat.filename != null && resourceOrigin != null ) {
+						for ( String[] res : RESOURCES ) {
 
-						String ext = Filez.getExtn( mat.filename ); 
-						String newName = uniqueResource +"." + ext ;
-						materialFile.append( "map_Kd " + newName + "\n" );
+							String ext = Filez.getExtn( mat.filename );
+							String newName = uniqueResource + res[ 0 ] + "." + ext;
 
-						if ( resourceOrigin != null ) {
-							
+							for ( int i = 1; i < res.length; i++ )
+								materialFile.append( res[ i ] + " " + newName + "\n" );
+
+							File src = new File( resourceOrigin + 
+									File.separator + 
+									Filez.stripExtn( mat.filename ) + 
+									res[ 0 ] + 
+									"." + 
+									ext );
+
+							if ( !src.exists() )
+								continue;
+
 							File dest = new File( output.getParentFile() + File.separator + newName );
 							if ( dest.exists() )
 								dest.delete();
-							
-							System.out.println( "writing "+dest );
 
-							Files.copy( new File( resourceOrigin + File.separator + mat.filename ).toPath(), dest.toPath() );
+							System.out.println( "writing " + dest );
+							Files.copy( src.toPath(), dest.toPath() );
 						}
-						
+
 						uniqueResource++;
 					}
 				}
