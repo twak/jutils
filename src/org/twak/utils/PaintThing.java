@@ -34,8 +34,9 @@ public class PaintThing {
 	public interface ICanPaintU {
 		public void paint (Object o, Graphics2D g, PanMouseAdaptor ma);
 	}
-	
+
 	public static Map<Class, ICanPaintU> lookup = new HashMap<>();
+	public static Map<Class, Class> editLookup = new HashMap<>();
 	
 	public static void paint (Object o, Graphics2D g, PanMouseAdaptor ma) {
 		if (o == null)
@@ -134,19 +135,19 @@ public class PaintThing {
 		g2.setStroke(  new BasicStroke( 1 ) );
 	}
 
-	private static void p(LoopL<Point2d> o, Graphics2D g, PanMouseAdaptor ma) {
+	private static void p(LoopL<? extends Point2d> o, Graphics2D g, PanMouseAdaptor ma) {
 		int cc = 0;
-		for (Loop<Point2d> ll : o)
+		for (Loop<? extends Point2d> ll : o)
 		{
 			p2 (ll, g, ma, cc);
 		}
 	}
 	
-	private static void p(Loop<Point2d> ll, Graphics2D g, PanMouseAdaptor ma) {
+	private static void p(Loop<? extends Point2d> ll, Graphics2D g, PanMouseAdaptor ma) {
 		p2 (ll, g, ma, 0);
 	}
 	
-	private static void p2(Loop<Point2d> ll, Graphics2D g, PanMouseAdaptor ma, int cc) {
+	private static void p2(Loop<? extends Point2d> ll, Graphics2D g, PanMouseAdaptor ma, int cc) {
 		
 		Color c = g.getColor();
 		g.setColor( Colour.transparent( c, 50 ) );
@@ -166,7 +167,7 @@ public class PaintThing {
 //			p (h, g, ma);
 //		
 		if (true)
-			for (Loopable<Point2d> able : ll.loopableIterator() )
+			for (Loopable<? extends Point2d> able : ll.loopableIterator() )
 				drawArrow(g, ma, new Line ( 
 						new Point2d ( able.get().x, able.get().y ),
 						new Point2d ( able.getNext().get().x, able.getNext().get().y ) ),5 );
@@ -280,6 +281,7 @@ public class PaintThing {
 	}
 	
 	private static DRectangle drawBounds = new DRectangle();
+
 	
 	public static DRectangle getBounds () {
 		return drawBounds;

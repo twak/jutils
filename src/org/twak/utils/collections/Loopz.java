@@ -350,7 +350,7 @@ public class Loopz {
 	}
 	
 
-	public static double[] minMax2d( LoopL<Point2d> in ) {
+	public static double[] minMax2d( LoopL<? extends Point2d> in ) {
 
 		double[] out = new double[] { 
 				Double.MAX_VALUE, -Double.MAX_VALUE, 
@@ -363,7 +363,7 @@ public class Loopz {
 		return out;
 	}
 	
-	public static double[] minMax2d( Loop<Point2d> in ) {
+	public static double[] minMax2d( Loop<? extends Point2d> in ) {
 
 		double[] out = new double[] { 
 				Double.MAX_VALUE, -Double.MAX_VALUE, 
@@ -375,7 +375,7 @@ public class Loopz {
 		return out;
 	}
 	
-	private static void minMax2d( Loop<Point2d> in, double[] out ) {
+	private static void minMax2d( Loop<? extends Point2d> in, double[] out ) {
 		
 			for (Point2d p : in) {
 				out[0] = Math.min(out[0], p.x);

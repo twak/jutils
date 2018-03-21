@@ -496,6 +496,14 @@ public class DRectangle {
 
 		return out;
 	}
+	
+	public Point2d normalize( Point2d p ) {
+		
+		return new Point2d ( 
+				( p.x - this.x ) / this.width,
+				( p.y - this.y ) / this.height );
+		
+	}
 
 	public DRectangle scale( DRectangle rect ) {
 		DRectangle out = new DRectangle( rect );

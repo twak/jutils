@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -119,6 +120,8 @@ public class Plot extends JComponent {
 
 		this();
 		
+		List<Object> lo = new ArrayList<>( Arrays.asList(o) );
+		
 		{
 //			Point location = null;
 //			Dimension lastDim
@@ -134,11 +137,16 @@ public class Plot extends JComponent {
 			frame.add( this, BorderLayout.CENTER );
 			
 			controls = new JPanel(new ListDownLayout());
-			for (int i = 0; i < o.length; i++) 
-				if (o[i] instanceof JComponent) {
-					controls.add( (JComponent ) o[i]);
-					o[i] = null;
+			
+			Iterator<Object> io = lo.iterator();
+			
+			while (io.hasNext()) {
+				Object oa = io.next();
+				if (oa instanceof JComponent) {
+					controls.add( (JComponent ) oa);
+					io.remove();
 				}
+			}
 			
 			if (controls.getComponentCount() > 0)
 				frame.add( controls, BorderLayout.EAST );
@@ -160,7 +168,7 @@ public class Plot extends JComponent {
 			open = frame;
 		}
 		
-		toPaint.addAll(Arrays.asList(o));
+		toPaint.addAll(lo);
 	}
 
 	public static void closeLast() {
@@ -206,6 +214,7 @@ public class Plot extends JComponent {
 //	}
 	
 	public interface ICanEdit {
+		public void setObject(Object o);
 		public double getDistance (Point2d pt);
 		public void mouseDown(MouseEvent e, PanMouseAdaptor ma);
 		public void mouseDragged(MouseEvent e, PanMouseAdaptor ma);
@@ -238,15 +247,32 @@ public class Plot extends JComponent {
 					ICanEdit bestEdit = null;
 					double bestDist = Double.MAX_VALUE;//px
 
-					for ( Object o : toPaint )
-						if ( o instanceof ICanEdit ) {
-							ICanEdit ice = (ICanEdit) o;
+					clickedOn = null;
+					
+					for ( Object o : toPaint ) {
+						
+						if (o == null)
+							continue;
+						
+						ICanEdit ice = o instanceof ICanEdit ? (ICanEdit)o : null;
+						Class c = null;
+						if ( ice == null && ( null != ( c = PaintThing.editLookup.get( o.getClass() ) ) ) ) {
+							try {
+								ice = (ICanEdit) c.newInstance();
+							} catch ( Throwable e1 ) {
+								e1.printStackTrace();
+							}
+							ice.setObject(o);
+						}
+						
+						if ( ice != null ) {
 							double dist = ma.toZoom( ice.getDistance( ma.from( e ) ) );
 							if ( dist < bestDist ) {
 								bestDist = dist;
 								bestEdit = ice;
 							}
 						}
+					}
 
 				if ( e.getButton() == MouseEvent.BUTTON3 ) {
 					clickedOn = bestEdit;
@@ -286,6 +312,7 @@ public class Plot extends JComponent {
 				for (Changed c : onChange)
 					c.changed();
 				}
+				clickedOn = null;
 			};
 			
 			public void mouseExited(java.awt.event.MouseEvent e) {
@@ -316,8 +343,10 @@ public class Plot extends JComponent {
 	}
 
 	protected void setText( String string ) {
-		this.text = string;
-		repaint();
+		if (this.text != string) {
+			this.text = string;
+			repaint();
+		}
 	}
 
 	public void writeImage( String string ) {
