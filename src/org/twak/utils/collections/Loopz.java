@@ -1,6 +1,5 @@
 package org.twak.utils.collections;
 
-import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,19 +16,19 @@ import javax.vecmath.Vector2d;
 import javax.vecmath.Vector3d;
 
 import org.twak.utils.Intersector;
+import org.twak.utils.Intersector.Collision;
 import org.twak.utils.Line;
 import org.twak.utils.Mathz;
 import org.twak.utils.Pair;
-import org.twak.utils.Intersector.Collision;
 import org.twak.utils.geom.Anglez;
 import org.twak.utils.geom.Graph2D;
 import org.twak.utils.geom.HalfMesh2;
+import org.twak.utils.geom.HalfMesh2.HalfEdge;
+import org.twak.utils.geom.HalfMesh2.HalfFace;
 import org.twak.utils.geom.LinearForm;
 import org.twak.utils.geom.LinearForm3D;
 import org.twak.utils.geom.ObjDump;
 import org.twak.utils.geom.UnionWalker;
-import org.twak.utils.geom.HalfMesh2.HalfEdge;
-import org.twak.utils.geom.HalfMesh2.HalfFace;
 import org.twak.utils.results.OOB;
 import org.twak.utils.triangulate.EarCutTriangulator;
 

@@ -463,4 +463,8 @@ public class Line implements Serializable
 				Double.isNaN( end  .y );
 	}
 
+    public void set ( double x1, double y1, double x2, double y2) {
+    	this.start = new Point2d(x1,y1);
+    	this.end = new Point2d (x2, y2);
+    }
 }

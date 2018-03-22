@@ -516,6 +516,11 @@ public class DRectangle {
 
 		return out;
 	}
+	public Point2d scale( Point2d pt ) {
+		return new Point2d ( 
+				( pt.x * this.width  ) + this.x, 
+				( pt.y * this.height ) + this.y ) ;
+	}
 
 	public DRectangle scale( double s ) {
 		DRectangle t = new DRectangle( this );
