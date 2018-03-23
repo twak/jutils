@@ -45,6 +45,9 @@ public class Imagez {
 	}
 
 	public static void writeJPG( BufferedImage rendered, float quality, File f ) {
+		
+		if (!f.getParentFile().exists())
+			f.getParentFile().mkdirs();
 
 		try {
 			JPEGImageWriteParam jpegParams = new JPEGImageWriteParam( null );
