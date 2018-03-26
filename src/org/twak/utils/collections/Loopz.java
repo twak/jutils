@@ -56,16 +56,12 @@ public class Loopz {
 		
 		MultiMap<Line, Point2d> cutLineAt = new MultiMap<>();
 		
-//		Set<Point2d> debug = new HashSet<>();
-		
 		for (Collision c : cols)
 			for (Line l : c.lines)
 				if (!l.start.equals(c.location) && !l.end.equals(c.location)) {
 					cutLineAt.put(l, c.location);
-//					debug.add(c.location );
 				}
 		
-//		System.out.println("found " + debug.size() + " collisions from " + a.count() +" + " + b.count() +" inputs ");
 		
 		for (Line l : cutLineAt.keySet()) {
 			final Line ll = l;
