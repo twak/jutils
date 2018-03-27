@@ -172,4 +172,53 @@ public class Imagez {
 		return out;
 	}
 
+	public static BufferedImage scaleSquare (BufferedImage in, int s ) {
+
+		double scale;
+		int xpad, ypad;
+
+		if ( in.getWidth() > in.getHeight() ) {
+			scale = s / (double) in.getWidth();
+			xpad = 0;
+			ypad = (int) ( s - in.getHeight() * scale ) / 2;
+		} else {
+			scale = s / (double) in.getHeight();
+			ypad = 0;
+			xpad = (int) ( s - in.getWidth() * scale ) / 2;
+		}
+
+		int nx = (int) ( xpad + in.getWidth() * scale ), ny = (int) ( ypad + in.getHeight() * scale );
+
+		BufferedImage out = new BufferedImage( s, s, BufferedImage.TYPE_3BYTE_BGR );
+
+		Graphics2D g = out.createGraphics();
+
+		g.setRenderingHint( RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY );
+		g.drawImage( in, xpad, ypad, nx, ny, 0, 0, in.getWidth(), in.getHeight(), null );
+		g.dispose();
+
+		return out;
+	}
+	
+	public static BufferedImage join ( BufferedImage a, BufferedImage b ) {
+		BufferedImage both = new BufferedImage( a.getWidth() + b.getWidth(), a.getHeight(), BufferedImage.TYPE_3BYTE_BGR );
+		Graphics2D g = (Graphics2D) both.getGraphics();
+		g.drawImage( a, 0, 0, a.getWidth(), a.getHeight(), 0, 0, a.getWidth(), a.getHeight(), null );
+		g.drawImage( b, a.getWidth(), 0, a.getWidth() + b.getWidth(), b.getHeight(), 0, 0, b.getWidth(), b.getHeight(), null );
+		g.dispose();
+		return both;
+	}
+
+	public static BufferedImage scaleTo( BufferedImage bi, int x, int y ) {
+		
+		BufferedImage out = new BufferedImage( x, y, BufferedImage.TYPE_3BYTE_BGR );
+		Graphics2D  g = out.createGraphics();
+		g.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
+		g.drawImage( bi, 0, 0, x, y, 0, 0, bi.getWidth(), bi.getHeight(), null );
+		g.dispose();
+		
+		return out;
+		
+	}
+	
 }
