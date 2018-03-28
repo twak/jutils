@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -108,6 +109,20 @@ public class Imagez {
 		t2[0] +=  ( ( c >> 16 ) & 0xFF ) * scale;
 		t2[1] +=  ( ( c >> 8  ) & 0xFF ) * scale;
 		t2[2] +=  ( ( c       ) & 0xFF ) * scale;
+	}
+	
+	private static void toComp( int c, double[] t2) {
+		t2[0] =  ( ( c >> 16 ) & 0xFF );
+		t2[1] =  ( ( c >> 8  ) & 0xFF );
+		t2[2] =  ( ( c       ) & 0xFF );
+	}
+	
+	private static int fromComp( double[] t2) {
+		
+		return 0xff000000 +
+				(((int)t2[0]) << 16) + 
+				(((int)t2[1]) <<  8) + 
+				(((int)t2[2])      ); 
 	}
 	
     public static BufferedImage blur(int radius, BufferedImage in ) {
@@ -219,6 +234,23 @@ public class Imagez {
 		
 		return out;
 		
+	}
+
+	static Random randy = new Random();
+	public static void gaussianNoise( BufferedImage b, double scale ) {
+		
+		double[] tmp = new double[3];
+		
+		for (int x = 0; x < b.getWidth(); x++)
+			for (int y = 0; y < b.getHeight(); y++) {
+				
+				toComp( b.getRGB( x, y ), tmp );
+				
+				for (int i = 0; i < tmp.length; i++) 
+					tmp[i] = Mathz.clamp( tmp[i]+randy.nextGaussian() * 255 * scale, 0, 255 );
+				
+				b.setRGB( x, y, fromComp ( tmp ) ); 
+			}
 	}
 	
 }
