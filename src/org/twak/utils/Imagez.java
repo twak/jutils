@@ -16,6 +16,8 @@ import javax.imageio.ImageWriter;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
 import javax.imageio.stream.FileImageOutputStream;
 
+import org.twak.utils.geom.DRectangle;
+
 public class Imagez {
 
 	public static void writeSummary( File file, List<BufferedImage> images ) {
@@ -188,6 +190,10 @@ public class Imagez {
 	}
 
 	public static BufferedImage scaleSquare (BufferedImage in, int s ) {
+		return scaleSquare( in, s, null );
+	}
+	
+	public static BufferedImage scaleSquare (BufferedImage in, int s, DRectangle pixeLocation ) {
 
 		double scale;
 		int xpad, ypad;
@@ -207,11 +213,15 @@ public class Imagez {
 		BufferedImage out = new BufferedImage( s, s, BufferedImage.TYPE_3BYTE_BGR );
 
 		Graphics2D g = out.createGraphics();
-
+		g.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
 		g.setRenderingHint( RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY );
 		g.drawImage( in, xpad, ypad, nx, ny, 0, 0, in.getWidth(), in.getHeight(), null );
 		g.dispose();
-
+		
+		if (pixeLocation != null) {
+			pixeLocation.x = xpad; pixeLocation.y = ypad; pixeLocation.width = nx-xpad; pixeLocation.height = ny-ypad;
+		}
+		
 		return out;
 	}
 	
@@ -229,6 +239,7 @@ public class Imagez {
 		BufferedImage out = new BufferedImage( x, y, BufferedImage.TYPE_3BYTE_BGR );
 		Graphics2D  g = out.createGraphics();
 		g.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
+		g.setRenderingHint( RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY );
 		g.drawImage( bi, 0, 0, x, y, 0, 0, bi.getWidth(), bi.getHeight(), null );
 		g.dispose();
 		
@@ -252,5 +263,4 @@ public class Imagez {
 				b.setRGB( x, y, fromComp ( tmp ) ); 
 			}
 	}
-	
 }
