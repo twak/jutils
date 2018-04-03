@@ -314,7 +314,7 @@ public class DRectangle {
 			height = py - y;
 	}
 
-	public void envelop( Point2d pt ) {
+	public void envelop( Tuple2d pt ) {
 
 		envelop( pt.x, pt.y );
 	}

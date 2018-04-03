@@ -626,6 +626,22 @@ public class Loopz {
 		
 		return crossings % 2 == 1;
 	}
+	
+	public static boolean inside( Line b, Loop<? extends Point2d> poly ) {
+		
+		if (inside( b.start, poly ))
+			return true;
+		
+		for (Loopable<? extends Point2d> ll : poly.loopableIterator()) {
+			
+			Line a = new Line (ll.get(), ll.getNext().get());
+
+			if ( a.intersects( b, true ) != null )
+				return true;
+		}
+
+		return false;
+	}
 
 	public static LinearForm3D findPlane( LoopL<Point3d> loopL ) {
 		
