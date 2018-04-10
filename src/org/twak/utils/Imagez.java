@@ -57,7 +57,7 @@ public class Imagez {
 		try {
 			JPEGImageWriteParam jpegParams = new JPEGImageWriteParam( null );
 			jpegParams.setCompressionMode( ImageWriteParam.MODE_EXPLICIT );
-			jpegParams.setCompressionQuality( 1f );
+			jpegParams.setCompressionQuality( quality );
 
 			ImageWriter writer = ImageIO.getImageWritersByFormatName( "jpeg" ).next();
 			ImageWriteParam param = writer.getDefaultWriteParam();
