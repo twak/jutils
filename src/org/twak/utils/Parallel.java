@@ -7,29 +7,78 @@ import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class Parallel <I,O> {
+public class Parallel<I, O> {
 
-	public interface Work<I,O> {
-		public O work (I i );
+	public interface Work<I, O> {
+		public O work( I i );
+	}
+
+	public interface Complete<O> {
+		public void complete( Set<O> dones );
+	}
+
+	public interface WorkFactory<I> {
+		public I generateWork();
+		public boolean shouldAbort();
 	}
 	
-	public interface Complete<O> {
-		public void complete (Set<O> dones);
+	
+	public static class ListWF<I> implements WorkFactory<I>{
+
+		List<I> list;
+		AtomicInteger index;
+		boolean abort = false;
+		
+		public ListWF( List<I> in ) {
+			this.list = in;
+			index = new AtomicInteger(-1);
+		}
+		
+		@Override
+		public I generateWork() {
+			int i = index.incrementAndGet();
+			if (i >= list.size())
+				return null;
+			
+			System.out.println( i+" parallel jobs remain" );
+			
+			return list.get( i );
+		}
+
+		public void abort() {
+			abort = true;
+		}
+		
+		@Override
+		public boolean shouldAbort() {
+			return abort;
+		}
+	}
+	
+
+//	public Parallel( List<I> in, Work<I, O> work, Complete<O> done, boolean block ) {
+//	}
+
+
+	public Parallel( List<I> lines, Work<I, O> work, Complete<O> done, boolean block ) {
+		this ( new ListWF(lines), work, done, block, -1 );
+	}
+	
+	public Parallel( List<I> lines, Work<I, O> work, Complete<O> done, boolean block, int tCount_ ) {
+		this ( new ListWF(lines), work, done, block, tCount_ );
 	}
 
-	public Parallel (List<I> in, Work<I,O> work, Complete<O> done, boolean block) {
-		
-		BlockingQueue<I> togo = new ArrayBlockingQueue<>( in.size() );
-		
-		togo.addAll( in );
-		
-		int tCount = Runtime.getRuntime().availableProcessors() / 2 /*hyperthreads are shite*/;
-		
+	
+	public Parallel( WorkFactory<I> gen, Work<I, O> work, Complete<O> done, boolean block, int tCount_ ) {
+
+		int tCount = tCount_ <= 0 ? Runtime.getRuntime().availableProcessors() / 2 : tCount_; // hyperthreads....
+
 		Set<O> os = Collections.synchronizedSet( new HashSet<>() );
-		
+
 		CountDownLatch cdl = new CountDownLatch( tCount );
-		
+
 		for ( int i = 0; i < tCount; i++ ) {
 			new Thread() {
 
@@ -38,17 +87,22 @@ public class Parallel <I,O> {
 
 					try {
 						while ( true ) {
+
+							I next = gen.generateWork();
 							
-							I i = togo.poll();
-
-							System.out.println( "parallel jobs remaining: " + togo.size() );
-
-							if ( i == null )
+							if ( next == null )
 								return;
-
-							os.add( work.work( i ) );
+							
+							try {
+								work.work( next );
+							} catch ( Throwable th ) {
+								th.printStackTrace();
+							}
+							
 							System.out.println( "parallel job done" );
-
+							
+							if (gen.shouldAbort())
+								break;
 						}
 					} finally {
 						cdl.countDown();
@@ -56,13 +110,13 @@ public class Parallel <I,O> {
 				}
 			}.start();
 		}
-		
+
 		Thread t = new Thread() {
 			public void run() {
 
 				try {
 					cdl.await();
-					if (done != null)
+					if ( done != null )
 						done.complete( os );
 					System.out.println( "parallel complete done" );
 				} catch ( InterruptedException e ) {
@@ -71,11 +125,9 @@ public class Parallel <I,O> {
 			};
 		};
 
-		if (block)
+		if ( block )
 			t.run();
 		else
 			t.start();
-		
 	}
-	
 }
