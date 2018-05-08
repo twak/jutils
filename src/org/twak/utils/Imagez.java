@@ -190,23 +190,27 @@ public class Imagez {
 	}
 
 	public static BufferedImage scaleSquare (BufferedImage in, int s ) {
-		return scaleSquare( in, s, null );
+		return scaleSquare( in, s, null, Double.MAX_VALUE );
 	}
 	
-	public static BufferedImage scaleSquare (BufferedImage in, int s, DRectangle pixeLocation ) {
+	public static BufferedImage scaleSquare (BufferedImage in, int s, double maxScale ) {
+		return scaleSquare( in, s, null, maxScale );
+	}
+	
+	public static BufferedImage scaleSquare (BufferedImage in, int s, DRectangle pixeLocation, double maxScale ) {
 
 		double scale;
 		int xpad, ypad;
 
-		if ( in.getWidth() > in.getHeight() ) {
+		if ( in.getWidth() > in.getHeight() ) 
 			scale = s / (double) in.getWidth();
-			xpad = 0;
-			ypad = (int) ( s - in.getHeight() * scale ) / 2;
-		} else {
+		else
 			scale = s / (double) in.getHeight();
-			ypad = 0;
-			xpad = (int) ( s - in.getWidth() * scale ) / 2;
-		}
+		
+		scale = Math.min (maxScale, scale);
+		
+		ypad = (int) ( s - in.getHeight() * scale ) / 2;
+		xpad = (int) ( s - in.getWidth() * scale ) / 2;
 
 		int nx = (int) ( xpad + in.getWidth() * scale ), ny = (int) ( ypad + in.getHeight() * scale );
 

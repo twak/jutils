@@ -42,7 +42,7 @@ public class Parallel<I, O> {
 			if (i >= list.size())
 				return null;
 			
-			System.out.println( i+" parallel jobs remain" );
+			System.out.println( list.size() - i +" parallel jobs remain" );
 			
 			return list.get( i );
 		}
