@@ -19,7 +19,9 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -93,6 +95,15 @@ public class WindowManager {
 		frames.add( new WeakReference<JFrame>( frame ));
 	}
 
+	public static JFrame frame( String title, JComponent content ) {
+		JFrame out = new JFrame( title );
+		out.setContentPane( content );
+		register (out);
+		return out;
+	}
+    
+
+	
     static Image getIcon()
     {
 		if ( icon == null ) {
@@ -109,4 +120,5 @@ public class WindowManager {
 		
         return icon;
     }
+
 }

@@ -552,4 +552,19 @@ public class DRectangle {
 
 		return out;
 	}
+	
+	public static class Enveloper extends DRectangle {
+
+		boolean seen = false;
+		
+		public void envelop (Point2d pt ) {
+			if (!seen) {
+				x = pt.x;
+				y = pt.y;
+				width = height = 0;
+			}
+			else
+				super.envelop( pt );
+		}
+	}
 }
