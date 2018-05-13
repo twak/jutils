@@ -35,6 +35,12 @@ public class AutoEnumCombo extends javax.swing.JPanel {
 
         combo.setModel( dcbm );
         combo.setSelectedItem( num );
+        
+        combo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboActionPerformed(evt);
+            }
+        });
     }
 
     public interface ValueSet
@@ -57,11 +63,7 @@ public class AutoEnumCombo extends javax.swing.JPanel {
         nameLabel.setText("name:");
 
         combo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        combo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboActionPerformed(evt);
-            }
-        });
+
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -82,8 +84,12 @@ public class AutoEnumCombo extends javax.swing.JPanel {
 
     private void comboActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_comboActionPerformed
     {//GEN-HEADEREND:event_comboActionPerformed
-        Enum num = (Enum)combo.getSelectedItem();
-        vs.valueSet( num );
+		Enum num = (Enum) combo.getSelectedItem();
+		try {
+			vs.valueSet( num );
+		} catch ( Throwable th ) {
+			th.printStackTrace();
+		}
     }//GEN-LAST:event_comboActionPerformed
 
 

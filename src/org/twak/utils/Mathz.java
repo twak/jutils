@@ -24,10 +24,12 @@ public class Mathz
 	public static final Vector2d UP = new Vector2d(0,1);
 
 	public static final Vector3d Y_UP = new Vector3d(0,1,0);
+	public static final Vector3d Z_UP = new Vector3d(0,0,1);
 	
 	public static final Tuple3d X_POS = new Vector3d(1,0,0);
 	public static final Tuple3d Y_POS = new Vector3d(0,1,0);
 	public static final Tuple3d Z_POS = new Vector3d(0,0,1);
+
 
 	public static double PI2 = Math.PI / 2, PI3 = Math.PI / 3, PI4 = Math.PI /4, PI6 = Math.PI / 6, TwoPI  = 2 * Math.PI;
 	

@@ -6,7 +6,7 @@ import java.awt.Color;
  * Very similar to Rainbow!
  * @author twak
  */
-public class Colour//  import uk.british; extends Color;
+public class Colourz
 {
 
     static float hue;
@@ -68,6 +68,15 @@ public class Colour//  import uk.british; extends Color;
 			};
 	}
 	
+	public static double[] toD4( Color color ) {
+		return new double[] {
+				color.getRed()   / 255f,
+				color.getGreen() / 255f,
+				color.getBlue()  / 255f,
+				color.getAlpha() / 255f
+		};
+	}
+	
 	public static String toHex(Color color) {
 		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());  
 	}
@@ -88,5 +97,12 @@ public class Colour//  import uk.british; extends Color;
 		Color.RGBtoHSB( c.getRed(), c.getGreen(), c.getBlue(), hsb );
 		hsb[2] = Math.max (1, hsb[1] * 1.2f );
 		return Color.getHSBColor( hsb[0], hsb[1], hsb[2] );
+	}
+
+	public static Color to4( float[] c ) {
+		return new Color(c[0], c[1], c[2], c[3]);
+	}
+	public static Color to4( double[] c ) {
+		return new Color( (float) c[0], (float)c[1], (float)c[2], (float)c[3]);
 	}
 }

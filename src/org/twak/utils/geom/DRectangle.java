@@ -502,7 +502,13 @@ public class DRectangle {
 		return new Point2d ( 
 				( p.x - this.x ) / this.width,
 				( p.y - this.y ) / this.height );
+	}
+	
+	public Point2d transform( Point2d p ) {
 		
+		return new Point2d (
+				p.x * this.width  + this.x,
+				p.y * this.height + this.y  );
 	}
 
 	public DRectangle scale( DRectangle rect ) {
@@ -557,11 +563,13 @@ public class DRectangle {
 
 		boolean seen = false;
 		
-		public void envelop (Point2d pt ) {
+		public void envelop( Tuple2d pt ) {
+			
 			if (!seen) {
 				x = pt.x;
 				y = pt.y;
 				width = height = 0;
+				seen = true;
 			}
 			else
 				super.envelop( pt );

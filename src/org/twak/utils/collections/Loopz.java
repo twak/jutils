@@ -1,5 +1,6 @@
 package org.twak.utils.collections;
 
+import java.awt.Polygon;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,6 +22,7 @@ import org.twak.utils.Line;
 import org.twak.utils.Mathz;
 import org.twak.utils.Pair;
 import org.twak.utils.geom.Anglez;
+import org.twak.utils.geom.DRectangle;
 import org.twak.utils.geom.Graph2D;
 import org.twak.utils.geom.HalfMesh2;
 import org.twak.utils.geom.HalfMesh2.HalfEdge;
@@ -791,6 +793,24 @@ public class Loopz {
 		out.x /= count;
 		out.y /= count;
 
+		return out;
+	}
+
+	public static List<Polygon> toPolygon( LoopL<Point2d> toDraw, DRectangle src, DRectangle dest ) {
+		
+		List<Polygon> out = new ArrayList<>();
+		
+		for (Loop<Point2d> l : toDraw) {
+			
+			Polygon p = new Polygon();
+			out.add( p );
+			
+			for (Point2d pt  : l) {
+				pt = dest.transform( src.normalize( pt ) );
+				p.addPoint( (int) pt.x, (int) pt.y ); 
+			}
+		}
+		
 		return out;
 	}
 }

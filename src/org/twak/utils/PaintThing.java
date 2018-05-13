@@ -22,7 +22,7 @@ import org.twak.utils.geom.Graph2D;
 import org.twak.utils.geom.HalfMesh2;
 import org.twak.utils.geom.HalfMesh2.HalfEdge;
 import org.twak.utils.geom.HalfMesh2.HalfFace;
-import org.twak.utils.ui.Colour;
+import org.twak.utils.ui.Colourz;
 import org.twak.utils.ui.Rainbow;
 
 public class PaintThing {
@@ -150,7 +150,7 @@ public class PaintThing {
 	private static void p2(Loop<? extends Point2d> ll, Graphics2D g, PanMouseAdaptor ma, int cc) {
 		
 		Color c = g.getColor();
-		g.setColor( Colour.transparent( c, 50 ) );
+		g.setColor( Colourz.transparent( c, 50 ) );
 		
 		Polygon p = new Polygon();
 		
