@@ -6,6 +6,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
+import java.awt.event.MouseAdapter;
 import java.io.File;
 import java.util.List;
 
@@ -21,8 +22,25 @@ public class FileDrop extends JLabel {
 		
 		setPreferredSize( new Dimension( 200,80) );
 		setHorizontalAlignment( SwingConstants.CENTER );
-		setBackground( Color.gray );
 		setBorder( new LineBorder( Color.black, 3 ) );
+		setOpaque( true );
+		setBackground( Color.white );
+		setForeground( Color.black );
+		
+		MouseAdapter ma = new MouseAdapter() {
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				setBackground( Color.gray );
+			};
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				setBackground( Color.white );
+			};
+			public void mouseDragged(java.awt.event.MouseEvent e) {
+				setBackground( Color.gray );
+			};
+		};
+		
+		addMouseListener( ma );
+		addMouseMotionListener( ma );
 		
 		setDropTarget(new DropTarget() {
 		    public synchronized void drop(DropTargetDropEvent evt) {
