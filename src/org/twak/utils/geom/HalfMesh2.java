@@ -55,7 +55,9 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			last = pt;
 		}
 
-		public void newFace() {
+		public HalfFace newFace() {
+			
+			HalfFace face = null;
 			
 			if (last != null) {
 
@@ -64,7 +66,7 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 				lastEdge.next = edge;
 				edge.next = firstEdge;
 				
-				HalfFace face = createFace( faceClass, edge);
+				face = createFace( faceClass, edge);
 				for (HalfEdge e : face.edges()) { 
 					e.face = face;
 				}
@@ -74,6 +76,8 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 
 			first = last = null;
 			firstEdge = lastEdge = null;
+			
+			return face;
 		}
 
 		private HalfEdge newEdge(Point2d s, Point2d e) {

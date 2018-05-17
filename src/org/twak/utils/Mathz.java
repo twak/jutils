@@ -291,6 +291,16 @@ public class Mathz
 		return Arrays.stream( objects ).filter( o -> o == null ).count() == 0;
 	}
 
-	
+	public static int nextPower2(int n) {
+	    n -= 1; 
+	    int shift = 1;
+	    
+	    while (((n+1) & n) != 0){ 
+	        n |= n >> shift;
+	        shift <<= 1;
+	    }
+	    
+	    return n + 1;
+}
 	
 }

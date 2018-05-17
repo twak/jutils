@@ -15,6 +15,8 @@ import javax.swing.DefaultComboBoxModel;
 public class AutoEnumCombo extends javax.swing.JPanel {
 
     ValueSet vs;
+    Enum[] values;
+    String label;
 
     /** Creates new form AutoEnumCombo */
     public AutoEnumCombo() {
@@ -22,13 +24,22 @@ public class AutoEnumCombo extends javax.swing.JPanel {
     }
     
     public AutoEnumCombo(Enum num, ValueSet vs) {
+    	this (num, vs, "name", num.getClass().getEnumConstants());
+    }
+    public AutoEnumCombo(Enum num, ValueSet vs, String label) {
+    	this (num, vs, label, num.getClass().getEnumConstants());
+    }
+    
+    public AutoEnumCombo(Enum num, ValueSet vs, String label, Enum[] values) {
         this.vs = vs;
+        this.values = values;
+        this.label = label;
 
         initComponents();
 
         DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
 
-        for (Enum e : num.getClass().getEnumConstants())
+        for (Enum e : values)
         {
             dcbm.addElement( e );
         }
@@ -43,6 +54,10 @@ public class AutoEnumCombo extends javax.swing.JPanel {
         });
     }
 
+    public void fire() {
+    	vs.valueSet( values [combo.getSelectedIndex()] );
+    }
+    
     public interface ValueSet
     {
         public void valueSet (Enum num);
@@ -60,7 +75,7 @@ public class AutoEnumCombo extends javax.swing.JPanel {
         nameLabel = new javax.swing.JLabel();
         combo = new javax.swing.JComboBox();
 
-        nameLabel.setText("name:");
+        nameLabel.setText(label);
 
         combo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 

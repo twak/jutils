@@ -7,6 +7,7 @@ import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.List;
 
@@ -37,6 +38,18 @@ public class FileDrop extends JLabel {
 			public void mouseDragged(java.awt.event.MouseEvent e) {
 				setBackground( Color.gray );
 			};
+			
+			@Override
+			public void mouseClicked( MouseEvent e ) {
+				new SimpleFileChooser(null, false, "select image file, or drag n drop") {
+					@Override
+					public void heresTheFile( File f ) throws Throwable {
+						process(f);
+					}
+				};
+				
+				super.mouseClicked( e );
+			}
 		};
 		
 		addMouseListener( ma );

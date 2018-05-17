@@ -71,6 +71,8 @@ public class AutoDoubleSlider extends JPanel{
             
             textField.setPreferredSize( new Dimension( 50, textField.getMinimumSize().height ) );
             add(textField, BorderLayout.EAST);
+            
+            setPreferredSize( textField.getPreferredSize() );
         }
         catch ( Throwable ex )
         {

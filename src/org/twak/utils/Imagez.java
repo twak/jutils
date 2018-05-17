@@ -1,8 +1,11 @@
 package org.twak.utils;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -190,14 +193,14 @@ public class Imagez {
 	}
 
 	public static BufferedImage scaleSquare (BufferedImage in, int s ) {
-		return scaleSquare( in, s, null, Double.MAX_VALUE );
+		return scaleSquare( in, s, null, Double.MAX_VALUE, Color.black );
 	}
 	
 	public static BufferedImage scaleSquare (BufferedImage in, int s, double maxScale ) {
-		return scaleSquare( in, s, null, maxScale );
+		return scaleSquare( in, s, null, maxScale, Color.black );
 	}
 	
-	public static BufferedImage scaleSquare (BufferedImage in, int s, DRectangle pixeLocation, double maxScale ) {
+	public static BufferedImage scaleSquare (BufferedImage in, int s, DRectangle pixeLocation, double maxScale, Color bg ) {
 
 		double scale;
 		int xpad, ypad;
@@ -217,6 +220,8 @@ public class Imagez {
 		BufferedImage out = new BufferedImage( s, s, BufferedImage.TYPE_3BYTE_BGR );
 
 		Graphics2D g = out.createGraphics();
+		g.setColor( bg );
+		g.fillRect( 0, 0, s, s );
 		g.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
 		g.setRenderingHint( RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY );
 		g.drawImage( in, xpad, ypad, nx, ny, 0, 0, in.getWidth(), in.getHeight(), null );
@@ -266,5 +271,61 @@ public class Imagez {
 				
 				b.setRGB( x, y, fromComp ( tmp ) ); 
 			}
+	}
+
+	public static BufferedImage padTo( BufferedImage in, DRectangle mask, int x, int y, Color bg ) {
+		
+		if (in.getWidth() > x || in.getHeight() > y)
+			throw new Error();
+		
+		BufferedImage out = new BufferedImage( x, y, in.getType() );
+		
+		Graphics2D g = out.createGraphics();
+		
+		g.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
+		g.setRenderingHint( RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY );
+		
+		int xd = (x - in.getWidth ())/2,
+			yd = (y - in.getHeight())/2;
+
+		g.setColor( bg );
+		g.fillRect( 0, 0, x, y );
+		
+		g.drawImage( in, xd, yd,in.getWidth(), in.getHeight(), null );
+		g.dispose();
+		
+		if (mask != null ){
+			mask.x += xd;
+			mask.y += yd;
+		}
+		
+		
+		return out;
+	}
+
+	public static BufferedImage cropShared( BufferedImage src, DRectangle w ) {
+		return
+				src.getSubimage(  
+					(int) w.x, 
+					(int) w.y,
+					(int) w.width , 
+					(int) w.height );
+	}
+	
+	// https://stackoverflow.com/questions/3514158/how-do-you-clone-a-bufferedimage?rq=1
+	public static BufferedImage clone(BufferedImage source){
+	    BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
+	    Graphics2D g = b.createGraphics();
+	    g.drawImage(source, 0, 0, null);
+	    g.dispose();
+	    return b;
+	}
+	
+	public static BufferedImage read( File f ) {
+		try {
+			return ImageIO.read( f );
+		} catch ( Throwable th ) {
+			return new BufferedImage( 1, 1, BufferedImage.TYPE_3BYTE_BGR );
+		}
 	}
 }
