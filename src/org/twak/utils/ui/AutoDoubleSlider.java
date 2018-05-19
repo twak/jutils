@@ -21,7 +21,9 @@ public class AutoDoubleSlider extends JPanel{
     JFormattedTextField textField;
     JSlider slider;
 	private Runnable update;
-
+	private boolean onDrag = true;
+	boolean updating = false;
+	
     public AutoDoubleSlider ( Object o, String field, final String name, final double min, final double max ) {
     	this (o, field, name, min, max, null);
     }
@@ -52,8 +54,16 @@ public class AutoDoubleSlider extends JPanel{
                 @Override
                 public void stateChanged( ChangeEvent e )
                 {
-                    double val = slider.getValue() / (double)(slider.getMaximum() - slider.getMinimum());
-                    set ((val * (max -min) ) + min, max, min);
+                	
+                	if (updating)
+                		return;
+                	
+                	if ( onDrag || !slider.getValueIsAdjusting()) {
+                		double val = slider.getValue() / (double)(slider.getMaximum() - slider.getMinimum());
+                		updating = true;
+                    	set ((val * (max -min) ) + min, max, min);
+                    	updating = false;
+                	}
                 }
             });
             add(slider, BorderLayout.CENTER);
@@ -65,7 +75,8 @@ public class AutoDoubleSlider extends JPanel{
                 @Override
                 public void propertyChange( PropertyChangeEvent evt )
                 {
-                    set ( (Double) textField.getValue(), max, min);
+                	if (!updating)
+                		set ( (Double) textField.getValue(), max, min);
                 }
             });
             
@@ -86,10 +97,14 @@ public class AutoDoubleSlider extends JPanel{
         try
         {
             f.set( o, value );
-//            if (!textField.getValue().equals( value ) )
-                textField.setValue( value );
             
-            slider.setValue( (int)( ((value-min)/(max-min)) * (slider.getMaximum() - slider.getMinimum()) + slider.getMinimum() ) );
+            if (!textField.getValue().equals( value ) )
+                 textField.setValue( value );
+            
+            int v =(int)( ((value-min)/(max-min)) * (slider.getMaximum() - slider.getMinimum()) + slider.getMinimum() ) ;
+            
+            if (v != slider.getValue())
+            	slider.setValue( v );
             
         } catch ( Throwable ex )
         {
@@ -99,6 +114,11 @@ public class AutoDoubleSlider extends JPanel{
         {
             updated();
         }
+    }
+    
+    public AutoDoubleSlider notWhileDragging() {
+    	this.onDrag = false;
+    	return this;
     }
     
     public void updated()
