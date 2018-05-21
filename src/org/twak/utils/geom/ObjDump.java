@@ -196,6 +196,8 @@ public class ObjDump {
 	{
 		int uniqueResource = 0;
 		
+		Map<String, String> usedTextures = new HashMap<>();
+		
 		try
 		{
             if (output.getParentFile() != null)
@@ -219,11 +221,21 @@ public class ObjDump {
 						for ( String[] res : RESOURCES ) {
 
 							String ext = Filez.getExtn( mat.filename );
-							String newName = uniqueResource + res[ 0 ] + "." + ext;
+							
+							String newName = usedTextures.get(mat.filename);
+							boolean needsCopy = false;
+							
+							if (newName == null) {
+								newName = uniqueResource + res[ 0 ] + "." + ext;
+								needsCopy = true;
+								usedTextures.put (mat.filename, newName);
+								uniqueResource++;
+							}
 
 							for ( int i = 1; i < res.length; i++ )
 								materialFile.append( res[ i ] + " " + newName + "\n" );
 
+							if ( needsCopy ) {
 							File src = new File( resourceOrigin + 
 									File.separator + 
 									Filez.stripExtn( mat.filename ) + 
@@ -234,15 +246,15 @@ public class ObjDump {
 							if ( !src.exists() )
 								continue;
 
-							File dest = new File( output.getParentFile() + File.separator + newName );
-							if ( dest.exists() )
-								dest.delete();
+								File dest = new File( output.getParentFile() + File.separator + newName );
+								if ( dest.exists() )
+									dest.delete();
 
-							System.out.println( "writing " + dest );
-							Files.copy( src.toPath(), dest.toPath() );
+								System.out.println( "writing " + dest );
+								Files.copy( src.toPath(), dest.toPath() );
+							}
 						}
 
-						uniqueResource++;
 					}
 				}
 				

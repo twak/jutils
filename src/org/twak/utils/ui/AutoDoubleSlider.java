@@ -45,9 +45,9 @@ public class AutoDoubleSlider extends JPanel{
 
             final int scale = 1000;
             slider = new JSlider( 
-                    (int)(min * scale), 
-                    (int)(max * scale), 
-                    (int)(initialVal * scale) );
+                    (int)0, 
+                    (int)( ( max - min) * scale), 
+                    (int)( ( initialVal- min) * scale) );
             
             slider.addChangeListener( new ChangeListener() {
 
