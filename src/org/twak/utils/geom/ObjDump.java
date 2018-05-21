@@ -34,6 +34,8 @@ import org.twak.utils.collections.MultiMap;
  */
 public class ObjDump {
 
+	public static boolean REMOVE_DUPE_TEXTURES = false;
+
 	public String name;
 
 	public Material currentMaterial = null;
@@ -197,6 +199,7 @@ public class ObjDump {
 		int uniqueResource = 0;
 		
 		Map<String, String> usedTextures = new HashMap<>();
+		Map<String, String> usedNames = new HashMap<>();
 		
 		try
 		{
@@ -210,25 +213,29 @@ public class ObjDump {
 				StringBuffer materialFile = new StringBuffer();
 				for ( Material mat : material2Face.keySet() ) {
 
-					materialFile.append( "newmtl " + mat.name + "\n" );
-					materialFile.append( "Ka " + mat.ambient[ 0 ] + " " + mat.ambient[ 1 ] + " " + mat.ambient[ 2 ] + "\n" );
-					materialFile.append( "Kd " + mat.diffuse[ 0 ] + " " + mat.diffuse[ 1 ] + " " + mat.diffuse[ 2 ] + "\n" );
-					materialFile.append( "Ks 1.0 1.0 1.0\n" );
-//					materialFile.append( "d 1.0\n" );
-//					materialFile.append( "illum 1\n" );
 					
-					if ( mat.filename != null && resourceOrigin != null ) {
+					if ( mat.filename != null && resourceOrigin != null ) { //texture
+						
+						String ext = Filez.getExtn( mat.filename );
+						
+						String newName = usedTextures.get(mat.filename);
+						boolean needsCopy = false;
+						
+						if (newName != null && REMOVE_DUPE_TEXTURES ) {
+							mat.name = usedNames.get(mat.filename);
+							continue;
+						}
+						
+						writeMaterial( materialFile, mat );
+						
 						for ( String[] res : RESOURCES ) {
 
-							String ext = Filez.getExtn( mat.filename );
-							
-							String newName = usedTextures.get(mat.filename);
-							boolean needsCopy = false;
 							
 							if (newName == null) {
 								newName = uniqueResource + res[ 0 ] + "." + ext;
 								needsCopy = true;
 								usedTextures.put (mat.filename, newName);
+								usedTextures.put (mat.filename, mat.name);
 								uniqueResource++;
 							}
 
@@ -254,7 +261,9 @@ public class ObjDump {
 								Files.copy( src.toPath(), dest.toPath() );
 							}
 						}
-
+					}
+					else { // no texture
+						writeMaterial( materialFile, mat );
 					}
 				}
 				
@@ -303,6 +312,16 @@ public class ObjDump {
 		{
 			e.printStackTrace();
 		}
+	}
+
+	private void writeMaterial( StringBuffer materialFile, Material mat ) {
+		materialFile.append( "newmtl " + mat.name + "\n" );
+		materialFile.append( "Ka " + mat.ambient[ 0 ] + " " + mat.ambient[ 1 ] + " " + mat.ambient[ 2 ] + "\n" );
+		materialFile.append( "Kd " + mat.diffuse[ 0 ] + " " + mat.diffuse[ 1 ] + " " + mat.diffuse[ 2 ] + "\n" );
+		materialFile.append( "Ks 1.0 1.0 1.0\n" );
+
+//		materialFile.append( "d 1.0\n" );
+//		materialFile.append( "illum 1\n" );
 	}
 
     /**
