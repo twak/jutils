@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point2d;
@@ -198,8 +198,9 @@ public class ObjDump {
 	{
 		int uniqueResource = 0;
 		
-		Map<String, String> usedTextures = new HashMap<>();
-		Map<String, String> usedNames = new HashMap<>();
+		Map<String, Material> usedTextures = new HashMap<>();
+//		Map<String, String> usedNames = new HashMap<>();
+//		Map<Material, Material> replaceMaterials = new LinkedHashMap(); 
 		
 		try
 		{
@@ -208,52 +209,64 @@ public class ObjDump {
             
 			BufferedWriter out = new BufferedWriter(new FileWriter(output));
 			
+			
 			if (writeMtlFile && currentMaterial != null) {
 				System.out.println("writing material file");
 				StringBuffer materialFile = new StringBuffer();
-				for ( Material mat : material2Face.keySet() ) {
+				for ( Material mat : new LinkedHashSet<Material> ( material2Face.keySet() ) ) {
 
 					
-					if ( mat.filename != null && resourceOrigin != null ) { //texture
+					if ( mat.filename != null ) { //texture
 						
 						String ext = Filez.getExtn( mat.filename );
 						
-						String newName = usedTextures.get(mat.filename);
-						boolean needsCopy = false;
-						
-						if (newName != null && REMOVE_DUPE_TEXTURES ) {
-							mat.name = usedNames.get(mat.filename);
-							continue;
+						if ( REMOVE_DUPE_TEXTURES ) {
+							Material neu = usedTextures.get( mat.filename );
+							if ( neu != null ) {
+								
+								List<Face> faces = material2Face.remove(mat);
+//								mat.name = neu.name;
+								material2Face.putAll(neu, faces, false);
+								
+								continue;
+							}
 						}
-						
+
 						writeMaterial( materialFile, mat );
 						
 						for ( String[] res : RESOURCES ) {
 
+							boolean needsCopy = false;
 							
-							if (newName == null) {
-								newName = uniqueResource + res[ 0 ] + "." + ext;
-								needsCopy = true;
-								usedTextures.put (mat.filename, newName);
-								usedTextures.put (mat.filename, mat.name);
-								uniqueResource++;
+							String fileName = Filez.stripExtn( mat.filename ) + res[ 0 ] + "." + ext ;
+							
+							if ( resourceOrigin != null) {
+									fileName = uniqueResource + res[ 0 ] + "." + ext;
+									needsCopy = true;
+									usedTextures.put ( mat.filename, mat);
 							}
+							else {
+								if (!new File (output.getParentFile(), fileName).exists())
+									continue;
+								usedTextures.put ( fileName, mat);
+							}
+							
 
 							for ( int i = 1; i < res.length; i++ )
-								materialFile.append( res[ i ] + " " + newName + "\n" );
+								materialFile.append( res[ i ] + " " + fileName + "\n" );
 
-							if ( needsCopy ) {
-							File src = new File( resourceOrigin + 
+							if ( needsCopy && resourceOrigin != null) {
+								File src = new File( resourceOrigin + 
 									File.separator + 
 									Filez.stripExtn( mat.filename ) + 
 									res[ 0 ] + 
 									"." + 
 									ext );
 
-							if ( !src.exists() )
-								continue;
+								if ( !src.exists() )
+									continue;
 
-								File dest = new File( output.getParentFile() + File.separator + newName );
+								File dest = new File( output.getParentFile() + File.separator + fileName );
 								if ( dest.exists() )
 									dest.delete();
 
@@ -261,6 +274,8 @@ public class ObjDump {
 								Files.copy( src.toPath(), dest.toPath() );
 							}
 						}
+
+						uniqueResource++;
 					}
 					else { // no texture
 						writeMaterial( materialFile, mat );
@@ -288,9 +303,12 @@ public class ObjDump {
 				for ( Tuple3d norm : orderNorm )
 					out.write( "vn " + norm.x + " " + norm.y + " " + norm.z + "\n" );
             
+			String lastMat = null;
 			for (Material mat : material2Face.keySet()) {
-				if (mat != null) {
+				
+				if (mat != null && lastMat != mat.name) {
 					out.write("usemtl " + mat.name+"\n");
+					lastMat = mat.name;
 					out.write("o " + mat.name+"\n"); // every object has a different material...right?
 				}
 				
