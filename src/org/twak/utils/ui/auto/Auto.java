@@ -31,6 +31,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.DefaultFormatter;
 
+import org.twak.utils.Stringz;
 import org.twak.utils.ui.AbstractDocumentListener;
 import org.twak.utils.ui.ListDownLayout;
 import org.twak.utils.ui.WindowManager;
@@ -169,7 +170,7 @@ public class Auto {
 		if ( n != null )
 			out = n.name();
 		else
-			return splitCamelCase( f.getName() ).toLowerCase();
+			return Stringz.splitCamelCase( f.getName() ).toLowerCase();
 
 		return out + ":";
 	}
@@ -185,10 +186,6 @@ public class Auto {
 		frame.setVisible( true );
 
 		return frame;
-	}
-
-	static String splitCamelCase( String s ) {
-		return s.replaceAll( String.format( "%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])", "(?<=[A-Za-z])(?=[^A-Za-z])" ), " " );
 	}
 
 	private class AutoInteger extends JSpinner implements Apply {

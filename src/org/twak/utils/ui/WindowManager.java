@@ -60,11 +60,17 @@ public class WindowManager {
     	}
     }
     
-	public static void register( JFrame frame ) {
+    public static void register( JFrame frame) {
+    	register (frame, "");
+    }
+    
+	public static void register( JFrame frame, String title ) {
+		
 		frame.setIconImage( getIcon() );
-		frame.setTitle( appName );
-		if (false)
-		frame.addWindowFocusListener( new WindowFocusListener() {
+		frame.setTitle( appName+":"+title );
+		
+		if ( false )
+			frame.addWindowFocusListener( new WindowFocusListener() {
 
 			@Override
 			public void windowLostFocus( WindowEvent e ) {}
@@ -98,7 +104,7 @@ public class WindowManager {
 	public static JFrame frame( String title, JComponent content ) {
 		JFrame out = new JFrame( title );
 		out.setContentPane( content );
-		register (out);
+		register (out, title);
 		return out;
 	}
     

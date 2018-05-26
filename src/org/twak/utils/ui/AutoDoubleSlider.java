@@ -112,7 +112,7 @@ public class AutoDoubleSlider extends JPanel{
         }
         finally
         {
-            updated();
+            updated(value);
         }
     }
     
@@ -121,7 +121,7 @@ public class AutoDoubleSlider extends JPanel{
     	return this;
     }
     
-    public void updated()
+    public void updated(double value)
     {
         update.run();
     }
