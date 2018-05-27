@@ -3,6 +3,7 @@ package org.twak.utils.ui;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.LayoutManager;
 
 /**
@@ -22,29 +23,38 @@ public class ListDownLayout implements LayoutManager
     public Dimension preferredLayoutSize( Container parent )
     {
         int height = 0;
+        
+        Insets insets = parent.getInsets();
+        
         for (Component c : parent.getComponents())
             height += c.getPreferredSize().getHeight();
-        return new Dimension ( 100, height );
+        
+        return new Dimension ( 100, height + insets.top + insets.bottom );
     }
 
     public Dimension minimumLayoutSize( Container parent )
     {
         int height = 0;
+        Insets insets = parent.getInsets();
+        
         for (Component c : parent.getComponents())
             height += c.getPreferredSize().getHeight();
-        return new Dimension ( 100, height );
+        
+        return new Dimension ( 100, height + insets.top + insets.bottom );
     }
 
     public void layoutContainer( Container parent )
     {
         synchronized ( parent.getTreeLock() )
         {
-            int height = 0;
+        	Insets insets = parent.getInsets();
+        	
+            int height = insets.top;
             for ( Component c : parent.getComponents() )
             {
                 Dimension prefSize = c.getPreferredSize();
-                c.setSize( parent.getWidth(), prefSize.height );
-                c.setLocation( 0, height );
+                c.setSize( parent.getWidth() - insets.left - insets.right, prefSize.height );
+                c.setLocation( insets.left, height );
                 height += prefSize.getHeight();
             }
         }

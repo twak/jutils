@@ -67,7 +67,7 @@ public class WindowManager {
 	public static void register( JFrame frame, String title ) {
 		
 		frame.setIconImage( getIcon() );
-		frame.setTitle( appName+":"+title );
+		frame.setTitle( appName+": "+title );
 		
 		if ( false )
 			frame.addWindowFocusListener( new WindowFocusListener() {
