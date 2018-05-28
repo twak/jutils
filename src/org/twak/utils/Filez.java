@@ -82,4 +82,7 @@ public class Filez
 			return filename.substring( i+1, filename.length() );
 		return "";
 	}
+	public static String extTo( String filename, String png ) {
+		return stripExtn( filename ) + png;
+	}
 }
