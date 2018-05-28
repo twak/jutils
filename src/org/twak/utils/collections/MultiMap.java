@@ -173,4 +173,9 @@ public class MultiMap<A, B> //implements Map<A,List<B>>
 			return 0;
 		return values().stream().mapToInt( m -> m.size() ).min().getAsInt();
 	}
+
+	public void putAll( A a, Iterable<B> bs ) {
+		for (B b : bs)
+			put (a, b);
+	}
 }
