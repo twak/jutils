@@ -34,6 +34,8 @@ public class Show extends JFrame
             {
                 last = e.getLocationOnScreen();
                 resize = true;
+                setVisible( false );
+                dispose();
             }
             
             @Override

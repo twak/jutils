@@ -1,6 +1,7 @@
 package org.twak.utils.collections;
 
 import java.awt.Polygon;
+import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -812,5 +813,25 @@ public class Loopz {
 		}
 		
 		return out;
+	}
+
+	public static Loop<Point2d> transform( Loop<Point2d> verticalPts, AffineTransform t ) {
+		return transform( verticalPts.singleton(), t ).get(0);
+	}
+	
+	public static LoopL<Point2d> transform( LoopL <Point2d> verticalPts, AffineTransform t ) {
+		return verticalPts.new Map<Point2d>() {
+			double[] tmp = new double[2];
+            @Override
+            public Point2d map(Loopable<Point2d> input)
+            {
+            	tmp[0] = input.me.x;
+            	tmp[1] = input.me.y;
+            	
+            	t.transform( tmp, 0, tmp, 0, 1 );
+            	
+                return new Point2d( tmp[0], tmp[1] );
+            }
+		}.run();
 	}
 }
