@@ -2,6 +2,8 @@ package org.twak.utils.ui;
 
 import java.awt.Color;
 
+import org.twak.utils.Mathz;
+
 /**
  * Very similar to Rainbow!
  * @author twak
@@ -104,5 +106,22 @@ public class Colourz
 	}
 	public static Color to4( double[] c ) {
 		return new Color( (float) c[0], (float)c[1], (float)c[2], (float)c[3]);
+	}
+
+	public static double distance( int a, int b ) {
+		
+		int[] 
+				t1 = new int[3], 
+				t2 = new int[3]; 
+		toComp(a, t1);
+		toComp(b, t2);
+		
+		return Mathz.L2( t1, t2);
+	}
+
+	private static void toComp( int c, int[] t2 ) {
+		t2[0] =  ( ( c >> 16 ) & 0xFF );
+		t2[1] =  ( ( c >> 8  ) & 0xFF );
+		t2[2] =  ( ( c       ) & 0xFF );
 	}
 }
