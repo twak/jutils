@@ -85,4 +85,7 @@ public class Filez
 	public static String extTo( String filename, String png ) {
 		return stripExtn( filename ) + png;
 	}
+	public static File extTo( File wf, String png ) {
+		return new File ( stripExtn ( wf.getPath() ) +png );
+	}
 }
