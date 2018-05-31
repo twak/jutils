@@ -612,6 +612,9 @@ public class Loopz {
 
 	public static boolean inside( Point2d pt, Loop<? extends Point2d> poly ) {
 
+		if (poly == null)
+			return false;
+		
 		int crossings = 0;
 		Vector2d left = new Vector2d(-1, 0);
 		
