@@ -20,6 +20,11 @@ public class MultiMap<A, B> //implements Map<A,List<B>>
 
 	public MultiMap() {
 	}
+	
+	public MultiMap(A a , B...bs) {
+		for (B b : bs )
+			put (a, b);
+	}
 
 	public MultiMap( MultiMap<A, B> other ) {
 		for ( A a : other.map.keySet() )

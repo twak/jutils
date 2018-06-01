@@ -107,6 +107,12 @@ public class Colourz
 	public static Color to4( double[] c ) {
 		return new Color( (float) c[0], (float)c[1], (float)c[2], (float)c[3]);
 	}
+	public static Color to3( double[] c ) {
+		return new Color( (float) c[0], (float)c[1], (float)c[2]);
+	}
+	public static Color to3( int[] c ) {
+		return new Color(  c[0], c[1], c[2]);
+	}
 
 	public static double distance( int a, int b ) {
 		
@@ -119,9 +125,15 @@ public class Colourz
 		return Mathz.L2( t1, t2);
 	}
 
-	private static void toComp( int c, int[] t2 ) {
+	public static void toComp( int c, int[] t2 ) {
 		t2[0] =  ( ( c >> 16 ) & 0xFF );
 		t2[1] =  ( ( c >> 8  ) & 0xFF );
 		t2[2] =  ( ( c       ) & 0xFF );
+	}
+	
+	public static int[] toComp( int c ) {
+		int[] out = new int[3];
+		toComp (c, out);
+		return out;
 	}
 }
