@@ -7,6 +7,7 @@ package org.twak.utils.collections;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.twak.utils.LContext;
@@ -28,6 +29,13 @@ public class LoopL<E> extends ArrayList<Loop<E>>
         this();
         for (Loop<E> loop : toClone)
         	add(new Loop<E>(loop) );
+    }
+    
+    public LoopL( List<Loop<E>> toClone)
+    {
+    	this();
+    	for (Loop<E> loop : toClone)
+    		add(new Loop<E>(loop) );
     }
     
     
