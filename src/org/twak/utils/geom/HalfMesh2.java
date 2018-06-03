@@ -313,6 +313,18 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			this.e = e;
 		}
 
+		public void insert (HalfEdge he) {
+			he.face = this;
+			
+			for (HalfEdge f : this)
+				if (f.next == e)
+					f.next = he;
+			
+			he.next = e; 
+			
+			e = he;
+		}
+		
 		public Iterable<HalfEdge> edges() {
 			return new Iterable() {
 				@Override
