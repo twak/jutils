@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,11 +27,15 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.vecmath.Point2d;
 
+import org.apache.batik.dom.GenericDOMImplementation;
+import org.apache.batik.svggen.SVGGraphics2D;
 import org.twak.utils.PaintThing;
 import org.twak.utils.PaintThing.ICanPaint;
 import org.twak.utils.PanMouseAdaptor;
 import org.twak.utils.WeakListener.Changed;
 import org.twak.utils.geom.DRectangle;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
 
 public class Plot extends JComponent {
 
@@ -168,6 +173,23 @@ public class Plot extends JComponent {
 			open = frame;
 		}
 		
+		addKeyListener( new KeyListener() {
+			
+			@Override
+			public void keyTyped( KeyEvent e ) {
+			}
+			
+			@Override
+			public void keyReleased( KeyEvent e ) {
+			}
+			
+			@Override
+			public void keyPressed( KeyEvent e ) {
+				if (e.getKeyCode() == KeyEvent.VK_S) 
+					dumpSVG();
+			}
+		} );
+		
 		toPaint.addAll(lo);
 	}
 
@@ -194,24 +216,24 @@ public class Plot extends JComponent {
 		return this;
 	}
 
-//	private void dumpSVG() {
-//		
-//		// Get a DOMImplementation.
-//		DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-//		// Create an instance of org.w3c.dom.Document.
-//		String svgNS = "http://www.w3.org/2000/svg";
-//		Document document = domImpl.createDocument( svgNS, "svg", null );
-//		// Create an instance of the SVG Generator.
-//		SVGGraphics2D svgGenerator = new SVGGraphics2D( document );
-//		// Ask the test to render into the SVG Graphics2D implementation.
-//		paintComponent( svgGenerator );
-//
-//		try {
-//			svgGenerator.stream( new FileWriter( Tweed.CONFIG + "dump.svg" ), true );
-//		} catch ( Throwable e ) {
-//			e.printStackTrace();
-//		}
-//	}
+	private void dumpSVG() {
+		
+		// Get a DOMImplementation.
+		DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
+		// Create an instance of org.w3c.dom.Document.
+		String svgNS = "http://www.w3.org/2000/svg";
+		Document document = domImpl.createDocument( svgNS, "svg", null );
+		// Create an instance of the SVG Generator.
+		SVGGraphics2D svgGenerator = new SVGGraphics2D( document );
+		// Ask the test to render into the SVG Graphics2D implementation.
+		paintComponent( svgGenerator );
+
+		try {
+			svgGenerator.stream( new FileWriter( "/home/twak/Desktop/dump.svg" ), true );
+		} catch ( Throwable e ) {
+			e.printStackTrace();
+		}
+	}
 	
 	public interface ICanEdit {
 		public void setObject(Object o);
@@ -323,23 +345,7 @@ public class Plot extends JComponent {
 		
 		addMouseListener( m );
 		addMouseMotionListener( m );
-		
-		addKeyListener( new KeyListener() {
-			
-			@Override
-			public void keyTyped( KeyEvent e ) {
-			}
-			
-			@Override
-			public void keyReleased( KeyEvent e ) {
-			}
-			
-			@Override
-			public void keyPressed( KeyEvent e ) {
-//				if (e.getKeyCode() == KeyEvent.VK_S) 
-//					dumpSVG();
-			}
-		} );
+
 	}
 
 	protected void setText( String string ) {

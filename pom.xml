@@ -59,6 +59,28 @@
 			<artifactId>xstream</artifactId>
 			<version>1.4.9</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-svggen -->
+<dependency>
+    <groupId>org.apache.xmlgraphics</groupId>
+    <artifactId>batik-svggen</artifactId>
+    <version>1.10</version>
+</dependency>
+		
+
+
+<dependency>
+    <groupId>org.apache.xmlgraphics</groupId>
+    <artifactId>batik-svg-dom</artifactId>
+    <version>1.10</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-anim -->
+<dependency>
+    <groupId>org.apache.xmlgraphics</groupId>
+    <artifactId>batik-anim</artifactId>
+    <version>1.10</version>
+</dependency>
 
 
 	</dependencies>
