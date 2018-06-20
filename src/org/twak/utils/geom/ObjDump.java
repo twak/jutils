@@ -34,7 +34,7 @@ import org.twak.utils.collections.MultiMap;
  */
 public class ObjDump {
 
-	public static boolean REMOVE_DUPE_TEXTURES = false;
+	public boolean REMOVE_DUPE_TEXTURES = false;
 
 	public String name;
 
