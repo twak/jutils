@@ -323,19 +323,32 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 	public void view( DRectangle bounds ) {
 		center( bounds.getCenter() );
 		zoomInt = 0;
-		
-		zoomFromWidth (bounds.width);
+
+		zoomFromWidth( bounds.width == 0 ? bounds.height : bounds.width );
 	}
 
 	public void zoomFromWidth( double width ) {
 		
 		int cw = comp.getWidth();
 		
-		if (cw == 0)
+		if (cw == 0 || width == 0)
 			return;
 		
-		zoom = toZoomD( width ) /  cw;
-		zoomInt = zoomToZoomInt( zoom );
+		zoom = cw / width;
+		zoomInt = zoomToZoomInt( zoom * 0.8 );
 		setZoom( 0 );
+	}
+
+	public void viewOnSetSize( DRectangle bounds ) {
+		
+		ComponentAdapter ca = new ComponentAdapter() {
+			public void componentResized(ComponentEvent e) {
+				view( bounds );
+				comp.removeComponentListener( this );
+			}
+		} ;
+		
+		comp.addComponentListener( ca );
+		
 	}
 }

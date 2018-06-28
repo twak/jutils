@@ -61,20 +61,20 @@ public class Plot extends JComponent {
 
 		g2.setColor( new Color(0,0,0,10));
 		
-		PaintThing.resetBounds();
 		
 		paint(toPaint, g2);
 		
 		DRectangle bounds = PaintThing.getBounds();
 		
-		if (firstFrame && bounds != null) {
+		if (firstFrame) {
 			if ( bounds != null )
 				ma.view( bounds );
 			else
 				ma.resetView();
-			firstFrame = false;
 		}
 		
+		firstFrame = false;
+		PaintThing.resetBounds();
 	}
 	
 	
@@ -117,7 +117,7 @@ public class Plot extends JComponent {
 		
 	}
 
-	public static JFrame open = null;
+	public JFrame open = null;
 	JPanel controls;
 	static Plot last;
 	
@@ -194,6 +194,11 @@ public class Plot extends JComponent {
 	}
 
 	public static void closeLast() {
+		if (last != null)
+			last.close();
+	}
+	
+	public void close() {
 		if (open != null) {
 			open.setVisible( false );
 			open.dispose();

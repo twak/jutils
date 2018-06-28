@@ -53,8 +53,11 @@ public class Auto {
 	JFrame frame;
 	List<Apply> applies = new ArrayList<>();
 
-	public Auto( Object o ) {
+	boolean instant = false; // 
+	
+	public Auto( Object o, boolean instant ) {
 		this.o = o;
+		this.instant = instant;
 		build();
 	}
 
@@ -85,6 +88,7 @@ public class Auto {
 			vals.add( entry );
 		}
 
+		
 		JPanel okayCancel = new JPanel( new FlowLayout( FlowLayout.TRAILING ) );
 
 		okay.addActionListener( new ActionListener() {
@@ -98,7 +102,7 @@ public class Auto {
 			}
 		} );
 		
-		cancel.addActionListener( x -> close() );
+		cancel.addActionListener( x -> done() );
 
 		updateOkayCancel();
 
@@ -112,7 +116,9 @@ public class Auto {
 		scrollVals.getVerticalScrollBar().setUnitIncrement( 16 );
 		
 		topLevel.add(scrollVals, BorderLayout.CENTER);
-		topLevel.add(okayCancel, BorderLayout.SOUTH);
+		
+		if(!instant)
+			topLevel.add(okayCancel, BorderLayout.SOUTH);
 		
 		return topLevel;
 	}
@@ -123,10 +129,10 @@ public class Auto {
 
 	public void apply() {
 		applies.stream().forEach( a -> a.apply() );
-		close();
+		done();
 	}
 
-	public void close() {
+	public void done() {
 		if ( frame != null ) {
 			frame.setVisible( false );
 			frame.dispose();
@@ -225,7 +231,20 @@ public class Auto {
 		Field f;
 
 		public AutoDouble( Field f ) throws IllegalArgumentException, IllegalAccessException {
-			super( new SpinnerNumberModel( f.getDouble( o ), null, null, 1.0 ) );
+
+			super();
+			
+			AutoRange ar[] = f.getAnnotationsByType( AutoRange.class );
+			
+			double min = -Double.MAX_VALUE, max = Double.MAX_VALUE, step = 1;
+			if (ar.length == 1) {
+				min = ar[0].min();
+				max = ar[0].max();
+				step = ar[0].step();
+			}
+			
+			setModel(  new SpinnerNumberModel( f.getDouble( o ), min, max, step  ) );
+			
 			this.f = f;
 			this.orig = f.getDouble( o );
 			addChangeListener( c -> updateOkayCancel() );

@@ -52,7 +52,7 @@ public abstract class ColourPicker extends JDialog {
 //				picked (chooser.getColor() );
 //			}
 //		});
-		
+		setModal( true );
 		pack();
 		setVisible(true);
 	}
