@@ -690,4 +690,15 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 	public Iterator<HalfFace> iterator() {
 		return faces.iterator();
 	}
+
+	public DRectangle getBounds() {
+		
+		DRectangle.Enveloper out = new DRectangle.Enveloper();
+		
+		for (HalfFace f : this)
+			for (HalfEdge e : f)
+				out.envelop( e.start );
+		
+		return out;
+	}
 }

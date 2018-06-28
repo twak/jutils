@@ -88,6 +88,7 @@ public class Auto {
 			vals.add( entry );
 		}
 
+		pWidth = Math.min (600, pWidth);
 		
 		JPanel okayCancel = new JPanel( new FlowLayout( FlowLayout.TRAILING ) );
 
@@ -187,7 +188,7 @@ public class Auto {
 
 		frame.setContentPane( build() );
 		frame.pack();
-		frame.setSize( frame.getWidth() + ((Integer)UIManager.get("ScrollBar.width")).intValue(), 
+		frame.setSize( Math.min (800, frame.getWidth() + ((Integer)UIManager.get("ScrollBar.width")).intValue() ), 
 				Math.min( 600, frame.getHeight() ) );
 		frame.setVisible( true );
 

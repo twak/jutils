@@ -103,11 +103,14 @@ public class DRectangle {
 		return ( ( w < x || w > X ) && ( h < y || h > Y ) );
 	}
 
-	public void grow( double e ) {
+	public DRectangle grow( double e ) {
+		
 		x -= e;
 		y -= e;
 		width += 2 * e;
 		height += 2 * e;
+		
+		return this;
 	}
 
 	public boolean intersects( DRectangle other ) {
@@ -437,6 +440,22 @@ public class DRectangle {
 
 	public float yF() {
 		return (float) y;
+	}
+	
+	public int heightI() {
+		return (int) height;
+	}
+	
+	public int widthI() {
+		return (int) width;
+	}
+	
+	public int xI() {
+		return (int) x;
+	}
+	
+	public int yI() {
+		return (int) y;
 	}
 
 	public static Comparator<DRectangle> comparator( Bounds bounds, boolean ascending ) {
