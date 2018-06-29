@@ -302,5 +302,18 @@ public class Mathz
 	    
 	    return n + 1;
 }
+
+	public static boolean hasNanInf( Tuple3d vert ) {
+		return hasNanInf( vert.x ) || hasNanInf( vert.y ) || hasNanInf( vert.z );
+	}
+	
+	public static boolean hasNanInf( Tuple2d vert ) {
+		return hasNanInf( vert.x ) || hasNanInf( vert.y );
+	}
+	
+	public static boolean hasNanInf( double v ) {
+		return  Double.isInfinite( v ) || Double.isNaN( v );
+	}
+
 	
 }

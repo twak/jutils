@@ -25,6 +25,10 @@ import javax.vecmath.Tuple3d;
 import javax.vecmath.Vector3d;
 
 import org.twak.utils.Filez;
+import org.twak.utils.Mathz;
+import org.twak.utils.collections.Arrayz;
+import org.twak.utils.collections.Arrayz.DoubleArrayObject;
+import org.twak.utils.collections.CountThings;
 import org.twak.utils.collections.Loop;
 import org.twak.utils.collections.LoopL;
 import org.twak.utils.collections.MultiMap;
@@ -362,9 +366,36 @@ public class ObjDump {
 				(fNorms != null && fNorms.size() != fVerts.size() ) ||
 				(fUVs   != null && fUVs  .size() != fVerts.size() ) )
 			throw new Error("bad length input");
-
-        for ( Tuple3d vert : fVerts )
-        {
+		
+		boolean[] ignore = new boolean[fVerts.size()];
+		
+		{
+			int goodCount = 0;
+			CountThings<Point3d> count = new CountThings<>();
+			
+			for (int i = 0; i < fVerts.size(); i++) {
+				
+				if ( Mathz.hasNanInf( fVerts.get(i) ) || 
+					 (fNorms != null && Mathz.hasNanInf( fNorms.get(i) ) ) ||
+					 (fUVs   != null && Mathz.hasNanInf( fUVs.get(i) ) ) ||
+						count.count( fVerts.get(i) ) > 1 )
+					ignore[i] = true;
+				else
+					goodCount++;
+			}
+			
+			if (goodCount < 3) {
+				System.out.println("ignoring bad face!");
+				return;
+			}
+		}
+				
+		for (int i = 0; i < fVerts.size(); i++) {
+			
+			if (ignore [i] )
+				continue;
+			
+        	Tuple3d vert = fVerts.get(i);
             Tuple3d v = convertVertex( vert );
 
             if ( vertexToNo.containsKey( v ) )
@@ -379,12 +410,18 @@ public class ObjDump {
         }
         
         if (fNorms != null) {
+
+        	if (normToNo == null) {
+        		normToNo = new HashMap<>();
+        		face.normIndexes = new ArrayList<>();
+        	}
         	
-        	normToNo = new HashMap<>();
-        	face.normIndexes = new ArrayList<>();
-        	
-        	for ( Tuple3d norm: fNorms )
-        	{
+        	for (int i = 0; i < fVerts.size(); i++) {
+        		
+        		if (ignore[i])
+        			continue;
+        		
+        		Tuple3d norm = fNorms.get(i);
         		if ( normToNo.containsKey( norm ) )
         			face.normIndexes.add( normToNo.get( norm ) );
         		else
@@ -399,11 +436,16 @@ public class ObjDump {
         
         if (fUVs != null) {
         	
-        	uvToNo = new HashMap<>();
-        	face.uvIndexes = new ArrayList<>();
-        	
-        	for ( Tuple2d uv: fUVs )
-        	{
+        	if (uvToNo == null) {
+        		uvToNo = new HashMap<>();
+        		face.uvIndexes = new ArrayList<>();
+        	}
+        	for (int i = 0; i < fVerts.size(); i++) {
+
+        		if (ignore[i])
+        			continue;
+        		
+        		Tuple2d uv = fUVs.get(i);
         		if ( uvToNo.containsKey( uv ) )
         			face.uvIndexes.add( uvToNo.get( uv ) );
         		else {
@@ -419,6 +461,7 @@ public class ObjDump {
 	}
 	
 	public void addFace(double[][] points, double[][] uvs, double[][] norms) {
+		
 		if (uvs   != null && uvs.length   != points.length ||
 			norms != null && norms.length != points.length )
 			throw new Error();
@@ -426,8 +469,36 @@ public class ObjDump {
 		Face face = new Face();
 		material2Face.put(currentMaterial, face);
 
-		for ( double[] xyz : points )
+		
+		boolean[] ignore = new boolean[points.length];
+		
 		{
+			int goodCount = 0;
+			CountThings<DoubleArrayObject> count = new CountThings<>();
+			
+			for (int i = 0; i < points.length; i++) {
+				
+				if ( Arrayz.hasNanInf( points[i] ) || 
+					 (norms != null && Arrayz.hasNanInf( norms[i] ) ) ||
+					 (uvs != null && Arrayz.hasNanInf( uvs[i] ) ) ||
+						count.count( new DoubleArrayObject( points[i] ) ) > 1 )
+					ignore[i] = true;
+				else
+					goodCount++;
+			}
+			
+			if (goodCount < 3) {
+				System.out.println("ignoring bad face!");
+				return;
+			}
+		}
+		
+		for (int i = 0; i < points.length; i++) {
+			if (ignore[i])
+				continue;
+			
+			double[] xyz = points[i];
+			
 			Tuple3d v = new Point3d( xyz[0], xyz[1], xyz[2] );
 			
 			if ( vertexToNo.containsKey( v ) ) 
@@ -450,7 +521,12 @@ public class ObjDump {
 				orderUV = new ArrayList<>();
 			}
 
-			for ( double[] uv : uvs ) {
+			for (int i = 0; i < points.length; i++) {
+				
+				if (ignore[i])
+					continue;
+				
+				double[] uv = uvs[i];
 				Tuple2d v = new Point2d( uv[ 0 ], uv[ 1 ] );
 
 				if ( uvToNo.containsKey( v ) )
@@ -471,8 +547,13 @@ public class ObjDump {
 				normToNo = new HashMap<>();
 				orderNorm = new ArrayList<>();
 			}
+			for (int i = 0; i < points.length; i++) {
 
-			for ( double[] n : norms ) {
+				if (ignore[i])
+					continue;
+				
+				double[] n = norms[i];
+					
 				Tuple3d v = new Point3d( n[ 0 ], n[ 1 ], n[ 2 ] );
 
 				if ( normToNo.containsKey( v ) )

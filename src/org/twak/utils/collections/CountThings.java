@@ -25,12 +25,14 @@ public class CountThings<E>
             return new MutableInteger( 0 );
         }
     };
+    
     int seen = 0;
 
-    public void count( E e )
+    public int count( E e )
     {
         counts.get( e ).i++;
         seen++;
+        return counts.get( e ).i;
     }
     
     public void count( E e, int by )

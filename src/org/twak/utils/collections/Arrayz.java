@@ -1,6 +1,8 @@
 package org.twak.utils.collections;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -175,5 +177,37 @@ public class Arrayz {
 				return true;
 		
 		return false;
+	}
+
+	public static boolean hasNanInf( double[] ds ) {
+		
+		for (double v  : ds) 
+			if ( Double.isInfinite( v ) || Double.isNaN( v ) )
+				return true;
+		
+		return false;
+	}
+	
+	public static class DoubleArrayObject {
+		
+		double[] d;
+
+		public DoubleArrayObject( double[] d ) {
+			this.d = d;
+		}
+
+		@Override
+		public boolean equals( Object obj ) {
+			try {
+				return Arrays.equals( ( (DoubleArrayObject) obj ).d, d );
+			} catch ( ClassCastException e ) {
+				return false;
+			}
+		}
+
+		@Override
+		public int hashCode() {
+			return Arrays.hashCode( d );
+		}
 	}
 }
