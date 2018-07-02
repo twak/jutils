@@ -26,14 +26,10 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 
 	public List<HalfFace> faces = new ArrayList();
 	
-	public interface EdgeFactory {
-		public HalfEdge create (Point2d s, Point2d e);
-	}
-	
 	public static class Builder {
 
 		MultiMap<Point2d, HalfEdge> local = new MultiMap<>();
-		HalfMesh2 mesh = new HalfMesh2();
+		public HalfMesh2 mesh = new HalfMesh2();
 		Point2d last, first; 
 		HalfEdge lastEdge, firstEdge;
 		Class edgeClass = HalfEdge.class, faceClass = HalfFace.class;
@@ -44,15 +40,23 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			this.faceClass = faceClass;
 		}
 		
-		public void newPoint(Point2d pt) {
+		public void setMesh(HalfMesh2 mesh) {
+			this.mesh = mesh;
+		}
+		
+		public HalfEdge newPoint(Point2d pt) {
 
 			if (first == null)
 				first = pt;
 
+			HalfEdge out = null;
+			
 			if (last != null)
-				newEdge(last, pt);
+				out = newEdge(last, pt);
 
 			last = pt;
+			
+			return out; 
 		}
 
 		public HalfFace newFace() {
