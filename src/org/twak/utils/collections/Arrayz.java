@@ -210,4 +210,8 @@ public class Arrayz {
 			return Arrays.hashCode( d );
 		}
 	}
+
+	public static double[] copyOf( double[] styleZ ) {
+		return Arrays.copyOf( styleZ, styleZ.length );
+	}
 }
