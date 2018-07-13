@@ -115,6 +115,8 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 		public HalfFace face;
 		public Point2d start, end;
 		
+		public HalfEdge() {}
+		
 		public HalfEdge(Point2d s, Point2d e, HalfEdge parent) { // called via reflection
 			this.start = s;
 			this.end = e;
