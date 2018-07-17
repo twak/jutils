@@ -202,8 +202,6 @@ public class ObjDump {
 		int uniqueResource = 0;
 		
 		Map<String, Material> usedTextures = new HashMap<>();
-//		Map<String, String> usedNames = new HashMap<>();
-//		Map<Material, Material> replaceMaterials = new LinkedHashMap(); 
 		
 		try
 		{
@@ -228,7 +226,6 @@ public class ObjDump {
 							if ( neu != null ) {
 								
 								List<Face> faces = material2Face.remove(mat);
-//								mat.name = neu.name;
 								material2Face.putAll(neu, faces, false);
 								
 								continue;
