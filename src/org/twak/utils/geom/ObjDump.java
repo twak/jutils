@@ -173,7 +173,6 @@ public class ObjDump {
 	
 	public ObjDump()
 	{
-		// reset hashes
 		material2Face = new MultiMap<>();
 		vertexToNo = new LinkedHashMap<Tuple3d, Integer>();
 		orderVert = new ArrayList<Tuple3d>();
@@ -411,9 +410,10 @@ public class ObjDump {
         
         if (fNorms != null) {
 
+        	face.normIndexes = new ArrayList<>();
+        	
         	if (normToNo == null) {
         		normToNo = new HashMap<>();
-        		face.normIndexes = new ArrayList<>();
         	}
         	
         	for (int i = 0; i < fVerts.size(); i++) {
@@ -436,10 +436,12 @@ public class ObjDump {
         
         if (fUVs != null) {
         	
+        	face.uvIndexes = new ArrayList<>();
+        	
         	if (uvToNo == null) {
         		uvToNo = new HashMap<>();
-        		face.uvIndexes = new ArrayList<>();
         	}
+        	
         	for (int i = 0; i < fVerts.size(); i++) {
 
         		if (ignore[i])
