@@ -241,35 +241,43 @@ public class ObjDump {
 
 							boolean needsCopy = false;
 							
-							String fileName = Filez.stripExtn( mat.filename ) + res[ 0 ] + "." + ext ;
+							
+							String filename = Filez.stripExtn( mat.filename ) + res[ 0 ] + "." + ext ;
+							
+							File src = null;
 							
 							if ( resourceOrigin != null) {
-									fileName = uniqueResource + res[ 0 ] + "." + ext;
+									filename = uniqueResource + res[ 0 ] + "." + ext;
+									
+									src = new File( resourceOrigin + 
+											File.separator + 
+											Filez.stripExtn( mat.filename ) + 
+											res[ 0 ] + 
+											"." + 
+											ext );
+									
+									if (!src.exists())
+										continue;
+									
 									needsCopy = true;
 									usedTextures.put ( mat.filename, mat);
 							}
 							else {
-								if (!new File (output.getParentFile(), fileName).exists())
+								if (!new File (output.getParentFile(), filename).exists())
 									continue;
-								usedTextures.put ( fileName, mat);
+								usedTextures.put ( filename, mat);
 							}
 							
 
 							for ( int i = 1; i < res.length; i++ )
-								materialFile.append( res[ i ] + " " + fileName + "\n" );
+								materialFile.append( res[ i ] + " " + filename + "\n" );
 
 							if ( needsCopy && resourceOrigin != null) {
-								File src = new File( resourceOrigin + 
-									File.separator + 
-									Filez.stripExtn( mat.filename ) + 
-									res[ 0 ] + 
-									"." + 
-									ext );
-
+								
 								if ( !src.exists() )
 									continue;
 
-								File dest = new File( output.getParentFile() + File.separator + fileName );
+								File dest = new File( output.getParentFile() + File.separator + filename );
 								if ( dest.exists() )
 									dest.delete();
 

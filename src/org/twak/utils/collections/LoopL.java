@@ -277,5 +277,14 @@ public class LoopL<E> extends ArrayList<Loop<E>>
 		add(out);
 		return out;
 	}
+	
+	@Override
+	public boolean isEmpty() {
+		for (Loop<E> loop : this)
+			for (E e : loop)
+				return false;
+		
+		return true;
+	}
 }
 
