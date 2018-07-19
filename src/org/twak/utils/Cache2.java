@@ -10,6 +10,7 @@ import java.util.Map;
  * @author twak
  */
 public abstract class Cache2<I1, I2, O> {
+	
 	public Map<I1, Map<I2, O>> cache = new LinkedHashMap();
 
 	public O get( I1 i1, I2 i2 ) {

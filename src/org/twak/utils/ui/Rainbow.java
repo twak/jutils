@@ -15,8 +15,10 @@ public class Rainbow
 
     static String[] rainbowStrings = new String[]
     {
-        "red", "orange", "green", "cyan", "blue", "magenta", "pink", "gray", "purple",
-        "dark red", "brown", "dark orange", "dark yellow", "dark green", "dark blue", "yellow"
+    		"purple", "green", "blue", "orange", "pink"
+    		
+//        "red", "orange", "green", "cyan", "blue", "magenta", "pink", "gray", "purple",
+//        "dark red", "brown", "dark orange", "dark yellow", "dark green", "dark blue", "yellow"
     };
     static int rainbowIndex = 0;
     
