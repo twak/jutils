@@ -151,6 +151,9 @@ public class ObjDump {
 
 	public double[][] getUVs( Face f ) {
 
+		if (f.uvIndexes == null)
+			return null;
+		
 		double[][] out = new double[f.uvIndexes.size()][3];
 
 		for ( int v = 0; v < f.uvIndexes.size(); v++ ) {
@@ -321,7 +324,7 @@ public class ObjDump {
 				}
 				
 				for (Face f : material2Face.get(mat)) {
-					
+					if (!f.vtIndexes.isEmpty()) {
 					out.write("f ");
 					for (int ii = 0; ii < f.vtIndexes.size(); ii ++)
 						out.write( ( f.vtIndexes.get(ii) + 1) +  /** obj's first element is 1 */
@@ -329,7 +332,9 @@ public class ObjDump {
 								( f.normIndexes == null ? "" : ("/" + ( f.normIndexes.get(ii) + 1 ) )) +" " ) ;
 					
 					out.write("\n");
+					}
 				}
+					
 			}
 			out.close();
 			System.out.println("done!");
@@ -729,13 +734,13 @@ public class ObjDump {
 
 								face.vtIndexes.add( Integer.parseInt( inds[ 0 ] ) - 1 + vtOffset );
 
-								if ( inds.length > 1 ) {
+								if ( inds.length > 1 && !inds[1].isEmpty() ) {
 									if ( face.uvIndexes == null )
 										face.uvIndexes = new ArrayList<>();
 									face.uvIndexes.add( Integer.parseInt( inds[ 1 ] ) - 1 + uvOffset );
 								}
 
-								if ( inds.length > 2 ) {
+								if ( inds.length > 2 && !inds[2].isEmpty()) {
 									if ( face.normIndexes == null )
 										face.normIndexes = new ArrayList<>();
 									face.normIndexes.add( Integer.parseInt( inds[ 2 ] ) - 1 + normOffset );

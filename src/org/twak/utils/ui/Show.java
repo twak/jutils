@@ -7,6 +7,10 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
@@ -83,5 +87,15 @@ public class Show extends JFrame
             g.fillRect( 0, 0, getWidth(), getHeight() );
             g.drawImage( bi, 0, 0, null );
         }
+    }
+    
+    public static void main(String[] args ) {
+    	
+    	try {
+			new Show (ImageIO.read( new File ("/home/twak/Downloads/lefkosia data/5-2325-3925.tif") ));
+		} catch ( IOException e ) {
+			e.printStackTrace();
+		}
+    	
     }
 }

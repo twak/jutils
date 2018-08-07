@@ -45,6 +45,7 @@ public abstract class SimpleFileChooser {
 			} );
         
         fd.setVisible(true);
+        fd.toFront();
 
         if (fd.getDirectory() == null)
         	return;
