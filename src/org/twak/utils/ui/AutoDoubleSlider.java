@@ -76,7 +76,7 @@ public class AutoDoubleSlider extends JPanel{
                 public void propertyChange( PropertyChangeEvent evt )
                 {
                 	if (!updating)
-                		set ( (Double) textField.getValue(), max, min);
+                		set ( ((Number) textField.getValue()).doubleValue(), max, min);
                 }
             });
             

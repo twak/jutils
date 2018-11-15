@@ -338,6 +338,17 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 				}
 			};
 		}
+
+		public List<HalfEdge> edgeList() {
+			
+			List<HalfEdge> out = new ArrayList<>();
+			
+			for (HalfEdge e : edges())
+				out.add( e );
+			
+			return out;
+		}
+
 		
 		public LoopL<HalfEdge> findHoles() {
 			
@@ -410,7 +421,7 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			
 			return out;
 		}
-
+		
 		public HalfEdge fracture( Point2d origin, Vector2d dir, HalfEdge...ignore ) {
 			
 			double bestDist = Double.MAX_VALUE;
