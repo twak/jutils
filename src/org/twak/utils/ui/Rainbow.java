@@ -27,7 +27,7 @@ public class Rainbow
     public static Color[] rainbow = new Color[]
     {
     	new Color (170,0,255),
-    	new Color (170,255,0),
+    	new Color (0,255,0),
     	new Color (0,170,255),
     	new Color (255,170,0),
     	new Color (255,0,170),
