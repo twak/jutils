@@ -120,12 +120,20 @@ public class Imagez {
 		t2[2] =  ( ( c       ) & 0xFF );
 	}
 	
-	private static int fromComp( double[] t2) {
+	public static int fromComp( double[] t2) {
 		
 		return 0xff000000 +
 				(((int)t2[0]) << 16) + 
 				(((int)t2[1]) <<  8) + 
 				(((int)t2[2])      ); 
+	}
+	
+	public static int fromComp( int[] t2) {
+		
+		return 0xff000000 +
+				(t2[0] << 16) + 
+				(t2[1] <<  8) + 
+				(t2[2]      ); 
 	}
 	
     public static BufferedImage blur(int radius, BufferedImage in ) {

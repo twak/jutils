@@ -314,6 +314,8 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 
 		public HalfEdge e;
 
+		public HalfFace() {}
+		
 		public HalfFace(HalfEdge e) {
 			this.e = e;
 		}
