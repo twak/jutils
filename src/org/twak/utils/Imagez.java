@@ -128,6 +128,14 @@ public class Imagez {
 				(((int)t2[2])      ); 
 	}
 	
+	public static int fromComp( double r, double g, double b ) {
+		
+		return 0xff000000 +
+				(((int)r) << 16) + 
+				(((int)g) <<  8) + 
+				(((int)b)      ); 
+	}
+	
 	public static int fromComp( int[] t2) {
 		
 		return 0xff000000 +
