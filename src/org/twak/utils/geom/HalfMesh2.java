@@ -117,6 +117,11 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 		
 		public HalfEdge() {}
 		
+		public HalfEdge(Point2d s, Point2d e) { // called via reflection
+			this.start = s;
+			this.end = e;
+		}
+		
 		public HalfEdge(Point2d s, Point2d e, HalfEdge parent) { // called via reflection
 			this.start = s;
 			this.end = e;
@@ -314,6 +319,8 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 
 		public HalfEdge e;
 
+		public HalfFace() {}
+		
 		public HalfFace(HalfEdge e) {
 			this.e = e;
 		}
@@ -338,6 +345,17 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 				}
 			};
 		}
+
+		public List<HalfEdge> edgeList() {
+			
+			List<HalfEdge> out = new ArrayList<>();
+			
+			for (HalfEdge e : edges())
+				out.add( e );
+			
+			return out;
+		}
+
 		
 		public LoopL<HalfEdge> findHoles() {
 			
@@ -410,7 +428,7 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			
 			return out;
 		}
-
+		
 		public HalfEdge fracture( Point2d origin, Vector2d dir, HalfEdge...ignore ) {
 			
 			double bestDist = Double.MAX_VALUE;
@@ -705,5 +723,9 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 				out.envelop( e.start );
 		
 		return out;
+	}
+
+	public void add( HalfFace hf ) {
+		faces.add( hf );
 	}
 }

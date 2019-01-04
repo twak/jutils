@@ -62,6 +62,8 @@ public class PaintThing {
 			p ((HalfMesh2) o, g, ma);
 		else if (o instanceof String)
 			p ((String) o, g, ma);
+		else if (o instanceof StringLoc)
+			p ((StringLoc) o, g, ma);
 		else if (o instanceof Rectangle2D)
 			p ((Rectangle2D) o, g, ma);
 		else if (o instanceof DRectangle)
@@ -89,6 +91,7 @@ public class PaintThing {
 	}
 
 	private static void p( HalfMesh2 o, Graphics2D g2, PanMouseAdaptor ma ) {
+		g2.setStroke(  new BasicStroke( 1 ) );
 
 		double scatterRadius = 0.0;
 
@@ -113,19 +116,19 @@ public class PaintThing {
 
 			
 			for ( HalfEdge e : f.edges() ) {
-				drawArrow(g2, ma, e.line(), 5);
-
+				drawArrow(g2, ma, e.line(), e.length() < 0.001 ? 16 : 5);
 			}
 		}
 			
 		for ( HalfFace f : o.faces ) 
 				for ( HalfEdge e : f.edges() ) {
-			if (	e.face  != f ||
-					(e.over  != null && (e.over.face == f || e.over.over != e ) ) ||
-					e.face  == null ||
-					e.start == null ||
-					e.end   == null ||
-					e.next  == null )
+			if ( e.over == null ) 
+//				e.face  != f ||
+//					(e.over  != null && (e.over.face == f || e.over.over != e ) ) ||
+//					e.face  == null ||
+//					e.start == null ||
+//					e.end   == null ||
+//					e.next  == null )
 			{
 				g2.setColor( Color.red );
 				g2.setStroke(  new BasicStroke( 4 ) );
@@ -240,6 +243,10 @@ public class PaintThing {
 		g.drawString( o, 10, 30 * stringCount );
 		stringCount++;
 	}
+	
+	private static void p(StringLoc o, Graphics2D g, PanMouseAdaptor ma) {
+		g.drawString( o.string, ma.toX( o.loc.x ), ma.toY( o.loc.y ) );
+	}
 
 	public static MultiMap<Object, Object> debug = new MultiMap();
 	
@@ -304,5 +311,17 @@ public class PaintThing {
 			drawBounds = new DRectangle(p);
 		else
 			drawBounds.envelop( p );
+	}
+	
+	public static class StringLoc {
+		String string;
+		Point2d loc;
+		public StringLoc(String string, Point2d loc) {
+			this.string = string;
+			this.loc = loc;
+		}
+		public StringLoc( String string, double x, double y ) {
+			this (string, new Point2d (x,y) );
+		}
 	}
 }

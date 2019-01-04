@@ -195,9 +195,9 @@ public class ObjDump {
 	}
 
     String[][] RESOURCES = new String[][] { 
-    	{"", "map_Kd", "map_Ka"},  // texture --> use for ambient and diffuse
+    	{"", "map_Kd"},  // texture --> use for ambient and diffuse
     	{"_spec", "map_Ks"}, // specular 
-    	{"_norm", "map_bump", "bump" } }; // bump 
+    	{"_norm", "map_bump" } }; // bump 
     
     public void dump( File output ) {dump(output, null);}
 	public void dump( File output, File resourceOrigin )

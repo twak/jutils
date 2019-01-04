@@ -61,6 +61,10 @@ public class Parallel<I, O> {
 //	public Parallel( List<I> in, Work<I, O> work, Complete<O> done, boolean block ) {
 //	}
 
+	
+	public Parallel( List<I> lines, Work<I, O> work ) {
+		this ( new ListWF(lines), work, o -> System.out.println("done " + o.size()), true, -1 );
+	}
 
 	public Parallel( List<I> lines, Work<I, O> work, Complete<O> done, boolean block ) {
 		this ( new ListWF(lines), work, done, block, -1 );
