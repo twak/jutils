@@ -149,9 +149,9 @@ public class Loop<E> implements Iterable<E> {
 		return new LoopIterator();
 	}
 
-	public void reverse() {
+	public Loop<E> reverse() {
 		if (start == null)
-			return;
+			return this;
 
 		Loopable m = start;
 
@@ -162,6 +162,8 @@ public class Loop<E> implements Iterable<E> {
 
 			m = m.prev; // reversed ;)
 		} while (m != start);
+		
+		return this;
 	}
 
 	public class LoopableIterator implements Iterator<Loopable<E>> {
