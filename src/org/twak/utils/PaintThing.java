@@ -117,6 +117,7 @@ public class PaintThing {
 			
 			for ( HalfEdge e : f.edges() ) {
 				drawArrow(g2, ma, e.line(), e.length() < 0.001 ? 16 : 8);
+				p(e.start, g2, ma);
 			}
 		}
 			

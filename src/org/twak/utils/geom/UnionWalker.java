@@ -131,6 +131,57 @@ public class UnionWalker
         return loopl;
     }
     
+    public LoopL<Point2d> findAllMinimizing() /* ignores start */ {
+    	
+    	LoopL<Point2d> loopl = new LoopL();
+    	start:
+    		while  (!map.isEmpty())
+    		{
+    			Loop<Point2d> loop = new Loop();
+    			
+    			Point2d prev = map.keySet().iterator().next(),
+    					current = map.get(prev).iterator().next(),
+    					start = current;
+    			
+    			do
+    			{
+    				Point2d next = null;
+    				double angle = Double.MAX_VALUE;
+    				
+    				for (Point2d n : map.get(current)) {
+    					
+    					double iA = interiorAngleBetween(prev, current, n);
+    					if (iA < angle) {
+    						next = n;
+    						angle = iA;
+    					}
+    				}
+    				
+    				if (next == null ) {
+    					
+    					map.remove( prev ); // don't revisit points
+    					continue start;
+    				}
+    				
+    				{
+    					Point2d tmp = new Point2d(0.01, 0.01);
+    					tmp.add(current);
+    				}
+    				
+    				map.remove( current, next ); // don't revisit points
+    				
+    				loop.append( new Point2d(next) );
+    				prev = current;
+    				current = next;
+    			}
+    			while (!current.equals ( start ) );
+    			
+    			// if we sucessfully complete :)
+    			loopl.add( loop );
+    		}
+    	return loopl;
+    }
+    
     public static void main (String[] args)
     {
         Point2d a = new Point2d (0,0),
