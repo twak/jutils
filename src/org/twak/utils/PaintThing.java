@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import org.twak.utils.ui.Rainbow;
 
 public class PaintThing {
 	
+
 	public interface ICanPaint {
 		public void paint (Graphics2D g, PanMouseAdaptor ma);
 	}
@@ -68,6 +70,8 @@ public class PaintThing {
 			p ((Rectangle2D) o, g, ma);
 		else if (o instanceof DRectangle)
 			p ((DRectangle) o, g, ma);
+		else if (o instanceof ImLoc)
+			p ((ImLoc) o, g, ma);
 		else if (o instanceof Iterable) {
 //			int c = 0;
 			for (Object o2 : (Iterable) o) {
@@ -116,8 +120,8 @@ public class PaintThing {
 
 			
 			for ( HalfEdge e : f.edges() ) {
-				drawArrow(g2, ma, e.line(), e.length() < 0.001 ? 16 : 8);
-				p(e.start, g2, ma);
+				drawArrow(g2, ma, e.line(), e.length() < 0.001 ? 16 : 4);
+//				p(e.start, g2, ma);
 			}
 		}
 			
@@ -133,7 +137,7 @@ public class PaintThing {
 			{
 				g2.setColor( Color.red );
 				g2.setStroke(  new BasicStroke( 4 ) );
-				p (e.line(), g2, ma);
+//				p (e.line(), g2, ma);
 			}
 		}
 		g2.setStroke(  new BasicStroke( 1 ) );
@@ -229,7 +233,7 @@ public class PaintThing {
 		g.fillOval(ma.toX(s.x) - 4, ma.toY(s.y) - 4, 8, 8);
 	}
 	
-	private static void p(Line o, Graphics2D g, PanMouseAdaptor ma) {
+	public static void p(Line o, Graphics2D g, PanMouseAdaptor ma) {
 		Line l = (Line) o;
 		g.drawLine(ma.toX(l.start.x), ma.toY(l.start.y), ma.toX(l.end.x), ma.toY(l.end.y));
 
@@ -325,4 +329,23 @@ public class PaintThing {
 			this (string, new Point2d (x,y) );
 		}
 	}
+
+	private static void p( ImLoc o, Graphics2D g, PanMouseAdaptor ma ) {
+		g.drawImage( o.im, (int) ma.toX( o.x ), (int) ma.toY( o.y ), (int)ma.toZoom( o.w ), (int)ma.toZoom( o.h ), null);
+	}
+
+
+	public static class ImLoc {
+		BufferedImage im;
+		int x, y, w, h;
+		
+		public ImLoc (BufferedImage im, int x, int y, int w, int h) {
+			this.im = im;
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+		}
+	}
+	
 }

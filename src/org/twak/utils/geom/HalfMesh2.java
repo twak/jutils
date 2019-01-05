@@ -278,7 +278,7 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			return null;
 		}
 
-		public void removeNextCorner(HalfMesh2 hm) {
+		public void mergeWithNext(HalfMesh2 hm) {
 			 
 			HalfEdge oo = next.over;
 			
@@ -290,16 +290,18 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 				if ( oo.face != over.face )
 					throw new Error( "not implemented" );
 
-				oo.end = start;
+				oo.end = oo.next.end;
 				if ( oo.face.e == oo.next )
 					oo.face.e = oo;
 				oo.next = oo.next.next;
+				oo.over = this;
 			}
 					
 			end = next.end;
 			if (face.e == next)
 				face.e = this;
 			next = next.next;
+			this.over = oo;
 		}
 		
 		public List<HalfEdge> collectAroundEnd() {
