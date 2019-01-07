@@ -128,6 +128,22 @@ public class Imagez {
 				(((int)t2[2])      ); 
 	}
 	
+	public static int fromComp( int[] t2 ) {
+		
+		return 0xff000000 +
+				(((int)t2[0]) << 16) + 
+				(((int)t2[1]) <<  8) + 
+				(((int)t2[2])      ); 
+	}
+	
+	public static int fromComp( int r, int g, int b ) {
+		
+		return 0xff000000 +
+				(r << 16) + 
+				(g <<  8) + 
+				(b      ); 
+	}
+	
     public static BufferedImage blur(int radius, BufferedImage in ) {
         
     	if (radius < 1) 
