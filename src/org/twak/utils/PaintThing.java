@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import org.twak.utils.ui.Rainbow;
 
 public class PaintThing {
 	
+
 	public interface ICanPaint {
 		public void paint (Graphics2D g, PanMouseAdaptor ma);
 	}
@@ -62,10 +64,14 @@ public class PaintThing {
 			p ((HalfMesh2) o, g, ma);
 		else if (o instanceof String)
 			p ((String) o, g, ma);
+		else if (o instanceof StringLoc)
+			p ((StringLoc) o, g, ma);
 		else if (o instanceof Rectangle2D)
 			p ((Rectangle2D) o, g, ma);
 		else if (o instanceof DRectangle)
 			p ((DRectangle) o, g, ma);
+		else if (o instanceof ImLoc)
+			p ((ImLoc) o, g, ma);
 		else if (o instanceof Iterable) {
 //			int c = 0;
 			for (Object o2 : (Iterable) o) {
@@ -89,6 +95,7 @@ public class PaintThing {
 	}
 
 	private static void p( HalfMesh2 o, Graphics2D g2, PanMouseAdaptor ma ) {
+		g2.setStroke(  new BasicStroke( 1 ) );
 
 		double scatterRadius = 0.0;
 
@@ -113,23 +120,24 @@ public class PaintThing {
 
 			
 			for ( HalfEdge e : f.edges() ) {
-				drawArrow(g2, ma, e.line(), 5);
-
+				drawArrow(g2, ma, e.line(), e.length() < 0.001 ? 16 : 4);
+//				p(e.start, g2, ma);
 			}
 		}
 			
 		for ( HalfFace f : o.faces ) 
 				for ( HalfEdge e : f.edges() ) {
-			if (	e.face  != f ||
-					(e.over  != null && (e.over.face == f || e.over.over != e ) ) ||
-					e.face  == null ||
-					e.start == null ||
-					e.end   == null ||
-					e.next  == null )
+			if ( e.over == null ) 
+//				e.face  != f ||
+//					(e.over  != null && (e.over.face == f || e.over.over != e ) ) ||
+//					e.face  == null ||
+//					e.start == null ||
+//					e.end   == null ||
+//					e.next  == null )
 			{
 				g2.setColor( Color.red );
 				g2.setStroke(  new BasicStroke( 4 ) );
-				p (e.line(), g2, ma);
+//				p (e.line(), g2, ma);
 			}
 		}
 		g2.setStroke(  new BasicStroke( 1 ) );
@@ -225,7 +233,7 @@ public class PaintThing {
 		g.fillOval(ma.toX(s.x) - 4, ma.toY(s.y) - 4, 8, 8);
 	}
 	
-	private static void p(Line o, Graphics2D g, PanMouseAdaptor ma) {
+	public static void p(Line o, Graphics2D g, PanMouseAdaptor ma) {
 		Line l = (Line) o;
 		g.drawLine(ma.toX(l.start.x), ma.toY(l.start.y), ma.toX(l.end.x), ma.toY(l.end.y));
 
@@ -239,6 +247,10 @@ public class PaintThing {
 		g.setColor( Color.black );
 		g.drawString( o, 10, 30 * stringCount );
 		stringCount++;
+	}
+	
+	private static void p(StringLoc o, Graphics2D g, PanMouseAdaptor ma) {
+		g.drawString( o.string, ma.toX( o.loc.x ), ma.toY( o.loc.y ) );
 	}
 
 	public static MultiMap<Object, Object> debug = new MultiMap();
@@ -305,4 +317,35 @@ public class PaintThing {
 		else
 			drawBounds.envelop( p );
 	}
+	
+	public static class StringLoc {
+		String string;
+		Point2d loc;
+		public StringLoc(String string, Point2d loc) {
+			this.string = string;
+			this.loc = loc;
+		}
+		public StringLoc( String string, double x, double y ) {
+			this (string, new Point2d (x,y) );
+		}
+	}
+
+	private static void p( ImLoc o, Graphics2D g, PanMouseAdaptor ma ) {
+		g.drawImage( o.im, (int) ma.toX( o.x ), (int) ma.toY( o.y ), (int)ma.toZoom( o.w ), (int)ma.toZoom( o.h ), null);
+	}
+
+
+	public static class ImLoc {
+		BufferedImage im;
+		int x, y, w, h;
+		
+		public ImLoc (BufferedImage im, int x, int y, int w, int h) {
+			this.im = im;
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+		}
+	}
+	
 }

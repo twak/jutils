@@ -25,7 +25,7 @@ public class Anglez {
 	}
 	
 	/**
-	 * 0Math.pi to pi
+	 * -Math.pi to pi
 	 */
 	public static double signed (Vector2d a, Vector2d b) {
 		

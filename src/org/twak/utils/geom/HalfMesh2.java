@@ -117,6 +117,11 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 		
 		public HalfEdge() {}
 		
+		public HalfEdge(Point2d s, Point2d e) { // called via reflection
+			this.start = s;
+			this.end = e;
+		}
+		
 		public HalfEdge(Point2d s, Point2d e, HalfEdge parent) { // called via reflection
 			this.start = s;
 			this.end = e;
@@ -155,7 +160,7 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			
 			return this;
 		}
-
+		
 		public Line line() {
 			return new Line (start, end );
 		}
@@ -273,6 +278,32 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			return null;
 		}
 
+		public void mergeWithNext(HalfMesh2 hm) {
+			 
+			HalfEdge oo = next.over;
+			
+			if ( oo == null ^ over == null )
+				throw new Error( "not implemented" );
+
+			if ( oo != null ) {
+
+				if ( oo.face != over.face )
+					throw new Error( "not implemented" );
+
+				oo.end = oo.next.end;
+				if ( oo.face.e == oo.next )
+					oo.face.e = oo;
+				oo.next = oo.next.next;
+				oo.over = this;
+			}
+					
+			end = next.end;
+			if (face.e == next)
+				face.e = this;
+			next = next.next;
+			this.over = oo;
+		}
+		
 		public List<HalfEdge> collectAroundEnd() {
 			List<HalfEdge> out = new ArrayList();
 			
@@ -314,6 +345,8 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 
 		public HalfEdge e;
 
+		public HalfFace() {}
+		
 		public HalfFace(HalfEdge e) {
 			this.e = e;
 		}
@@ -349,7 +382,6 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			return out;
 		}
 
-		
 		public LoopL<HalfEdge> findHoles() {
 			
 			
@@ -716,5 +748,9 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 				out.envelop( e.start );
 		
 		return out;
+	}
+
+	public void add( HalfFace hf ) {
+		faces.add( hf );
 	}
 }

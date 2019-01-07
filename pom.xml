@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.twak.utils</groupId>
@@ -23,8 +24,8 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			
-						<plugin>
+
+			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
 					<descriptorRefs>
@@ -32,7 +33,7 @@
 					</descriptorRefs>
 				</configuration>
 			</plugin>
-			
+
 		</plugins>
 
 
@@ -59,29 +60,28 @@
 			<artifactId>xstream</artifactId>
 			<version>1.4.9</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-svggen -->
-<dependency>
-    <groupId>org.apache.xmlgraphics</groupId>
-    <artifactId>batik-svggen</artifactId>
-    <version>1.10</version>
-</dependency>
-		
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-svggen</artifactId>
+			<version>1.10</version>
+		</dependency>
 
 
-<dependency>
-    <groupId>org.apache.xmlgraphics</groupId>
-    <artifactId>batik-svg-dom</artifactId>
-    <version>1.10</version>
-</dependency>
 
-<!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-anim -->
-<dependency>
-    <groupId>org.apache.xmlgraphics</groupId>
-    <artifactId>batik-anim</artifactId>
-    <version>1.10</version>
-</dependency>
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-svg-dom</artifactId>
+			<version>1.10</version>
+		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-anim -->
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-anim</artifactId>
+			<version>1.10</version>
+		</dependency>
 
 	</dependencies>
 

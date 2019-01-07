@@ -54,7 +54,15 @@ public class Loop<E> implements Iterable<E> {
 		start = null;
 	}
 
-	public Loopable<E> append(E append) {
+	public Loopable<E> append(E...append) {
+		Loopable<E> last = null;
+		
+		for (E e : append)
+			last = append_ (e);
+		
+		return last;
+	}
+	public Loopable<E> append_(E append) {
 		if (start == null) {
 			start = new Loopable(append);
 			start.setNext(start);
@@ -149,9 +157,9 @@ public class Loop<E> implements Iterable<E> {
 		return new LoopIterator();
 	}
 
-	public void reverse() {
+	public Loop<E> reverse() {
 		if (start == null)
-			return;
+			return this;
 
 		Loopable m = start;
 
@@ -162,6 +170,8 @@ public class Loop<E> implements Iterable<E> {
 
 			m = m.prev; // reversed ;)
 		} while (m != start);
+		
+		return this;
 	}
 
 	public class LoopableIterator implements Iterator<Loopable<E>> {
