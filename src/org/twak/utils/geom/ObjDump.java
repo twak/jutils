@@ -730,6 +730,10 @@ public class ObjDump {
 							Face face = new Face();
 
 							for ( int i = 1; i < params.length; i++ ) {
+
+								if (params[i].isEmpty())
+									continue;
+
 								String[] inds = params[ i ].split( "/" );
 
 								face.vtIndexes.add( Integer.parseInt( inds[ 0 ] ) - 1 + vtOffset );

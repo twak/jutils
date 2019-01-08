@@ -39,7 +39,7 @@ import org.w3c.dom.Document;
 
 public class Plot extends JComponent {
 
-	PanMouseAdaptor ma;
+	public PanMouseAdaptor ma;
 
 	String text= "";
 	

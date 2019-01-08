@@ -125,6 +125,7 @@ public class UnionWalker
             }
             while (!current.equals ( start ) );
 
+
             // if we sucessfully complete :)
             loopl.add( loop );
         }
