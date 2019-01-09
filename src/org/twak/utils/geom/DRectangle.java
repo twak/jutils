@@ -588,7 +588,12 @@ public class DRectangle {
 			else
 				super.envelop( pt );
 		}
-	}
+
+        public void envelop(DRectangle bb) {
+			for (Point2d p : bb.points())
+				envelop(p);
+        }
+    }
 
 	@Override
 	public int hashCode() {

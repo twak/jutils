@@ -15,10 +15,7 @@ import javax.vecmath.Vector2d;
 import org.twak.utils.IdentityHashSet;
 import org.twak.utils.Line;
 import org.twak.utils.Mathz;
-import org.twak.utils.collections.LoopL;
-import org.twak.utils.collections.Loopable;
-import org.twak.utils.collections.Loopz;
-import org.twak.utils.collections.MultiMap;
+import org.twak.utils.collections.*;
 import org.twak.utils.geom.HalfMesh2.HalfFace;
 
 public class HalfMesh2 implements Iterable<HalfFace> {
@@ -643,6 +640,26 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 //						continue again;
 //					}
 			}
+
+			public Loop<Point2d> toLoop (){
+				Loop<Point2d> out = new Loop();
+
+				for (HalfEdge e : this)
+					out.append(e.end);
+
+				return out;
+			}
+
+			public DRectangle bb() {
+
+				DRectangle.Enveloper out = new DRectangle.Enveloper();
+
+				for (HalfEdge e : this)
+					out.envelop(e.start);
+
+				return out;
+			}
+
 	}
 
 	public static class EdgeIterator implements Iterator<HalfEdge> {

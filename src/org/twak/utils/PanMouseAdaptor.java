@@ -21,6 +21,12 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 
 	public List<RangeListener> listeners = new ArrayList();
 
+	public PanMouseAdaptor(Point2d center, double v) {
+		this.cenX= center.x;
+		this.cenY = center.y;
+		this.zoom = v * 2;
+	}
+
 	public static PanMouseAdaptor buildFixedMA( Component comp, double x, double y, double width, double height, double outWidth ) {
 
 		PanMouseAdaptor out = new PanMouseAdaptor();
@@ -48,16 +54,16 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 
 			switch ( e.getKeyCode() ) {
 			case KeyEvent.VK_LEFT:
-				cenX -= comp.getWidth() / ( speed * zoom );
+				cenX -= compGetWidth() / ( speed * zoom );
 				break;
 			case KeyEvent.VK_RIGHT:
-				cenX += comp.getWidth() / ( speed * zoom );
+				cenX += compGetWidth() / ( speed * zoom );
 				break;
 			case KeyEvent.VK_UP:
-				cenY -= comp.getHeight() / ( speed * zoom );
+				cenY -= compGetHeight() / ( speed * zoom );
 				break;
 			case KeyEvent.VK_DOWN:
-				cenY += comp.getHeight() / ( speed * zoom );
+				cenY += compGetHeight() / ( speed * zoom );
 				break;
 			case KeyEvent.VK_PAGE_UP:
 				e.consume();
@@ -72,6 +78,7 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 			}
 
 			e.consume();
+			if (comp != null)
 			PanMouseAdaptor.this.comp.repaint();
 		}
 
@@ -82,6 +89,14 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 		@Override
 		public void keyTyped( KeyEvent arg0 ) {
 		}
+	}
+
+	public int compGetWidth() {
+		return comp.getWidth();
+	}
+
+	public int compGetHeight() {
+		return comp.getHeight();
 	}
 
 	public PanMouseAdaptor( Component comp ) {
@@ -99,8 +114,8 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 		//            public void run()
 		//            {
 		//
-		//                cenX = PanMouseAdaptor.this.comp.getWidth() / 2;
-		//                cenY = PanMouseAdaptor.this.comp.getHeight() / 2;
+		//                cenX = PanMouseAdaptor.this.compGetWidth() / 2;
+		//                cenY = PanMouseAdaptor.this.compGetHeight() / 2;
 		//            }
 		//
 		//        });
@@ -109,7 +124,8 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 
 			@Override
 			public void componentResized( ComponentEvent e ) {
-				PanMouseAdaptor.this.comp.repaint();
+				if (comp != null)
+					PanMouseAdaptor.this.comp.repaint();
 				fireListeners();
 			}
 		} );
@@ -117,6 +133,7 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 
 	@Override
 	public void mousePressed( MouseEvent e ) {
+		if (comp != null)
 		comp.requestFocus();
 		if ( e.getButton() == button ) {
 			startX = e.getPoint().x;
@@ -133,6 +150,7 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 			cenY -= ( endY - startY ) / zoom;
 			startX = endX;
 			startY = endY;
+			if (comp != null)
 			comp.repaint();
 			fireListeners();
 
@@ -172,6 +190,7 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 		zoomInt += direction;
 		zoomInt = Mathz.clamp( zoomInt, -100, 100 );
 		zoom = zoomIntToZoom( zoomInt );
+		if (comp != null)
 		comp.repaint();
 		fireListeners();
 
@@ -191,11 +210,11 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 	}
 
 	public double fromX( int val ) {
-		return ( val - comp.getWidth() / 2 ) / zoom + cenX;
+		return ( val - compGetWidth() / 2 ) / zoom + cenX;
 	}
 
 	public double fromY( int val ) {
-		return ( val - comp.getHeight() / 2 ) / zoom + cenY;
+		return ( val - compGetHeight() / 2 ) / zoom + cenY;
 	}
 
 	public double fromZoom( double width ) {
@@ -203,11 +222,11 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 	}
 
 	public int toX( double val ) {
-		return (int) ( ( val - cenX ) * zoom + comp.getWidth() / 2 );
+		return (int) ( ( val - cenX ) * zoom + compGetWidth() / 2 );
 	}
 
 	public int toY( double val ) {
-		return (int) ( ( val - cenY ) * zoom + comp.getHeight() / 2 );
+		return (int) ( ( val - cenY ) * zoom + compGetHeight() / 2 );
 	}
 
 	public int toZoom( double width ) {
@@ -232,7 +251,7 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 	}
 
 	public double getMaxRange() {
-		return fromZoom( Math.max( comp.getWidth(), comp.getHeight() ) );
+		return fromZoom( Math.max( compGetWidth(), compGetHeight() ) );
 	}
 
 	public Point2d from( MouseEvent e ) {
@@ -248,7 +267,7 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 	}
 
 	public double viewWidth() {
-		return fromZoom( comp.getWidth() );
+		return fromZoom( compGetWidth() );
 	}
 
 	public double viewTop() {
@@ -256,7 +275,7 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 	}
 
 	public double viewHeight() {
-		return fromZoom( comp.getHeight() );
+		return fromZoom( compGetHeight() );
 	}
 
 	public boolean isDragging() {
@@ -274,7 +293,7 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 	public AffineTransform getAffineTransform( AffineTransform current ) {
 		AffineTransform at = new AffineTransform();
 
-		at.translate( comp.getWidth() / 2, comp.getHeight() / 2 );
+		at.translate( compGetWidth() / 2, compGetHeight() / 2 );
 		at.scale( zoom, zoom );
 		at.translate( -cenX, -cenY );
 
@@ -293,11 +312,11 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 	}
 
 	public double toXD( double val ) {
-		return ( val - cenX ) * zoom + comp.getWidth() / 2;
+		return ( val - cenX ) * zoom + compGetWidth() / 2;
 	}
 
 	public double toYD( double val ) {
-		return ( val - cenY ) * zoom + comp.getHeight() / 2;
+		return ( val - cenY ) * zoom + compGetHeight() / 2;
 	}
 
 	public double toZoomD( double width ) {
@@ -329,7 +348,7 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 
 	public void zoomFromWidth( double width ) {
 		
-		int cw = comp.getWidth();
+		int cw = compGetWidth();
 		
 		if (cw == 0 || width == 0)
 			return;
@@ -344,10 +363,12 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 		ComponentAdapter ca = new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
 				view( bounds );
+				if (comp != null)
 				comp.removeComponentListener( this );
 			}
 		} ;
-		
+
+		if (comp != null)
 		comp.addComponentListener( ca );
 		
 	}
