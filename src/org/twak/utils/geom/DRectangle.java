@@ -9,9 +9,8 @@ import java.util.List;
 import javax.vecmath.Point2d;
 import javax.vecmath.Tuple2d;
 
-import org.twak.utils.Line;
-import org.twak.utils.Pair;
-import org.twak.utils.collections.ConsecutiveItPairs;
+import org.twak.utils.*;
+import org.twak.utils.collections.*;
 
 /**
  *
@@ -358,6 +357,68 @@ public class DRectangle {
 		}
 
 		return out;
+	}
+
+	public double distance(DRectangle other) {
+
+		double a = distancea(other),
+				b = distanceb(other);
+
+		if (Math.abs(a - b) > 0.1)
+			throw new Error("BUG");
+
+		return b;
+	}
+
+	private double distancea(DRectangle other) {
+
+
+//		correct
+
+		if (intersects(other))
+			return 0;
+
+
+		double dist = Double.MAX_VALUE;
+
+		for (Pair<Point2d, Point2d> line : new ConsecutivePairs<Point2d>(Arrays.asList(points()), true))
+			for (Pair<Point2d, Point2d> pine : new ConsecutivePairs<Point2d>(Arrays.asList(other.points()), true)) {
+				dist = Math.min(dist,
+						new Line (pine.first(), pine.second()).distance(new Line(line.first(), line.second())) );
+		}
+
+		return dist;
+	}
+
+
+	private double distanceb(DRectangle other) {
+
+	//fast
+		double xOverlap = Mathz.min(
+				Math.abs(other.x - getMaxX()),
+				Math.abs(x - other.getMaxX())
+				);
+
+		if (other.x + other.width > x && other.x < x + width)
+			xOverlap = 0;
+
+		double yOverlap = Mathz.min(
+				Math.abs(other.y - getMaxY()),
+				Math.abs(y - other.getMaxY())
+		);
+
+		if (other.y + other.height > y && other.y < y + height)
+			yOverlap = 0;
+
+		if (xOverlap == 0)
+			return yOverlap;
+
+		if (yOverlap == 0)
+			return xOverlap;
+
+
+		return Math.sqrt(xOverlap * xOverlap + yOverlap * yOverlap);
+
 	}
 
 	public double distance( Line ray ) {
