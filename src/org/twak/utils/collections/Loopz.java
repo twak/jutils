@@ -346,7 +346,12 @@ public class Loopz {
 
 		return out;
 	}
-	
+
+	public static DRectangle rect( LoopL<? extends Point2d> in ) {
+
+		double[] out = minMax2d(in);
+		return new DRectangle(out[0], out[2], out[1] - out[0], out[3]-out[2] );
+	}
 
 	public static double[] minMax2d( LoopL<? extends Point2d> in ) {
 
