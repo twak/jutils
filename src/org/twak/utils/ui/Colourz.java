@@ -2,6 +2,8 @@ package org.twak.utils.ui;
 
 import java.awt.Color;
 
+import javax.vecmath.Point3d;
+
 import org.twak.utils.Mathz;
 
 /**
@@ -135,5 +137,11 @@ public class Colourz
 		int[] out = new int[3];
 		toComp (c, out);
 		return out;
+	}
+
+	public static double colDist( Color a, Color b ) {
+		
+		return new Point3d( a.getRed(), a.getGreen(), a.getBlue() ).
+				distance ( new Point3d( b.getRed(), b.getGreen(), b.getBlue() ) ) / 442;
 	}
 }
