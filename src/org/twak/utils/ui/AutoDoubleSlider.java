@@ -11,6 +11,8 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.twak.utils.Mathz;
+
 /**
  *
  * @author twak
@@ -44,10 +46,13 @@ public class AutoDoubleSlider extends JPanel{
             add( new JLabel( name ), BorderLayout.WEST );
 
             final int scale = 1000;
+            
+            double i = Mathz.clamp( initialVal, min, max );
+            
             slider = new JSlider( 
                     (int)0, 
                     (int)( ( max - min) * scale), 
-                    (int)( ( initialVal- min) * scale) );
+                    (int) ( (i - min ) * scale) );
             
             slider.addChangeListener( new ChangeListener() {
 
