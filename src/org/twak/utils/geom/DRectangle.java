@@ -276,6 +276,8 @@ public class DRectangle {
 
 	public final static Bounds XMIN = Bounds.XMIN, XCEN = Bounds.XCEN, XMAX = Bounds.XMAX, YMIN = Bounds.YMIN, YCEN = Bounds.YCEN, YMAX = Bounds.YMAX, WIDTH = Bounds.WIDTH, HEIGHT = Bounds.HEIGHT;
 
+	public final static Bounds[] perimeterBounds = new Bounds[] {XMIN, XMAX, YMIN, YMAX};
+
 	public static class FromComparator implements Comparator<DRectangle> {
 		Direction dir;
 

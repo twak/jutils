@@ -158,8 +158,8 @@ public class PaintThing {
 	private static void p2(Loop<? extends Point2d> ll, Graphics2D g, PanMouseAdaptor ma, int cc) {
 		
 		Color c = g.getColor();
-		g.setColor( Colourz.transparent( c, 50 ) );
-		
+		g.setColor( Colourz.transparent( c, 255 ) );
+
 		Polygon p = new Polygon();
 		
 		for (Point2d pt : ll) {
@@ -168,13 +168,13 @@ public class PaintThing {
 		}
 
 		g.fill(p);
-		g.setColor(c);
+		g.setColor(c.darker().darker());
 		g.draw(p);
 		
 //		for (Loop<Point2d> h : ll.holes)
 //			p (h, g, ma);
 //		
-		if (true)
+		if (false)
 			for (Loopable<? extends Point2d> able : ll.loopableIterator() )
 				drawArrow(g, ma, new Line ( 
 						new Point2d ( able.get().x, able.get().y ),
