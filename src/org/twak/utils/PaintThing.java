@@ -168,17 +168,22 @@ public class PaintThing {
 		}
 
 		g.fill(p);
-		g.setColor(c.darker().darker());
+		g.setColor(c.darker());
 		g.draw(p);
 		
 //		for (Loop<Point2d> h : ll.holes)
 //			p (h, g, ma);
-//		
-		if (false)
+//
+
+		g.setStroke(new BasicStroke(3));
+
+		if (true)
 			for (Loopable<? extends Point2d> able : ll.loopableIterator() )
 				drawArrow(g, ma, new Line ( 
 						new Point2d ( able.get().x, able.get().y ),
-						new Point2d ( able.getNext().get().x, able.getNext().get().y ) ),5 );
+						new Point2d ( able.getNext().get().x, able.getNext().get().y ) ), 9 );
+
+		g.setStroke(new BasicStroke(1));
 	}
 	
 
