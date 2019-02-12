@@ -158,7 +158,7 @@ public class PaintThing {
 	private static void p2(Loop<? extends Point2d> ll, Graphics2D g, PanMouseAdaptor ma, int cc) {
 		
 		Color c = g.getColor();
-		g.setColor( Colourz.transparent( c, 255 ) );
+		g.setColor( Colourz.transparent( c, 100 ) );
 
 		Polygon p = new Polygon();
 		
