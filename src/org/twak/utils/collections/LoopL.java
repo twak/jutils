@@ -234,11 +234,18 @@ public class LoopL<E> extends ArrayList<Loop<E>>
                 out.add( loopO );
                 for (Loopable<E> e : loopE.loopableIterator())
                     loopO.append( map( e ) );
+                
+                for (Loop<E> hole : loopE.holes) {
+                	Loop<O> loopHoleO = new Loop();
+                	for (Loopable<E> e : hole.loopableIterator())
+                		loopHoleO.append( map( e ) );
+                	loopO.holes.add( loopHoleO );
+                }
+                
             }
 
             return out;
         }
-        // convert teh
         public abstract O map (Loopable<E> input);
     }
 
