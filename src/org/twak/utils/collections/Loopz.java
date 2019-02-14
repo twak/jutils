@@ -4,6 +4,7 @@ import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -849,4 +850,39 @@ public class Loopz {
             }
 		}.run();
 	}
+	
+	public static LoopL<Point2d> findHoles( LoopL<Point2d> findAll ) { // single level of nesting...
+		
+		LoopL<Point2d> out = new LoopL<>();
+		
+		Collections.sort ( findAll, (a,b) -> Double.compare (Loopz.area( b ), Loopz.area(a) ) );
+		
+		query:
+		for (Loop<Point2d> query : findAll) {
+			
+			if ( Loopz.area(query) < 0.00001)
+				break;
+			
+			for (Loop<Point2d> outer : out) {
+				if (dirtyInside (query, outer)) {
+					outer.holes.add( query );
+					continue query;
+				}
+			}
+			
+			out.add( query );
+		}
+		
+		return out;
+	}
+	
+	public static boolean dirtyInside ( Loop<Point2d> maybeHole, Loop<Point2d> perimeter ) {
+		
+		for (Point2d p : maybeHole)
+			return Loopz.inside (p, perimeter);
+		
+		return false;
+	}
+
+
 }
