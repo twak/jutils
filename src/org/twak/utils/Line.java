@@ -239,6 +239,9 @@ public class Line implements Serializable
 
 	public double distance( Tuple2d p, boolean clamp ) {
 		
+		if (start.equals( end ))
+			return start.distance( new Point2d ( p ) );
+		
 		if ( clamp ) {
 			Point2d p2 = project( new Point2d( p ), clamp );
 			return p2.distance( new Point2d( p ) );
