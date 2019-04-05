@@ -721,6 +721,18 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 					}
 	}
 
+	public DRectangle bb() {
+
+		DRectangle.Enveloper out = new DRectangle.Enveloper();
+
+		for (HalfFace hf : this)
+			for (HalfEdge e : hf)
+				out.envelop(e.start);
+
+		return out;
+	}
+	
+
 	private static void transform(Point2d a, AffineTransform at) {
 		
 		double[] coords = new double[2];
