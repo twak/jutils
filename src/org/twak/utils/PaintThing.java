@@ -151,11 +151,11 @@ public class PaintThing {
 		}
 	}
 	
-	private static void p(Loop<? extends Point2d> ll, Graphics2D g, PanMouseAdaptor ma) {
+	public static void p(Loop<? extends Point2d> ll, Graphics2D g, PanMouseAdaptor ma) {
 		p2 (ll, g, ma, 0);
 	}
 	
-	private static void p2(Loop<? extends Point2d> ll, Graphics2D g, PanMouseAdaptor ma, int cc) {
+	public static void p2(Loop<? extends Point2d> ll, Graphics2D g, PanMouseAdaptor ma, int cc) {
 		
 		Color c = g.getColor();
 		g.setColor( Colourz.transparent( c, 100 ) );
