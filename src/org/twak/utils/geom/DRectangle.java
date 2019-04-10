@@ -123,6 +123,16 @@ public class DRectangle {
 		return new Rectangle( (int) x, (int) y, (int) width, (int) height );
 	}
 
+	public double intersectionOverUnion( DRectangle other ) {
+		
+		DRectangle sect = intersect( other );
+		
+		if (sect == null) 
+			return 0;
+		
+		return sect.area() / union( other ).area();
+	}
+	
 	/**
 	 * Same bounds, positive height and width
 	 * 

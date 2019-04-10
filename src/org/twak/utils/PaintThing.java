@@ -9,6 +9,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
@@ -295,6 +296,10 @@ public class PaintThing {
 	
 	public static void debug( Color c, float f, Object clean ) {
 		debug.put (new Style(c, f), clean );
+	}
+	
+	public static void debug( Object o ) {
+		debug.put (new Style(Rainbow.next( Random.class ), 1f), o );
 	}
 	
 	private static DRectangle drawBounds = new DRectangle();

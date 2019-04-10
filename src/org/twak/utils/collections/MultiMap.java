@@ -60,6 +60,19 @@ public class MultiMap<A, B> //implements Map<A,List<B>>
 		return out;
 	}
 
+	public List<B> getMulti( A...keys ) {
+		
+		List<B> out = new ArrayList<>();
+		
+		for (A a : keys) {
+			List<B> query = map.get( a );
+			if (query != null)
+				out.addAll( query );
+		}
+		
+		return out;
+	}
+	
 	public List<B> getOrAdd( A key ) {
 		List<B> out = map.get( key );
 		if ( out == null ) {
