@@ -13,7 +13,7 @@ public class Cach2<I1, I2,O> extends Cache2<I1, I2,O> {
 	}
 	
 	@Override
-    public O create(I1 i1, I2 i2) {
+	public O create(I1 i1, I2 i2) {
 		return create.create( i1, i2 );
 	}
 }
