@@ -5,8 +5,7 @@ import java.util.Iterator;
 public class Loopable<E> implements Iterable<Loopable<E>> {
 	
 	E me;
-	public Loopable<E> next;
-	Loopable<E> prev;
+	public Loopable<E> next, prev;
 
 	public Loopable( E me ) {
 		this.me = me;

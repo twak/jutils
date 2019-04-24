@@ -9,6 +9,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
@@ -155,7 +156,7 @@ public class PaintThing {
 		p2 (ll, g, ma, 0);
 	}
 	
-	private static void p2(Loop<? extends Point2d> ll, Graphics2D g, PanMouseAdaptor ma, int cc) {
+	public static void p2(Loop<? extends Point2d> ll, Graphics2D g, PanMouseAdaptor ma, int cc) {
 		
 		Color c = g.getColor();
 		g.setColor( Colourz.transparent( c, 100 ) );
@@ -295,6 +296,10 @@ public class PaintThing {
 	
 	public static void debug( Color c, float f, Object clean ) {
 		debug.put (new Style(c, f), clean );
+	}
+	
+	public static void debug( Object o ) {
+		debug.put (new Style(Rainbow.next( Random.class ), 1f), o );
 	}
 	
 	private static DRectangle drawBounds = new DRectangle();

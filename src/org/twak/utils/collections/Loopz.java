@@ -851,6 +851,30 @@ public class Loopz {
 		}.run();
 	}
 	
+
+	public static Loop<Point2d> translate( Loop<Point2d> loop, Vector2d dir ) {
+		
+		return loop.new Map<Point2d>() {
+            @Override
+            public Point2d map(Loopable<Point2d> input)
+            {
+                return new Point2d( input.get().x + dir.x, input.get().y + dir.y );
+            }
+		}.run();
+	}
+	
+
+	public static Loop<Point2d> deepCopy( Loop<Point2d> loop ) {
+		
+		return loop.new Map<Point2d>() {
+        @Override
+        public Point2d map(Loopable<Point2d> input)
+        {
+            return new Point2d( input.get().x, input.get().y );
+        }
+		}.run();
+	}
+	
 	public static LoopL<Point2d> findHoles( LoopL<Point2d> findAll ) { // single level of nesting...
 		
 		LoopL<Point2d> out = new LoopL<>();
@@ -883,6 +907,5 @@ public class Loopz {
 		
 		return false;
 	}
-
 
 }

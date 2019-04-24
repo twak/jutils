@@ -10,6 +10,7 @@ import javax.vecmath.Tuple2d;
 import javax.vecmath.Vector2d;
 
 import org.twak.utils.geom.Anglez;
+import org.twak.utils.geom.DRectangle;
 import org.twak.utils.geom.LinearForm;
 
 /**

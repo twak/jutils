@@ -13,7 +13,7 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 	int zoomInt = 0;
 	double cenX;
 	double cenY;
-	double zoom = 1;
+	public double zoom = 1;
 	Integer startX;
 	Integer startY;
 	public Component comp;
@@ -260,6 +260,10 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 
 	public Rectangle to( DRectangle r ) {
 		return new Rectangle( toX( r.x ), toY( r.y ), toZoom( r.width ), toZoom( r.height ) );
+	}
+	
+	public DRectangle toD( DRectangle r ) {
+		return new DRectangle( toX( r.x ), toY( r.y ), toZoom( r.width ), toZoom( r.height ) );
 	}
 
 	public double viewLeft() {
