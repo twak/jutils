@@ -278,6 +278,7 @@ public class DRectangle {
 
 	}
 
+
 	public enum Bounds {
 		XMIN, XCEN, XMAX, YMIN, YCEN, YMAX, WIDTH, HEIGHT;
 
@@ -497,6 +498,17 @@ public class DRectangle {
 
 	public Point2d[] points() {
 		return new Point2d[] { new Point2d( x, y ), new Point2d( x, y + height ), new Point2d( x + width, y + height ), new Point2d( x + width, y ), };
+	}
+
+	public Iterable<Line> lines() {
+		ArrayList<Line> out = new ArrayList();
+
+		out.add(new Line (x      ,y       , x      ,y+height));
+		out.add(new Line (x      ,y+height, x+width,y+height));
+		out.add(new Line (x+width,y+height, x+width,y       ));
+		out.add(new Line (x+width,y       , x      ,y       ));
+
+		return out;
 	}
 
 	public float heightF() {
