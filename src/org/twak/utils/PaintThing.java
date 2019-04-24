@@ -151,7 +151,7 @@ public class PaintThing {
 		}
 	}
 	
-	private static void p(Loop<? extends Point2d> ll, Graphics2D g, PanMouseAdaptor ma) {
+	public static void p(Loop<? extends Point2d> ll, Graphics2D g, PanMouseAdaptor ma) {
 		p2 (ll, g, ma, 0);
 	}
 	
