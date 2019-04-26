@@ -35,6 +35,15 @@ public class Filez
             return false;
         }
     }
+    
+    public static File makeUnique(File name) {
+    	int i = 1;
+    	while (name.exists()) 
+    		name = new File ( name.getParentFile(), stripExtn( name.getName() )+"_" + (i++) +"."+getExtn( name.getName() ) );
+    	
+    	return name;
+    }
+    
     public static void copyfile( String srFile, String dtFile )
     {
         try
