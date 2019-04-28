@@ -31,8 +31,9 @@ public class Mathz
 	public static final Tuple3d Z_POS = new Vector3d(0,0,1);
 
 
-	public static double PI2 = Math.PI / 2, PI3 = Math.PI / 3, PI4 = Math.PI /4, PI6 = Math.PI / 6, TwoPI  = 2 * Math.PI;
-	
+	public static final double PI2 = Math.PI / 2, PI3 = Math.PI / 3, PI4 = Math.PI /4, PI6 = Math.PI / 6, TwoPI  = 2 * Math.PI;
+	public static final double SQRT2 = Math.sqrt( 2 );
+
     public static Color[] rainbow = new Color[]
     {
         Color.red,

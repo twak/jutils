@@ -270,6 +270,10 @@ public class DRectangle {
 		}
 	}
 
+	public Point2d getPoint( Bounds x, Bounds y ) {
+		return new Point2d ( get( x ), get( y ));
+	}
+
 	/**
 	 * Contains entirity of given rectanlge
 	 */
@@ -278,11 +282,32 @@ public class DRectangle {
 
 	}
 
-
 	public enum Bounds {
-		XMIN, XCEN, XMAX, YMIN, YCEN, YMAX, WIDTH, HEIGHT;
+		XMIN (-1), XCEN (0), XMAX(1), YMIN(-1), YCEN(0), YMAX(1), WIDTH(0), HEIGHT(0);
 
-		boolean horizontal;
+		int sign;
+
+		Bounds (int sign) {
+			this.sign = sign;
+		}
+
+		public int sign() {
+			return sign;
+		}
+
+		public Bounds flip() {
+			switch (this) {
+			case XMIN:
+				return XMAX;
+			case XMAX:
+				return XMIN;
+			case YMIN:
+				return YMAX;
+			case YMAX:
+				return YMIN;
+			}
+			return null;
+		}
 	}
 
 	public final static Bounds XMIN = Bounds.XMIN, XCEN = Bounds.XCEN, XMAX = Bounds.XMAX, YMIN = Bounds.YMIN, YCEN = Bounds.YCEN, YMAX = Bounds.YMAX, WIDTH = Bounds.WIDTH, HEIGHT = Bounds.HEIGHT;
