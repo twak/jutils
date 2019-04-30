@@ -187,8 +187,8 @@ public class Arrayz {
 		
 		return false;
 	}
-	
-	public static class DoubleArrayObject {
+
+    public static class DoubleArrayObject {
 		
 		double[] d;
 

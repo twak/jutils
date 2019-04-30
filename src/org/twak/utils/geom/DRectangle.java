@@ -66,21 +66,24 @@ public class DRectangle {
 	}
 
 	public boolean contains( double X, double Y ) {
-		double w = this.width;
-		double h = this.height;
 
-		if ( w < 0 || h < 0 ) {
-			// At least one of the dimensions is negative...
-			return false;
-		}
+		return X >= x && X <= getMaxX() &&  Y >= y && Y <= getMaxY();
 
-		if ( X < x || Y < y ) {
-			return false;
-		}
-		w += x;
-		h += y;
-		//    overflow || intersect
-		return ( ( w < x || w > X ) && ( h < y || h > Y ) );
+//		double w = this.width;
+//		double h = this.height;
+//
+//		if ( w < 0 || h < 0 ) {
+//			// At least one of the dimensions is negative...
+//			return false;
+//		}
+//
+//		if ( X < x || Y < y ) {
+//			return false;
+//		}
+//		w += x;
+//		h += y;
+//		//    overflow || intersect
+//		return ( ( w < x || w > X ) && ( h < y || h > Y ) );
 	}
 
 	// not sure about this, I like width, height being +ve
