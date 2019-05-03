@@ -300,14 +300,60 @@ public class DRectangle {
 
 		public Bounds flip() {
 			switch (this) {
-			case XMIN:
-				return XMAX;
-			case XMAX:
-				return XMIN;
-			case YMIN:
-				return YMAX;
-			case YMAX:
-				return YMIN;
+				case XMIN:
+					return XMAX;
+				case XMAX:
+					return XMIN;
+				case YMIN:
+					return YMAX;
+				case YMAX:
+					return YMIN;
+			}
+			return null;
+		}
+
+		public boolean isX() {
+			switch (this) {
+				case XMIN:
+					return true;
+				case XMAX:
+					return true;
+				case XCEN:
+					return true;
+				case YMIN:
+					return false;
+				case YMAX:
+					return false;
+				case YCEN:
+					return false;
+			}
+			throw new Error();
+		}
+
+		public boolean isY() { return !isX(); }
+
+		public Bounds next() {
+			switch (this) {
+				case XMIN:
+					return YMIN;
+				case YMIN:
+					return XMAX;
+				case XMAX:
+					return YMAX;
+				case YMAX:
+					return XMIN;
+			}
+			return null;
+		}
+
+		public Bounds length() {
+			switch (this) {
+				case XMIN:
+				case XMAX:
+					return HEIGHT;
+				case YMIN:
+				case YMAX:
+					return WIDTH;
 			}
 			return null;
 		}
@@ -523,6 +569,7 @@ public class DRectangle {
 		}
 		throw new Error();
 	}
+
 
 	public Point2d[] points() {
 		return new Point2d[] { new Point2d( x, y ), new Point2d( x, y + height ), new Point2d( x + width, y + height ), new Point2d( x + width, y ), };

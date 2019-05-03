@@ -103,11 +103,16 @@ public class Mathz
         return a.x * b.y - a.y * b.x;
     }
 
-    public static boolean inRange( double query, double min, double max )
-    {
-        return query >= min && query <= max;
-    }
-    
+	public static boolean inRange( double query )
+	{
+		return inRange(query, 0, 1);
+	}
+
+	public static boolean inRange( double query, double min, double max )
+	{
+		return query >= min && query <= max;
+	}
+
     public static boolean inRangeTol( double query, double value, double tol )
     {
     	return query >= value - tol && query <= value + tol;
