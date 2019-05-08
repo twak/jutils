@@ -207,14 +207,14 @@ public class Imagez {
 	}
 
 	public static BufferedImage scaleSquare (BufferedImage in, int s ) {
-		return scaleSquare( in, s, null, Double.MAX_VALUE, Color.black );
+		return scaleSquare( in, s, null, Double.MAX_VALUE, Color.black, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
 	}
 	
 	public static BufferedImage scaleSquare (BufferedImage in, int s, double maxScale ) {
-		return scaleSquare( in, s, null, maxScale, Color.black );
+		return scaleSquare( in, s, null, maxScale, Color.black, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
 	}
 	
-	public static BufferedImage scaleSquare (BufferedImage in, int s, DRectangle pixeLocation, double maxScale, Color bg ) {
+	public static BufferedImage scaleSquare (BufferedImage in, int s, DRectangle pixeLocation, double maxScale, Color bg, Object quality ) {
 
 		double scale;
 		int xpad, ypad;
@@ -236,7 +236,7 @@ public class Imagez {
 		Graphics2D g = out.createGraphics();
 		g.setColor( bg );
 		g.fillRect( 0, 0, s, s );
-		g.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
+		g.setRenderingHint( RenderingHints.KEY_INTERPOLATION, quality );
 		g.setRenderingHint( RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY );
 		g.drawImage( in, xpad, ypad, nx, ny, 0, 0, in.getWidth(), in.getHeight(), null );
 		g.dispose();
