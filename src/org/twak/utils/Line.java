@@ -133,7 +133,7 @@ public class Line implements Serializable
 
         double tol = 0.000001;
         
-        if (    x >= Math.min( start.x, end.x ) - tol &&
+        if  (   x >= Math.min( start.x, end.x ) - tol &&
                 x <= Math.max( start.x, end.x ) + tol &&
                 y >= Math.min( start.y, end.y ) - tol &&
                 y <= Math.max( start.y, end.y ) + tol )
