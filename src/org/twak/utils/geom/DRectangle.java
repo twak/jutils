@@ -1,6 +1,6 @@
 package org.twak.utils.geom;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -752,6 +752,10 @@ public class DRectangle {
         public void envelop(DRectangle bb) {
 			for (Point2d p : bb.points())
 				envelop(p);
+        }
+
+        public void envelop(Point q) {
+			envelop(new Point2d(q.x, q.y));
         }
     }
 
