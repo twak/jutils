@@ -131,6 +131,17 @@ public class ObjDump {
 
 		return out;
 	}
+	
+	public Point3d[] getPointsP3( Face f ) {
+		Point3d[] out = new Point3d[f.vtIndexes.size()];
+		
+		for ( int v = 0; v < f.vtIndexes.size(); v++ ) {
+			Tuple3d vert = orderVert.get( f.vtIndexes.get( v ) );
+			out[v] = new Point3d (vert);
+		}
+		
+		return out;
+	}
 
 	public double[][] getNorms( Face f ) {
 		
@@ -888,5 +899,19 @@ public class ObjDump {
 				f.normIndexes.add( nIndex );
 			}
 		}
+	}
+
+	public Point3d computeMeanVert() {
+
+		Point3d pos = new Point3d();
+		int count = 0;
+		for (Face f : material2Face.valueList()) {
+			for (Point3d pt : getPointsP3( f )) {
+				pos.add( pt );
+				count++;
+			}
+		}
+		pos.scale( 1./count );
+		return pos;
 	}
 }
