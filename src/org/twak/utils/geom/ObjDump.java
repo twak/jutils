@@ -38,6 +38,8 @@ import org.twak.utils.collections.MultiMap;
  */
 public class ObjDump {
 
+	public boolean FLIP_Y_UV_ON_WRITE = false;
+
 	public boolean REMOVE_DUPE_TEXTURES = false;
 
 	public String name;
@@ -319,7 +321,7 @@ public class ObjDump {
 			
 			if ( orderUV != null )
 				for ( Tuple2d uv : orderUV )
-					out.write( "vt " + uv.x + " " + uv.y + "\n" );
+					out.write( "vt " + uv.x + " " + ( FLIP_Y_UV_ON_WRITE ? (1-uv.y ) : uv.y ) + "\n" );
 			
 			if ( orderNorm != null )
 				for ( Tuple3d norm : orderNorm )
@@ -862,7 +864,6 @@ public class ObjDump {
 			transform.transform( pt );
 			v.set ( pt );
 		}
-		
 	}
 
 	public void computeMissingNormals() {
