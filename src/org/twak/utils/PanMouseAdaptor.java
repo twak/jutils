@@ -212,7 +212,7 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 	public double fromX( int val ) {
 		return ( val - compGetWidth() / 2 ) / zoom + cenX;
 	}
-
+	
 	public double fromY( int val ) {
 		return ( val - compGetHeight() / 2 ) / zoom + cenY;
 	}
@@ -327,6 +327,14 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 		return width * zoom;
 	}
 
+	public double fromXD( double val ) {
+		return ( val - compGetWidth() / 2 ) / zoom + cenX;
+	}
+
+	public double fromYD( double val ) {
+		return ( val - compGetHeight() / 2 ) / zoom + cenY;
+	}
+	
 	public Point2d toD( Point2d end ) {
 		return new Point2d( toX( end.x ), toY( end.y ) );
 	}
