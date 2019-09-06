@@ -214,4 +214,15 @@ public class Arrayz {
 	public static double[] copyOf( double[] styleZ ) {
 		return Arrays.copyOf( styleZ, styleZ.length );
 	}
+    
+	public static double[][] copyOf( double[][] i ) {
+		
+		double[][] out = new double [i.length][i[0].length];
+		
+		for (int x = 0; x < i.length; x++)
+			for (int y = 0; y < i[0].length; y++)
+				out[x][y] = i[x][y];
+
+		return out;
+	}
 }
