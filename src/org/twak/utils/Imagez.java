@@ -1,8 +1,6 @@
 package org.twak.utils;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -180,16 +178,14 @@ public class Imagez {
     }
 
 	public static BufferedImage scaleLongest (BufferedImage in, int longest) {
-		
-		
+
 		double scale; 
 		
-		if (in.getWidth() > in.getHeight()) {
+		if (in.getWidth() > in.getHeight())
 			scale = longest / (double) in.getWidth() ;
-		}
-		else {
+		else
 			scale = longest / (double) in.getHeight();
-		}
+
 	
 		BufferedImage out = new BufferedImage( 
 				(int) (in.getWidth() * scale), 
@@ -197,10 +193,13 @@ public class Imagez {
 				BufferedImage.TYPE_3BYTE_BGR );
 		
 		Graphics2D  g = out.createGraphics();
-		g.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
+
+//		g.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
 //	    g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
-		g.drawImage( in, 0, 0, out.getWidth(), out.getHeight(), 0, 0, in.getWidth(), in.getHeight(), null );
+		Image sm = in.getScaledInstance( out.getWidth(), out.getHeight(), Image.SCALE_SMOOTH );
+
+		g.drawImage(  sm, 0, 0, null );
 		g.dispose();
 		
 		return out;
@@ -341,6 +340,13 @@ public class Imagez {
 		} catch ( Throwable th ) {
 			return new BufferedImage( 1, 1, BufferedImage.TYPE_3BYTE_BGR );
 		}
+	}
+
+	public static void fill( BufferedImage roomcat, Color color ) {
+		Graphics2D g = roomcat.createGraphics();
+		g.setColor( color );
+		g.fillRect( 0,0, roomcat.getWidth(), roomcat.getHeight() );
+		g.dispose();
 	}
 }
 
