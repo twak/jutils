@@ -3,7 +3,7 @@
 
 # jutils
 
-Twak's java utils!
+twak's java utils!
 
 Random tools and abstractions created as required. Not a tidy library! Required for some of my other projects. Not all my own work. 
 
