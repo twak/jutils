@@ -1,4 +1,22 @@
-/bin/
 /target/
-/.idea/
+/bin/
+/build
+.gradle
+
+# PyDev
 /.pydevproject
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# IntelliJ
+*.iml
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+
+# Mac
+.DS_Store
