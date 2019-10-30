@@ -24,7 +24,7 @@ Add this to your `pom.xml` to use latest snapshot in your project:
 </dependency>
 ```
 
-### local Maven
+### local maven
 `mvn compile install` should install it into your local mvn.
 
 ### gradle
