@@ -1,14 +1,12 @@
 [![](https://jitpack.io/v/twak/jutils.svg)](https://jitpack.io/#twak/jutils)
 
-# jutils
-
 twak's java utils!
 
 Random tools and abstractions created as required. Not a tidy library! Required for some of my other projects. Not all my own work. 
 
-## Integration
+## integration
 
-### Maven
+### maven
 Add this to your `pom.xml` to use latest snapshot in your project:
 
 ```
@@ -26,7 +24,10 @@ Add this to your `pom.xml` to use latest snapshot in your project:
 </dependency>
 ```
 
-### Gradle
+### local Maven
+`mvn compile install` should install it into your local mvn.
+
+### gradle
 Add this in your root `build.gradle` at the end of repositories to use latest snapshot:
 
 ```
@@ -41,6 +42,3 @@ dependencies {
         implementation 'com.github.twak:jutils:master-SNAPSHOT'
 }
 ```
-
-### Local Maven
-`mvn compile install` should install it into your local mvn.
