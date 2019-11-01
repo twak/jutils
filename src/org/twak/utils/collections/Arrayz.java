@@ -49,6 +49,26 @@ public class Arrayz {
 		return minI;
 	}
 
+	public static int min(int...array) {
+		int min = Integer.MAX_VALUE;
+		int minI = -1;
+
+		for (int i = 0; i < array.length; i++)
+			if (array[i] < min) {
+				minI = i;
+				min = array[i];
+			}
+
+		return minI;
+	}
+
+	public static int minV(int...array) {
+		int index = min(array);
+		if (index == -1)
+			return -1;
+		return array[index];
+	}
+
 	public static <E> Set<E>  asSet(Object... to) {
 		Set<E> h = new HashSet();
 		
