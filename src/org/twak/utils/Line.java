@@ -74,7 +74,11 @@ public class Line implements Serializable
         return this.intersects( other, true );
     }
 
-    public Point2d intersects (Line other, boolean doClip)
+    public Point2d intersects (Line other, boolean doClip) {
+        return intersects(other, doClip, 0);
+    }
+
+    public Point2d intersects (Line other, boolean doClip, double tol)
     {
         double a1 = end.y - start.y;
         double b1 = start.x-end.x;
@@ -95,7 +99,7 @@ public class Line implements Serializable
         if (!doClip)
             return new Point2d(x,y);
 
-        double tol = 0;//0.000001;
+//        double tol = 0;//0.000001;
         // lines cross...now check segments ( this is the place to add and remove tolerances from)
         if (    x >= Math.min( start.x, end.x ) - tol &&
                 x <= Math.max( start.x, end.x ) + tol &&
