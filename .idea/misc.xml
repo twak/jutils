@@ -4,8 +4,15 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/../campskeleton/pom.xml" />
+        <option value="$PROJECT_DIR$/../siteplan/pom.xml" />
+        <option value="$PROJECT_DIR$/../chordatlas/pom.xml" />
+        <option value="$PROJECT_DIR$/../planchordatlas/pom.xml" />
+        <option value="$PROJECT_DIR$/../tweedstreets/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_12" default="false" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_12" default="false" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
 </project>

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/../campskeleton" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../chordatlas" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../planchordatlas" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../siteplan" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../tweedstreets" vcs="Git" />
   </component>
 </project>
