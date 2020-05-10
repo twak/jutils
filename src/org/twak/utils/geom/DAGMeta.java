@@ -36,7 +36,6 @@ public class DAGMeta<E, D>
     public void add( E a, E b, D d )
     {
         addEntry( a, b, d );
-//        addEntry( b, a, d );
     }
 
     private void addEntry( E a, E b, D d )
@@ -67,22 +66,6 @@ public class DAGMeta<E, D>
     public void removeReturning()
     {
         Map<E, ArcInfo<E, D>> toRemove = new HashMap();
-
-//        Iterator<E> sit = map.keySet().iterator();
-//
-//        while (sit.hasNext()){
-//            E s = sit.next();
-//            Iterator<ArcInfo<E,D>> eit = map.get(s).iterator();
-//            while (eit.hasNext())
-//            {
-//                ArcInfo<E,D> aED = eit.next();
-//                if (aED.e == s)
-//                {
-//
-//                }
-//            }
-//        }
-
 
         for ( E s : map.keySet() )
             for ( ArcInfo<E, D> aiE : map.get( s ) )

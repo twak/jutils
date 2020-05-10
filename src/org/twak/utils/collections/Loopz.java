@@ -88,12 +88,13 @@ public class Loopz {
 		}
 		
 		UnionWalker uw = new UnionWalker();
+
 		lines.stream().forEach ( x -> uw.addEdge(x.start, x.end) );
 
 		out = uw.findAll();
-		
+
 //		new Plot( out );
-		
+
 		return out;
 	}
 	
