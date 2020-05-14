@@ -99,5 +99,20 @@ public class HalfMeshez {
                             }
 
     }
-	
+
+	public static void findEdgeOvers( HalfMesh2 out ) {
+
+        MultiMap<Point2d, HalfMesh2.HalfEdge> overs = new MultiMap<>(  );
+        out.faces.stream().flatMap( x -> x.edgeList().stream() ).forEach( e -> overs.put(e.start, e) );
+
+        for ( HalfMesh2.HalfFace ff : out)
+            for ( HalfMesh2.HalfEdge e : ff )
+            {
+                for (HalfMesh2.HalfEdge over : overs.get(e.end) )
+                    if (over.end .equals ( e.start ) && over.start.equals ( e.end ) ) {
+                        over.over = e;
+                        e.over = over;
+                    }
+            }
+	}
 }

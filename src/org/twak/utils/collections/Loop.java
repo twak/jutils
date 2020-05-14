@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.vecmath.Point3d;
@@ -271,5 +272,9 @@ public class Loop<E> implements Iterable<E> {
 		LoopL<E> out = new LoopL<E>();
 		out.add(this);
 		return out;
+	}
+
+	public List<E>asList() {
+		return this.stream().collect( Collectors.toList() );
 	}
 }

@@ -70,10 +70,12 @@ public class LoopL<E> extends ArrayList<Loop<E>>
 
 
 
-    public void reverseEachLoop()
+    public LoopL<E> reverseEachLoop()
     {
         for (Loop<E> loop : this)
             loop.reverse();
+
+        return this;
     }
 
     public Iterator<LContext<E>> getCIterator()

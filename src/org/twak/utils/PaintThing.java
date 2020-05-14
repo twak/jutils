@@ -98,7 +98,7 @@ public class PaintThing {
 	private static void p( HalfMesh2 o, Graphics2D g2, PanMouseAdaptor ma ) {
 		g2.setStroke(  new BasicStroke( 1 ) );
 
-		double scatterRadius = 0.0;
+		double scatterRadius = 20;
 
 		int fc = 0;
 		for ( HalfFace f : o.faces ) {
@@ -136,9 +136,9 @@ public class PaintThing {
 //					e.end   == null ||
 //					e.next  == null )
 			{
-				g2.setColor( Color.red );
+				g2.setColor( Color.blue );
 				g2.setStroke(  new BasicStroke( 4 ) );
-//				p (e.line(), g2, ma);
+				p (e.line(), g2, ma);
 			}
 		}
 		g2.setStroke(  new BasicStroke( 1 ) );
@@ -246,7 +246,7 @@ public class PaintThing {
 		setBounds( o.start );
 		setBounds( o.end );
 		
-//		drawArrow(g, ma, l, 5);
+		drawArrow(g, ma, l, 5);
 	}
 
 	private static void p(String o, Graphics2D g, PanMouseAdaptor ma) {

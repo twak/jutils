@@ -46,7 +46,19 @@ public class Plot extends JComponent {
 	public List<Object> toPaint = new ArrayList();
 	
 	boolean firstFrame = true;
-	
+
+	public static void refresh( String title ) {
+
+		if (last != null && last.isVisible() ) {
+			last.repaint();
+			return;
+		}
+
+		Plot.closeLast();
+		new Plot( title );
+
+	}
+
 	public void publicPaintComponent(Graphics g) {
 		paintComponent( g );
 	}
