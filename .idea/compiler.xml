@@ -9,15 +9,16 @@
         <module name="campskeleton" />
         <module name="chordatlas" />
         <module name="jutils" />
+        <module name="mmg" />
         <module name="siteplan" />
         <module name="tweedplans" />
-        <module name="tweedstreets" />
         <module name="utils" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="campskeleton" target="1.8" />
       <module name="chordatlas" target="1.8" />
+      <module name="mmg" target="1.8" />
       <module name="siteplan" target="1.8" />
       <module name="tweedplans" target="1.8" />
       <module name="tweedstreets" target="1.8" />

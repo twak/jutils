@@ -1,5 +1,6 @@
 package org.twak.utils.geom;
 
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -336,6 +337,14 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			
 			return out;
 		}
+
+		public boolean hasFaces( HalfFace a, HalfFace b ) {
+
+			HalfFace of = over== null? null : over.face;
+
+			return face == a && of == b ||
+			 		face == b && of == a;
+		}
 	}
 
 	public static class HalfFace implements Iterable<HalfEdge> {
@@ -660,6 +669,19 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 				return out;
 			}
 
+			public Point2d getMean() {
+
+				double x = 0, y = 0, count = 0;
+
+					for ( HalfEdge he : this) {
+						x += he.start.x;
+						y += he.start.y;
+						count++;
+					}
+
+				return new Point2d(x/count, y/count);
+			}
+
 	}
 
 	public static class EdgeIterator implements Iterator<HalfEdge> {
@@ -777,6 +799,22 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 				out.envelop( e.start );
 		
 		return out;
+	}
+
+	public Point2d getMean() {
+
+		double x = 0, y = 0, count = 0;
+
+		for (HalfFace f : this) {
+			for ( HalfEdge he : f) {
+				x += he.start.x;
+				y += he.start.y;
+				count++;
+			}
+
+		}
+
+		return new Point2d(x/count, y/count);
 	}
 
 	public void add( HalfFace hf ) {

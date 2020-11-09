@@ -909,4 +909,14 @@ public class Loopz {
 		return false;
 	}
 
+	public static double lineLineDist( Loop<Point2d> a, Loop<Point2d> b ) {
+
+		double dist = Double.MAX_VALUE;
+
+		for ( Loopable<Point2d> al : a.loopableIterator() )
+			for ( Loopable<Point2d> bl : b.loopableIterator() )
+				dist = Math.min( dist, new Line( al.get(), al.getNext().get() ).distance( new Line( bl.get(), bl.getNext().get() ) ) );
+
+		return dist;
+	}
 }

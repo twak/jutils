@@ -44,11 +44,10 @@ public class PaintThing {
 	public static void paint (Object o, Graphics2D g, PanMouseAdaptor ma) {
 		if (o == null)
 			return;
+		else if (lookup.containsKey(o.getClass()))
+			((ICanPaintU)lookup.get(o.getClass())).paint(o, g, ma);
 		else if (o instanceof ICanPaint)
 			((ICanPaint)o).paint(g, ma);
-		else if (lookup.containsKey(o.getClass())) {
-			((ICanPaintU)lookup.get(o.getClass())).paint(o, g, ma);
-		}
 		else if (o instanceof LoopL)
 			p ((LoopL) o, g, ma);
 		else if (o instanceof Loop)

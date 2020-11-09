@@ -575,6 +575,15 @@ public class DRectangle {
 		return new Point2d[] { new Point2d( x, y ), new Point2d( x, y + height ), new Point2d( x + width, y + height ), new Point2d( x + width, y ), };
 	}
 
+	public Loop<Point2d>toLoop() {
+
+		Loop<Point2d> out = new Loop<>(  );
+
+		out.append(points());
+
+		return out;
+	}
+
 	public Iterable<Line> lines() {
 		ArrayList<Line> out = new ArrayList();
 
