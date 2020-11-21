@@ -11,8 +11,8 @@ import org.twak.utils.geom.DRectangle;
 
 public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 	int zoomInt = 0;
-	double cenX;
-	double cenY;
+	public double cenX;
+	public double cenY;
 	public double zoom = 1;
 	Integer startX;
 	Integer startY;
@@ -32,6 +32,25 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 		PanMouseAdaptor out = new PanMouseAdaptor();
 
 		out.comp = comp;
+
+		out.cenX = x + width / 2;
+		out.cenY = y + height / 2;
+
+		out.zoom = outWidth / width;
+
+		return out;
+	}
+
+	public static PanMouseAdaptor buildFixedMA( double x, double y, double width, double height, double outWidth, double compWidth, double compHeight ) {
+
+		PanMouseAdaptor out = new PanMouseAdaptor() {
+			public int compGetWidth() {
+				return (int)compWidth;
+			}
+			public int compGetHeight() {
+				return (int)compHeight;
+			}
+		};
 
 		out.cenX = x + width / 2;
 		out.cenY = y + height / 2;
