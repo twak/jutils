@@ -255,6 +255,7 @@ public class PaintThing {
 	}
 	
 	private static void p(StringLoc o, Graphics2D g, PanMouseAdaptor ma) {
+		g.setFont( g.getFont().deriveFont( 36f ) );
 		g.drawString( o.string, ma.toX( o.loc.x ), ma.toY( o.loc.y ) );
 	}
 

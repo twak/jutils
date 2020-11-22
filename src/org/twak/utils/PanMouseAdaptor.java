@@ -355,7 +355,7 @@ public class PanMouseAdaptor extends MouseAdapter implements Cloneable {
 	}
 	
 	public Point2d toD( Point2d end ) {
-		return new Point2d( toX( end.x ), toY( end.y ) );
+		return new Point2d( toXD( end.x ), toYD( end.y ) );
 	}
 
 	public PanMouseAdaptor clone() {
