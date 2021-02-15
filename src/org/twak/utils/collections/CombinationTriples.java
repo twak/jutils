@@ -8,7 +8,7 @@ import java.util.Set;
 import org.twak.utils.Triple;
 
 /**
- * Iterator that returns all tri-combinations of things in a list
+ * Iterator that returns all tri-combinations of things in a map
  * @author twak
  */
 public class CombinationTriples <E> implements Iterator<Triple<E,E,E>>, Iterable<Triple<E,E,E>>
@@ -68,13 +68,13 @@ public class CombinationTriples <E> implements Iterator<Triple<E,E,E>>, Iterable
     
 //    public static void main (String[] args)
 //    {
-//        List<Integer> list = new ArrayList();
-//        list.add( 1 );
-//        list.add( 2 );
-//        list.add( 3 );
-//        list.add( 4 );
-//        list.add( 5 );
-//        for ( Triple <Integer, Integer, Integer> t : new AllTriples <Integer>( list ))
+//        List<Integer> map = new ArrayList();
+//        map.add( 1 );
+//        map.add( 2 );
+//        map.add( 3 );
+//        map.add( 4 );
+//        map.add( 5 );
+//        for ( Triple <Integer, Integer, Integer> t : new AllTriples <Integer>( map ))
 //        {
 //            System.out.println(t);
 //        }

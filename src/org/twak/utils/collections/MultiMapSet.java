@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 /**
- * HashMap backed mutli-item hash. eg a list for every entry in the hash table
+ * HashMap backed mutli-item hash. eg a map for every entry in the hash table
  * @author twak
  */
 public class MultiMapSet <A,B> //implements Map<A,List<B>>
@@ -78,7 +78,7 @@ public class MultiMapSet <A,B> //implements Map<A,List<B>>
     }
 
     /**
-     * Removes entire list indexed by key
+     * Removes entire map indexed by key
      * @param key
      * @return
      */

@@ -7,7 +7,7 @@ import java.util.List;
 import org.twak.utils.Pair;
 
 /**
- * Iterator that returns all consecutive triples in a list.
+ * Iterator that returns all consecutive triples in a map.
  *
  * If size is 1 and we're looping we return one pair of (elment 1, element 1)
  *
@@ -21,7 +21,7 @@ public class ConsecutivePairs <E> implements Iterator<Pair<E,E>>, Iterable<Pair<
 
     /**
      *
-     * @param input the list to returns triples from
+     * @param input the map to returns triples from
      * @param loop is it cyclic? (do we return {end-1, end, start} etc...))
      */
     public ConsecutivePairs (List<E> input, boolean loop)

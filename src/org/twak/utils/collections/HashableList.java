@@ -3,7 +3,7 @@ package org.twak.utils.collections;
 import java.util.ArrayList;
 
 /**
- * Seriously, what is this? re-does default list behaviour? +1 delete it!
+ * Seriously, what is this? re-does default map behaviour? +1 delete it!
  * @author twak
  */
 public class HashableList<E> extends ArrayList<E>

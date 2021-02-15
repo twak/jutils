@@ -22,7 +22,7 @@ public class ConsecutiveItPairsGap <E> implements Iterator<Pair<E,E>>, Iterable<
 
     /**
      *
-     * @param input the list to returns triples from
+     * @param input the map to returns triples from
      * @param loop is it cyclic? (do we return {end-1, end, start} etc...))
      */
     public ConsecutiveItPairsGap (Iterable<E> input)
@@ -79,7 +79,7 @@ public class ConsecutiveItPairsGap <E> implements Iterator<Pair<E,E>>, Iterable<
         list.add( 2 );
         list.add( 3 );
         list.add( 4 );
-//        list.add( 5 );
+//        map.add( 5 );
         for ( Pair <Integer, Integer> t : new ConsecutiveItPairsGap<Integer>( list ))
         {
             System.out.println(t);

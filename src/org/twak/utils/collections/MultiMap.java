@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * HashMap backed mutli-item hash. eg a list for every entry in the hash table
+ * HashMap backed mutli-item hash. eg a map for every entry in the hash table
  * 
  * @author twak
  */

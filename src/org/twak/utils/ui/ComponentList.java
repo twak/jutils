@@ -19,7 +19,7 @@ public class ComponentList extends JPanel
     {
         public void selected();
         public void deselected();
-        // used to retain selection after rebuilding the list
+        // used to retain selection after rebuilding the map
         public Object getObject();
     }
     

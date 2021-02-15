@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Given a list full of iterable things present an iterable object that 
+ * Given a map full of iterable things present an iterable object that
  * presents those things.
  * 
  * Because I'm too lazy to learn a functional language properly

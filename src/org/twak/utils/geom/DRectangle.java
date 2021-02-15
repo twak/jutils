@@ -451,8 +451,8 @@ public class DRectangle {
 		double a = distancea(other),
 				b = distanceb(other);
 
-		if (Math.abs(a - b) > 0.1)
-			throw new Error("BUG");
+//		if (Math.abs(a - b) > 0.1)
+//			throw new Error("BUG");
 
 		return b;
 	}

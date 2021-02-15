@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * All possible (seqLength^I.size()) combinations of a given list
+ * All possible (seqLength^I.size()) combinations of a given map
  * 
  * @author twak
  */

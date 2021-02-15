@@ -7,7 +7,7 @@ import java.util.List;
 import org.twak.utils.Triple;
 
 /**
- * Iterator that returns all consecutive triples in a list
+ * Iterator that returns all consecutive triples in a map
  * @author twak
  */
 public class ConsecutiveTriples <E> implements Iterator<Triple<E,E,E>>, Iterable<Triple<E,E,E>>
@@ -18,7 +18,7 @@ public class ConsecutiveTriples <E> implements Iterator<Triple<E,E,E>>, Iterable
 
     /**
      *
-     * @param input the list to returns triples from
+     * @param input the map to returns triples from
      * @param loop is it cyclic? (do we return {end-1, end, start} etc...))
      */
     public ConsecutiveTriples (Iterable<E> input, boolean loop)
@@ -80,9 +80,9 @@ public class ConsecutiveTriples <E> implements Iterator<Triple<E,E,E>>, Iterable
         List<Integer> list = new ArrayList();
         list.add( 1 );
         list.add( 2 );
-//        list.add( 3 );
-//        list.add( 4 );
-//        list.add( 5 );
+//        map.add( 3 );
+//        map.add( 4 );
+//        map.add( 5 );
         for ( Triple <Integer, Integer, Integer> t : new ConsecutiveTriples<Integer>( list, false ))
         {
             System.out.println(t);

@@ -89,7 +89,7 @@ public class CountThings<E>
     {
         Set<E> val = null;
         int max = Integer.MIN_VALUE;
-        
+
         for ( Map.Entry<E, MutableInteger> e : counts.cache.entrySet() )
         {
             if (e.getValue().i > max)
@@ -104,6 +104,11 @@ public class CountThings<E>
         }
         
         return new Pair(val, max);
+    }
+
+    public void print() {
+        for ( Map.Entry<E, MutableInteger> e : counts.cache.entrySet() )
+            System.out.println(e.getKey()+": " + e.getValue().i);
     }
 
     public int getSize()

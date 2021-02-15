@@ -664,7 +664,7 @@ public class HashSet<T>
 
     /**
      * Returns a string representation of this set.  The string
-     * representation consists of a list of the collection's elements in the
+     * representation consists of a map of the collection's elements in the
      * order they are returned by its iterator, enclosed in square brackets
      * (<tt>"[]"</tt>).  Adjacent elements are separated by the characters
      * <tt>", "</tt> (comma and space).  Elements are converted to strings as

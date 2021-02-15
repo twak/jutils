@@ -14,7 +14,7 @@ import javax.vecmath.Point3d;
 import org.twak.utils.Pair;
 
 /**
- * Double linked-list wrapper around an arbitrary object
+ * Double linked-map wrapper around an arbitrary object
  * 
  * @author twak
  */

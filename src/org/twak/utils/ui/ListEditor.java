@@ -29,12 +29,12 @@ public class ListEditor<E> extends javax.swing.JPanel {
         this.list = list;
         initComponents();
         init();
-        jList.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
+        jFrames.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
     }
 
     public void init()
     {
-        Object[] vals = jList.getSelectedValues();
+        Object[] vals = jFrames.getSelectedValues();
 
         DefaultListModel dlm = new DefaultListModel();
 
@@ -45,10 +45,10 @@ public class ListEditor<E> extends javax.swing.JPanel {
             }
 
         fireSelection = false;
-        jList.setModel( dlm );
+        jFrames.setModel( dlm );
 
         for ( Object o : vals )
-            jList.setSelectedValue( o, true );
+            jFrames.setSelectedValue( o, true );
         
         fireSelection = true;
     }
@@ -68,7 +68,7 @@ public class ListEditor<E> extends javax.swing.JPanel {
             list.add( Mathz.clamp( index+i, 0, list.size()), o);
         }
         fireSelection= false;
-        jList.setSelectedValue(o, true);
+        jFrames.setSelectedValue(o, true);
         fireSelection= true;
         init();
         changed(list);
@@ -76,14 +76,14 @@ public class ListEditor<E> extends javax.swing.JPanel {
 
     public void setSelected (E e)
     {
-        if (jList.getSelectedValue() == e)
+        if ( jFrames.getSelectedValue() == e)
             return;
         
-        jList.setSelectedValue(e, true);
+        jFrames.setSelectedValue(e, true);
     }
 
     public void setList(List<E> nList)
-    {   
+    {
         if (list == nList)
             return;
 
@@ -93,7 +93,7 @@ public class ListEditor<E> extends javax.swing.JPanel {
             nList = new ArrayList();
 
         list = nList;
-//        jList.clearSelection();
+//        jFrames.clearSelection();
         init();
     }
 
@@ -106,7 +106,7 @@ public class ListEditor<E> extends javax.swing.JPanel {
 
     public E getSelected()
     {
-        return (E)jList.getSelectedValue();
+        return (E) jFrames.getSelectedValue();
     }
 
     /** This method is called from within the constructor to
@@ -119,7 +119,7 @@ public class ListEditor<E> extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList = new javax.swing.JList();
+        jFrames = new javax.swing.JList();
         jPanel1 = new javax.swing.JPanel();
         add = new javax.swing.JButton();
         remove = new javax.swing.JButton();
@@ -128,22 +128,22 @@ public class ListEditor<E> extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        jList.setModel(new javax.swing.AbstractListModel() {
+        jFrames.setModel( new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jList.addMouseListener(new java.awt.event.MouseAdapter() {
+        jFrames.addMouseListener( new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jListMouseClicked(evt);
             }
         });
-        jList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+        jFrames.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 jListValueChanged(evt);
             }
         });
-        jScrollPane1.setViewportView(jList);
+        jScrollPane1.setViewportView( jFrames );
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -188,67 +188,71 @@ public class ListEditor<E> extends javax.swing.JPanel {
     {//GEN-HEADEREND:event_jListValueChanged
         if (fireSelection && !evt.getValueIsAdjusting())
         {
-            selected( (E) jList.getSelectedValue() );
+            selected( (E) jFrames.getSelectedValue() );
         }
 
     }//GEN-LAST:event_jListValueChanged
 
     private void addMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_addMouseClicked
     {//GEN-HEADEREND:event_addMouseClicked
-        Object[] original = jList.getSelectedValues();
+
+    	if (!add.isEnabled())
+    		return;
+
+        Object[] original = jFrames.getSelectedValues();
         add(evt, list);
-        List<Object> neu = Arrayz.newElements (original, jList.getSelectedValues());
+        List<Object> neu = Arrayz.newElements (original, jFrames.getSelectedValues());
 
         changed(list);
         init();
 
         if (!neu.isEmpty())
-            jList.setSelectedValue(neu.get(0), true);
+            jFrames.setSelectedValue(neu.get(0), true);
     }//GEN-LAST:event_addMouseClicked
 
     private void removeActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_removeActionPerformed
     {//GEN-HEADEREND:event_removeActionPerformed
-        int index = jList.getSelectedIndex();
+        int index = jFrames.getSelectedIndex();
         
-        for (Object o : jList.getSelectedValues())
+        for (Object o : jFrames.getSelectedValues())
             list.remove((E)o);
 
         changed(list);
         init();
-        jList.setSelectedIndex(Math.min (list.size()-1, index));
+        jFrames.setSelectedIndex(Math.min (list.size()-1, index));
     }//GEN-LAST:event_removeActionPerformed
 
     private void upActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_upActionPerformed
     {//GEN-HEADEREND:event_upActionPerformed
-        for (Object o :jList.getSelectedValues())
+        for (Object o : jFrames.getSelectedValues())
             moveSelected((E)o, -1);
     }//GEN-LAST:event_upActionPerformed
 
     private void downActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_downActionPerformed
     {//GEN-HEADEREND:event_downActionPerformed
-        for (Object o : Arrayz.reverse ( jList.getSelectedValues()) )
+        for (Object o : Arrayz.reverse ( jFrames.getSelectedValues()) )
             moveSelected((E)o, 1);
     }//GEN-LAST:event_downActionPerformed
 
     private void jListMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jListMouseClicked
     {//GEN-HEADEREND:event_jListMouseClicked
-        if (evt.getClickCount() == 2)
+    	if (evt.getClickCount() == 2)
         {
-            doubleClick((E) jList.getSelectedValue(), list);
+            doubleClick((E) jFrames.getSelectedValue(), list);
             init();
         }
         else if (evt.getButton() == MouseEvent.BUTTON3)
         {
-            rightClick((E) jList.getSelectedValue(), evt, list);
+            rightClick((E) jFrames.getSelectedValue(), evt, list);
             init();
         }
     }//GEN-LAST:event_jListMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton add;
+    public javax.swing.JButton add;
     private javax.swing.JButton down;
-    private javax.swing.JList jList;
+    private javax.swing.JList jFrames;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton remove;

@@ -490,7 +490,7 @@ public class Intersector
       
     /**
      * We change the line directions to be homogenious. But we need to return a
-     * list of the original Lines with the collisions. This class orders the original
+     * map of the original Lines with the collisions. This class orders the original
      * line correctly, while keeping a reference to the original.
      */
     static class ILine extends Line

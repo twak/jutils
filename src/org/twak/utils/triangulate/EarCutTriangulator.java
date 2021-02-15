@@ -46,7 +46,7 @@ public class EarCutTriangulator
     /** Normal of the face being processed now */
     private float[] faceNormal;
 
-    /** The current 2D coordinate list that we work from */
+    /** The current 2D coordinate map that we work from */
     private float[] working2dCoords;
 
     /** Array for reading out the concave vertices from the hashset */
@@ -98,7 +98,7 @@ public class EarCutTriangulator
      *
      * @param coords The coordinates of the face
      * @param startIndex The index of the first coordinate in the face
-     * @param numVertex  The number of vertices to read from the list
+     * @param numVertex  The number of vertices to read from the map
      * @param coordOutput The array to copy the coord index values to
      * @param normal The normal to this face these vertices are a part of
      * @return The number of triangles in the output array
@@ -138,7 +138,7 @@ public class EarCutTriangulator
      *
      * @param coords The coordinates of the face
      * @param startIndex The index of the first coordinate in the face
-     * @param numVertex  The number of vertices to read from the list
+     * @param numVertex  The number of vertices to read from the map
      * @param firstNormalIndex The first position of the normalIndex array
      * @param normalIndex The index of normals for each coordinate
      * @param firstColorIndex The first position of the colorIndex array
@@ -208,7 +208,7 @@ public class EarCutTriangulator
             tmpArray = new PolyVertex[numVertex];
 
         // More than 3, so work on the ear-splitting algorithm.
-        // Build a list of the vertices in a circular list.
+        // Build a map of the vertices in a circular map.
         // First vertex, then interior vertices, then last vertex
         int index = coordIndex[startIndex];
         PolyVertex first = newVertex();
@@ -342,7 +342,7 @@ while(tmp != first)
      *
      * @param coords The coordinates of the face
      * @param startIndex The index of the first coordinate in the face
-     * @param numVertex  The number of vertices to read from the list
+     * @param numVertex  The number of vertices to read from the map
      * @param firstNormalIndex The first position of the normalIndex array
      * @param firstColorIndex The index of color for each coordinate
      * @param firstTexCoordIndex The first position of the texCoordIndex array
@@ -405,7 +405,7 @@ while(tmp != first)
             tmpArray = new PolyVertex[numVertex];
 
         // More than 3, so work on the ear-splitting algorithm.
-        // Build a list of the vertices in a circular list.
+        // Build a map of the vertices in a circular map.
         // First vertex, then interior vertices, then last vertex
         PolyVertex first = newVertex();
         first.x = coords[startIndex];
@@ -623,7 +623,7 @@ while(tmp != first)
                 current.prev = prev_vtx.prev;
 
                 // Check this line. Algo says to remove current.prev, not
-                // current from the concave list, but I think that's wrong.
+                // current from the concave map, but I think that's wrong.
 
                 if(concaveVertices.contains(current) &&
                    isConvexVertex(current.prev, current, current.next))
@@ -764,7 +764,7 @@ for(int i = 0; i < output_index; i += 3)
                     // happens to also be concave, it will not correctly work it
                     // out that there's an ear there. This checks to see if it is
                     // the identical vertex but in a different place in the vertex
-                    // list. If it is, then ignore it and continue on
+                    // map. If it is, then ignore it and continue on
                     if(cp.x == p.x && cp.y == p.y && cp.z == p.z)
                         continue;
 
@@ -1079,7 +1079,7 @@ for(int i = 0; i < output_index; i += 3)
      * Release this entry back to the cache. Assumes that the entry has been
      * freed of all the links and value before the call.
      *
-     * @param e The entry to put back in the list
+     * @param e The entry to put back in the map
      */
     private static void freeVertex(PolyVertex e)
     {
