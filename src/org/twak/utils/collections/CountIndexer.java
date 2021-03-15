@@ -22,10 +22,17 @@ public class CountIndexer <E, O>
 
     public void register (O o)
     {
+        registerDontReset( o );
+        reset();
+    }
+
+    public void registerDontReset (O o)
+    {
         Collections.sort( current, new HashCodeComparator());
-
         index.put (current, o);
+    }
 
+    public void reset() {
         current = new ArrayList();
     }
 

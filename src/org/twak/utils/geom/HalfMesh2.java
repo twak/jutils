@@ -631,6 +631,16 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 			return area;
 		}
 
+		public double circumrence() {
+
+			double len = 0;
+
+			for (HalfEdge e : this)
+				len += e.length();
+
+			return len;
+		}
+
 		public void merge( HalfMesh2 mesh, HalfFace togo ) {
 			
 			for ( HalfEdge e : this )

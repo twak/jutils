@@ -29,4 +29,8 @@ public class MapMap<I1, I2,O>
 
         return cache2.get( i2 );
     }
+
+    public Map<I2,O> get( I1 i1 ) {
+        return cache.get( i1 );
+    }
 }

@@ -1,6 +1,6 @@
 package org.twak.utils.ui;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -147,9 +147,11 @@ public class ListEditor<E> extends javax.swing.JPanel {
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel1.setLayout(new java.awt.GridLayout(0, 1));
+        jPanel1.setLayout(new ListDownLayout());
 
+        Dimension bSize = new Dimension( 50,50 );
         add.setText("+");
+        add.setPreferredSize( bSize );
         add.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 addMouseClicked(evt);
@@ -158,6 +160,7 @@ public class ListEditor<E> extends javax.swing.JPanel {
         jPanel1.add(add);
 
         remove.setText("-");
+        remove.setPreferredSize( bSize );
         remove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 removeActionPerformed(evt);
@@ -166,6 +169,7 @@ public class ListEditor<E> extends javax.swing.JPanel {
         jPanel1.add(remove);
 
         up.setText("^");
+        up.setPreferredSize( bSize );
         up.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 upActionPerformed(evt);
@@ -174,6 +178,7 @@ public class ListEditor<E> extends javax.swing.JPanel {
         jPanel1.add(up);
 
         down.setText("V");
+        down.setPreferredSize( bSize );
         down.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 downActionPerformed(evt);
