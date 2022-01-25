@@ -78,8 +78,12 @@ public class ListEditor<E> extends javax.swing.JPanel {
     {
         if ( jFrames.getSelectedValue() == e)
             return;
-        
-        jFrames.setSelectedValue(e, true);
+
+        if (e != null)
+            jFrames.setSelectedValue(e, true);
+        else
+            jFrames.clearSelection();
+
     }
 
     public void setList(List<E> nList)
