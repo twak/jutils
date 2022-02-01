@@ -145,7 +145,11 @@ public class SimplePopup2 {
 
 	public void show() {
 		if (menu.getComponents().length == 0)
-			return; // nothing to show!
+			add("nothing here!", new Runnable() {
+				public void run() { System.err.println("nothing happened!"); }
+			});
+
+//			return; // nothing to show!
 
 		menu.show(evt.getComponent(), evt.getX() - 10, evt.getY() - 10);
 
