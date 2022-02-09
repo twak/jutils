@@ -196,4 +196,9 @@ public class MultiMap<A, B> //implements Map<A,List<B>>
 		for (B b : bs)
 			put (a, b);
 	}
+
+	public void addEmptyForAll(Collection<A> all) {
+		for (A a : all)
+			addEmpty(a);
+	}
 }
