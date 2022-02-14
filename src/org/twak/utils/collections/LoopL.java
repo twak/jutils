@@ -5,6 +5,7 @@ package org.twak.utils.collections;
  * @author twak
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -16,7 +17,7 @@ import org.twak.utils.LContext;
  * a loop of loops, with an iterator for the contained primitive (corners!)
  * @author twak
  */
-public class LoopL<E> extends ArrayList<Loop<E>>
+public class LoopL<E> extends ArrayList<Loop<E>> implements Serializable
 {
     public LoopL(){}
     public LoopL( Loop<E> fromPoints )

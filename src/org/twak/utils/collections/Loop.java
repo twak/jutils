@@ -1,6 +1,7 @@
 
 package org.twak.utils.collections;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,7 +19,7 @@ import org.twak.utils.Pair;
  * 
  * @author twak
  */
-public class Loop<E> implements Iterable<E> {
+public class Loop<E> implements Iterable<E>, Serializable {
 	public Loopable<E> start;
 	public List<Loop<E>> holes = new ArrayList<>();
 

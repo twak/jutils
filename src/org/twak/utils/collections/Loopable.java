@@ -1,8 +1,9 @@
 package org.twak.utils.collections;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
-public class Loopable<E> implements Iterable<Loopable<E>> {
+public class Loopable<E> implements Iterable<Loopable<E>>, Serializable {
 	
 	E me;
 	public Loopable<E> next, prev;

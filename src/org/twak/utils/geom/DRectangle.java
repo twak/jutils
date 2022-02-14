@@ -1,6 +1,7 @@
 package org.twak.utils.geom;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -16,7 +17,7 @@ import org.twak.utils.collections.*;
  *
  * @author twak
  */
-public class DRectangle {
+public class DRectangle implements Serializable {
 	public double x, y, width, height;
 
 	public DRectangle() {
