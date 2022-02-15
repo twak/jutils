@@ -91,6 +91,12 @@
 			<version>${batik_v}</version>
 		</dependency>
 
+		<dependency> <!-- triangulator -->
+			<groupId>org.orbisgis</groupId>
+			<artifactId>poly2tri-core</artifactId>
+			<version>0.1.2</version>
+		</dependency>
+
 
 	</dependencies>
 

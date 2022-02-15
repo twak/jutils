@@ -1,5 +1,6 @@
 package org.twak.utils.collections;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
  * 
  * @author twak
  */
-public class MultiMap<A, B> //implements Map<A,List<B>>
+public class MultiMap<A, B> implements Serializable
 {
 	public Map<A, List<B>> map = new LinkedHashMap();
 

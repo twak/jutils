@@ -1,6 +1,8 @@
 package org.twak.utils;
 
-public class MutableDouble {
+import java.io.Serializable;
+
+public class MutableDouble implements Serializable {
 	
 	public double d;
 

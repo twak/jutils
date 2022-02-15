@@ -1,10 +1,12 @@
 package org.twak.utils;
 
+import java.io.Serializable;
+
 /**
  *
  * @author twak
  */
-public class MutableInteger {
+public class MutableInteger implements Serializable {
 	public int i;
 
 	public MutableInteger( int i ) {

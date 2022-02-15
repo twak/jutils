@@ -1,11 +1,13 @@
 
 package org.twak.utils;
 
+import java.io.Serializable;
+
 /**
  *
  * @author twak
  */
-public class MutableBoolean {
+public class MutableBoolean implements Serializable {
     boolean val;
 
     public MutableBoolean( boolean value )

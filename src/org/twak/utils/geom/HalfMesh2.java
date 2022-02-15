@@ -2,6 +2,7 @@ package org.twak.utils.geom;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -19,7 +20,7 @@ import org.twak.utils.Mathz;
 import org.twak.utils.collections.*;
 import org.twak.utils.geom.HalfMesh2.HalfFace;
 
-public class HalfMesh2 implements Iterable<HalfFace> {
+public class HalfMesh2 implements Iterable<HalfFace>, Serializable {
 
 	public List<HalfFace> faces = new ArrayList();
 	
@@ -107,7 +108,7 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 
 	}
 
-	public static class HalfEdge {
+	public static class HalfEdge implements Serializable {
 
 		public HalfEdge over, next;
 		public HalfFace face;
@@ -347,7 +348,7 @@ public class HalfMesh2 implements Iterable<HalfFace> {
 		}
 	}
 
-	public static class HalfFace implements Iterable<HalfEdge> {
+	public static class HalfFace implements Iterable<HalfEdge>, Serializable {
 
 		public HalfEdge e;
 

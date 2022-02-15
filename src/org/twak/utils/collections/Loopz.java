@@ -572,12 +572,26 @@ public class Loopz {
 	}
 
 	public static Loop<Point3d> to3d( Loop<? extends Point2d> lp, double h, int i) {
+
 		Loop<Point3d> ol = new Loop<>();
 		for (Point2d pt : lp)
 			ol.append( i == 1 ? 
 					new Point3d (pt.x, h, pt.y) : i == 2 ? 
 					new Point3d (pt.x, pt.y, h ) : 
 					new Point3d (h, pt.x, pt.y) );
+
+		for (Loop<? extends Point2d> hl : lp.holes )
+		{
+			Loop<Point3d> hl3 = new Loop<>();
+			ol.holes.add(hl3);
+
+			for (Point2d pt : hl)
+				hl3.append( i == 1 ?
+						new Point3d (pt.x, h, pt.y) : i == 2 ?
+						new Point3d (pt.x, pt.y, h ) :
+						new Point3d (h, pt.x, pt.y) );
+		}
+
 		return ol;
 	}
 
@@ -701,6 +715,18 @@ public class Loopz {
 			Point3d pn = new Point3d(p);
 			mat.transform( pn );
 			out.append( pn );
+		}
+
+		for (Loop<? extends Point3d> hl : ll.holes )
+		{
+			Loop<Point3d> hl3 = new Loop<>();
+			out.holes.add(hl3);
+
+			for (Point3d p : hl) {
+				Point3d pn = new Point3d(p);
+				mat.transform(pn);
+				hl3.append(pn);
+			}
 		}
 		
 		return out;
