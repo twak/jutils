@@ -945,4 +945,24 @@ public class Loopz {
 
 		return dist;
 	}
+
+	public static Vector3d normal(Loop<Point3d> poly) {
+
+		Vector3d normal = new Vector3d();
+		for ( Loopable<Point3d> pt : poly.loopableIterator() ) {
+
+			Vector3d l = new Vector3d( pt.get() );
+			l.sub(pt.getPrev().get());
+
+			Vector3d n = new Vector3d(pt.getNext().get());
+			n.sub(pt.get());
+			if (l.lengthSquared() > 0 && n.lengthSquared() > 0) {
+				l.cross(l, n);
+				normal.add(l);
+			}
+		}
+
+		normal.normalize();
+		return normal;
+	}
 }
