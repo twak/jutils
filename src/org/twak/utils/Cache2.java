@@ -46,4 +46,9 @@ public abstract class Cache2<I1, I2, O> {
 	public void clear() {
 		cache.clear();
 	}
+
+    public int size() {
+		return cache.values().stream().mapToInt( x -> x.size() ).sum();
+
+    }
 }
