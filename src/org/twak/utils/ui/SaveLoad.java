@@ -1,12 +1,17 @@
 package org.twak.utils.ui;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
+
 import java.awt.Container;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -259,8 +264,18 @@ public class SaveLoad
         }
     }
 
-    private static XStream createXStream()
-    {
-        return new XStream();
+    public static XStream createXStream() {
+
+        XStream out = new XStream();
+        XStream.setupDefaultSecurity(out);
+        out.allowTypeHierarchy(Collection.class);
+        out.allowTypeHierarchy(Map.class);
+        out.addPermission(NullPermission.NULL);
+        out.addPermission(PrimitiveTypePermission.PRIMITIVES);
+
+        out.allowTypesByWildcard(new String[] {
+                "org.twak.**", "javax.**"
+        });
+        return out;
     }
 }
