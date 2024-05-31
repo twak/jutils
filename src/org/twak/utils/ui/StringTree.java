@@ -19,7 +19,10 @@ public class StringTree <E>
     public Map<String, E> contents = new HashMap();
     
     public void add(String s, E e) {
-        
+
+        if (s == null)
+            return;
+
         String[] tokens = s.split("/");
         StringTree<E> tree = this;
         
