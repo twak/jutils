@@ -1,12 +1,10 @@
 
 package org.twak.utils.geom;
 
-import javax.vecmath.Matrix3d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Tuple3d;
 import javax.vecmath.Vector3d;
 
-import org.twak.utils.Jama;
 import org.twak.utils.results.LineOnPlane;
 import org.twak.utils.results.OOB;
 
@@ -176,23 +174,39 @@ public class LinearForm3D implements Cloneable
     }
     
     /**
-     * Collide three planes to a point
+     * Finds the intersection point of three planes in 3D space.
      */
-    public Tuple3d collide (LinearForm3D b, LinearForm3D c)
-    {
-        LinearForm3D a = this;
-
-        if (a.hasNaN() || b.hasNaN() || c.hasNaN() )
+    public Tuple3d collide(final LinearForm3D b, final LinearForm3D c) {
+    	final LinearForm3D a = this;
+        
+        if (a.hasNaN() || b.hasNaN() || c.hasNaN()) {
             throw new Error();
+        }
         
-        Matrix3d three = new Matrix3d (
-                a.A, a.B, a.C, 
-                b.A, b.B, b.C,
-                c.A, c.B, c.C );
+        // Calculate determinant directly
+        final double det = a.A * (b.B * c.C - b.C * c.B)
+                    - a.B * (b.A * c.C - b.C * c.A)
+                    + a.C * (b.A * c.B - b.B * c.A);
+                    
+        // Check if planes are parallel/coincident (no single intersection point)
+        if (Math.abs(det) < 1e-10) {
+            return null;
+        }
         
-        Point3d offset = new Point3d (-a.D, -b.D, -c.D);
-
-        return Jama.solve(three, offset);
+        // Use Cramer's rule to solve the system
+        final double x = (-a.D * (b.B * c.C - b.C * c.B) +
+                    -b.D * (c.B * a.C - c.C * a.B) +
+                    -c.D * (a.B * b.C - a.C * b.B)) / det;
+                    
+        final double y = (-a.D * (c.A * b.C - b.A * c.C) +
+                    -b.D * (a.A * c.C - c.A * a.C) +
+                    -c.D * (b.A * a.C - a.A * b.C)) / det;
+                    
+        final double z = (-a.D * (b.A * c.B - c.A * b.B) +
+                    -b.D * (c.A * a.B - a.A * c.B) +
+                    -c.D * (a.A * b.B - b.A * a.B)) / det;
+        
+        return new Point3d(x, y, z);
     }
     
     public Vector3d createNormalVector()
