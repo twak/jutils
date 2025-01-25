@@ -174,7 +174,7 @@ public class LinearForm3D implements Cloneable
     }
     
     /**
-     * Finds the intersection point of three planes in 3D space.
+     * Finds the intersection point between this plane and two others in 3D space.
      */
     public Tuple3d collide(final LinearForm3D b, final LinearForm3D c) {
     	final LinearForm3D a = this;
@@ -189,8 +189,8 @@ public class LinearForm3D implements Cloneable
                     + a.C * (b.A * c.B - b.B * c.A);
                     
         // Check if planes are parallel/coincident (no single intersection point)
-        if (Math.abs(det) < 1e-10) {
-            return null;
+        if (det == 0) {
+        	throw new Error("Planes do not intersect at a single point.");
         }
         
         // Use Cramer's rule to solve the system
